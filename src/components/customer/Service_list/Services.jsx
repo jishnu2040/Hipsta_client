@@ -9,7 +9,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/partner/service-types/`);
+        const response = await axios.get(`${baseUrl}/partner/service_type/`);
         if (response.status === 200) {
           setServices(response.data); // Assuming your API response is an array of service objects
         }

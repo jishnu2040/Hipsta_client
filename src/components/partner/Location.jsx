@@ -15,7 +15,7 @@ const center = {
 };
 
 const libraries = ['places'];
-const googleMapsApiKey = 'AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4';
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const Location = () => {
   const [mapPosition, setMapPosition] = useState(center);

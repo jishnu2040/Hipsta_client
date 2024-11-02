@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 
-// Set your Google Maps API key
-Geocode.setApiKey('AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4');
+// Set the API key from the environment variable
+Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
 Geocode.enableDebug();
 
 const containerStyle = {
@@ -14,7 +14,7 @@ const containerStyle = {
 const MapComponent = ({ center, zoom }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4',
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Use the key from .env
   });
 
   const [markerPosition, setMarkerPosition] = useState(center);
