@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
   return (
     <>
-    
       <div className='flex mb-4 text-gray-700 font-medium'>
         <h1>Create Account</h1>
       </div>
       
-      <form onSubmit={handleSubmit} className="flex flex-col ">
+      <form onSubmit={handleSubmit} className="flex flex-col">
         <div className="flex mb-4 space-x-4">
           <div className="w-1/2">
             <div className="relative">
@@ -24,7 +23,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
               />
               <label
                 htmlFor="first_name"
-                className="absolute -top-2 left-3 bg-white px-1 text-gray-500 font-small "
+                className="absolute -top-2 left-3 bg-white px-1 text-gray-500 font-small"
               >
                 First Name
               </label>
@@ -44,7 +43,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
               />
               <label
                 htmlFor="last_name"
-                className="absolute -top-2 left-3 bg-white px-1  text-gray-500 font-small"
+                className="absolute -top-2 left-3 bg-white px-1 text-gray-500 font-small"
               >
                 Last Name
               </label>
@@ -65,7 +64,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
             />
             <label
               htmlFor="email"
-              className="absolute -top-2 left-3 bg-white px-1  text-gray-500 font-small"
+              className="absolute -top-2 left-3 bg-white px-1 text-gray-500 font-small"
             >
               Email
             </label>
@@ -105,7 +104,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
             />
             <label
               htmlFor="password2"
-              className="absolute -top-2 left-3 bg-white px-1 text-gray-500  font-small"
+              className="absolute -top-2 left-3 bg-white px-1 text-gray-500 font-small"
             >
               Confirm Password
             </label>
@@ -114,34 +113,39 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
         </div>
         
         <div className="mb-4">
-        {/* <label htmlFor="user_type" className="block text-gray-500  font-medium mb-2">User Type</label> */}
-        <select
-          id="user_type"
-          name="user_type"
-          value={formData.user_type}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="customer">Customer</option>
-          <option value="partner">Partner</option>
-        </select>
-        {errors.user_type && <p className="text-red-500 text-sm">{errors.user_type}</p>}
-      </div>
+          <select
+            id="user_type"
+            name="user_type"
+            value={formData.user_type}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="customer">Customer</option>
+            <option value="partner">Partner</option>
+          </select>
+          {errors.user_type && <p className="text-red-500 text-sm">{errors.user_type}</p>}
+        </div>
+        
         <button
           type="submit"
-          className="w-full bg-black text-white px-4 py-2 rounded-lg font-medium focus:ring-2 focus:ring-indigo-500 "
+          className="w-full bg-black text-white px-4 py-2 rounded-lg font-medium focus:ring-2 focus:ring-indigo-500"
         >
           Create Account
         </button>
 
-        <div className="mt-4 flex items-center justify-center">
-          <div id="signInDiv" className="w-full flex justify-center"></div>
+        {errors.general && <p className="text-red-500 text-sm mt-2">{errors.general}</p>}
+
+        <div className="mt-4 flex items-center justify-between">
+          <span>Already have an account?</span>
+          <Link to="/login" className="text-indigo-600 hover:text-indigo-500">Login</Link>
         </div>
 
         <div className="mt-4 text-center">
-          <p className="text-gray-600">Already have an account? <Link to="/login" className="text-indigo-500 hover:text-indigo-600">Login</Link></p>
+          <span>Or</span>
         </div>
+
+        <div id="signInDiv" className="flex justify-center my-4"></div>
       </form>
     </>
   );

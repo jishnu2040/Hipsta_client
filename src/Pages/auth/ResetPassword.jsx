@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,6 +10,27 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResetConfirm = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/v1/auth/password-reset-confirm/${uid}/${token}/`);
+
+        // Print the full response data for debugging
+        console.log(response.data); 
+
+        if (!response.data.success) {
+          toast.error('Invalid or expired link.');
+          navigate('/forgotpassword'); // Redirect if invalid
+        }
+      } catch (error) {
+        toast.error('An error occurred. Please try again.');
+        navigate('/forgotpassword'); // Redirect if error
+      }
+    };
+
+    handleResetConfirm();
+  }, [uid, token, navigate]);
 
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
@@ -35,14 +56,21 @@ const ResetPassword = () => {
         confirm_password: confirmPassword,
         uidb64: uid,
         token
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
       });
-      setIsLoading(false);
-      toast.success(response.data.message);
-      setTimeout(() => navigate('/login'), 3000);
+
+      console.log('Success:', response.data);
+      toast.success('Password reset successful');
+      navigate('/login'); // Redirect after successful password reset
     } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to reset password. Please try again.');
+    } finally {
       setIsLoading(false);
-      toast.error('An error occurred. Please try again.');
-      console.error(error);
     }
   };
 

@@ -28,23 +28,23 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleResetConfirm = async (uidb64, token) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/api/v1/auth/password-reset-confirm/${uidb64}/${token}/`);
-      if (response.data.success) {
-        navigate(`/reset-password?uidb64=${uidb64}&token=${token}`);
-      } else {
-        toast.error('Invalid or expired link.');
-      }
-    } catch (error) {
-      toast.error('An error occurred. Please try again.');
-      console.error(error);
-    }
-  };
+  // const handleResetConfirm = async (uidb64, token) => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:8000/api/v1/auth/password-reset-confirm/${uidb64}/${token}/`);
+  //     if (response.data.success) {
+  //       navigate(`/reset-password?uidb64=${uidb64}&token=${token}`);
+  //     } else {
+  //       toast.error('Invalid or expired link.');
+  //     }
+  //   } catch (error) {
+  //     toast.error('An error occurred. Please try again.');
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center">Forgot Password</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg font-mediumfocus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Reset Password'}

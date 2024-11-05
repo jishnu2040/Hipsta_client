@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SignupForm from './Signup/SignupForm';
+import { toast } from 'react-toastify';
 import Card from './Signup/Card';
 import signup_img from '../../assets/close.jpg';
 
@@ -19,15 +20,40 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignInWithGoogle = async (response) => {
+    console.log(response);
     const payload = response.credential;
+  
     try {
-      const server_res = await axios.post('http://localhost:8000/api/v1/Oauth/google/', { access_token: payload });
+      const server_res = await axios.post('http://localhost:8000/api/v1/auth/google/', { access_token: payload });
       console.log(server_res);
-      // Handle the server response appropriately
+  
+
+      if (server_res.status === 200) {
+    
+        const { email, full_name, access_token, refresh_token } = server_res.data;
+  
+        localStorage.setItem("user", JSON.stringify({ email, full_name }));
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+
+
+        navigate('/');
+  
+        // Dispatch user ID or any other required user state
+        dispatch(setUserId(server_res.data.userId)); // Assuming userId comes from the server response
+  
+        navigate('/');
+  
+        // Display success message
+        toast.success("Login successful");
+        setErrors({});
+      }
     } catch (error) {
       console.error('Google sign-in error:', error);
+      setErrors({ google: 'Failed to sign in with Google.' });
     }
   };
+  
 
   useEffect(() => {
     const loadGoogleScript = () => {
@@ -71,18 +97,18 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({}); // Clear previous errors
     try {
       const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formData);
       if (response.status === 200 || response.status === 201) {
         navigate('/verify');
-      } else {
-        setErrors(response.data);
       }
     } catch (error) {
       if (error.response) {
-        setErrors(error.response.data);
+        setErrors(error.response.data); // Set errors from the server response
       } else {
         console.error('Error occurred:', error.message);
+        setErrors({ general: 'An unexpected error occurred. Please try again.' });
       }
     }
   };
