@@ -1,42 +1,93 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchServiceTypes, setServiceType } from '../../Redux/slices/partnerSlice';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FaCut, FaSpa, FaLeaf, FaHands } from 'react-icons/fa';
 
-const Services = () => {
-  const dispatch = useDispatch();
-  const serviceCategories = useSelector(state => state.partner.serviceCategories);
-  const selectedServices = useSelector(state => state.partner.serviceType);
-  const status = useSelector(state => state.partner.status);
-  const error = useSelector(state => state.partner.error);
+// CSS spinner styles
+const spinnerStyles = {
+  display: 'inline-block',
+  width: '50px',
+  height: '50px',
+  border: '5px solid #f3f3f3',
+  borderTop: '5px solid #3498db',
+  borderRadius: '50%',
+  animation: 'spin 2s linear infinite',
+};
 
-  const navigate = useNavigate(); 
+// Keyframes for the spinning animation
+const styles = {
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' },
+  },
+};
+
+const Services = ({ nextStep, previousStep }) => {
+  const [serviceCategories, setServiceCategories] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchServiceTypes());
-  }, [dispatch]);
+    const fetchServiceTypes = async () => {
+      setStatus('loading');
+      try {
+        const response = await axios.get('http://localhost:8000/api/v1/partner/service_type/');
+        setServiceCategories(response.data);
+        setStatus('succeeded');
+      } catch (err) {
+        setError('Failed to fetch service categories');
+        setStatus('failed');
+      }
+    };
+
+    fetchServiceTypes();
+  }, []);
 
   const handleServiceSelect = (serviceId) => {
-    if (selectedServices.includes(serviceId)) {
-      dispatch(setServiceType(selectedServices.filter(id => id !== serviceId)));
-    } else {
-      dispatch(setServiceType([...selectedServices, serviceId]));
-    }
+    setSelectedServices((prevSelected) =>
+      prevSelected.includes(serviceId)
+        ? prevSelected.filter((id) => id !== serviceId)
+        : [...prevSelected, serviceId]
+    );
   };
 
   const handleSubmit = () => {
-    const selectedServiceLabels = selectedServices.map(id => serviceCategories.find(service => service.id === id).name);
-    console.log('Selected Services:', selectedServiceLabels);
-    // Handle submission logic here (e.g., dispatch to Redux, API call)
-    alert('Services submitted!'); // Replace with actual logic
+    if (selectedServices.length === 0) {
+      alert('Please select at least one service.');
+      return;
+    }
+    nextStep();
+  };
 
-    setTimeout(() => {
-      navigate('/teamSize'); 
-    }, 1000);
+  const getServiceIcon = (serviceName) => {
+    switch (serviceName.toLowerCase()) {
+      case 'salon':
+        return <FaCut className="text-indigo-500 text-3xl" />;
+      case 'spa':
+        return <FaSpa className="text-indigo-500 text-3xl" />;
+      case 'skin-care':
+        return <FaLeaf className="text-indigo-500 text-3xl" />;
+      case 'massage':
+        return <FaHands className="text-indigo-500 text-3xl" />;
+      default:
+        return null;
+    }
   };
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
+          <div className="flex justify-center items-center space-x-4">
+            <div style={spinnerStyles}></div>
+            <p>Loading Services...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (status === 'failed') {
@@ -44,31 +95,45 @@ const Services = () => {
   }
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">Services</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {serviceCategories.map(service => (
-            <div key={service.id} className="border p-4 rounded-lg cursor-pointer hover:bg-gray-200">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox h-5 w-5 text-indigo-600"
-                  checked={selectedServices.includes(service.id)}
-                  onChange={() => handleServiceSelect(service.id)}
-                />
-                <span className="ml-2">{service.name}</span>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
+        <h2 className="text-2xl font-bold mb-4 text-center">What services are you looking for?</h2>
+        <p className="text-center mb-6">Please let us know what role best describes you.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {serviceCategories.map((service) => (
+            <div
+              key={service.id}
+              className={`flex flex-col items-center justify-center border p-8 rounded-lg cursor-pointer hover:bg-gray-200 ${
+                selectedServices.includes(service.id) ? 'bg-indigo-200' : ''
+              }`}
+              style={{ width: '150px', height: '120px' }} // Adjust card size here
+              onClick={() => handleServiceSelect(service.id)}
+            >
+              <label className="flex flex-col items-center">
+                {getServiceIcon(service.name)}
+                <span className="mt-2 text-lg font-medium text-center">{service.name}</span>
               </label>
             </div>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="w-full mt-4 bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          Submit Services
-        </button>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between mt-8">
+          <button
+            type="button"
+            onClick={previousStep}
+            className=" text-gray-800 px-6 py-2 rounded-lg font-semibold hover:text-blue-600 transition duration-200"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={nextStep}
+            className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
+import ContentCutIcon from '@mui/icons-material/ContentCut'; // Salon icon
+import SpaIcon from '@mui/icons-material/Spa'; // Spa icon
+import FaceIcon from '@mui/icons-material/Face'; // Skincare icon
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'; // Massage icon
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -15,38 +19,49 @@ const Services = () => {
         }
       } catch (error) {
         console.error('Error fetching services:', error);
-        // Handle error state or show a message to the user
       }
     };
 
     fetchServices();
   }, []);
 
-  // Colors for the cards
-  const colors = ['#FFB6C1', '#87CEFA', '#FFD700', '#98FB98', '#FF69B4', '#8A2BE2', '#FF6347', '#20B2AA'];
+  const getServiceIcon = (serviceName) => {
+    switch (serviceName.toLowerCase()) {
+      case 'salon':
+        return <ContentCutIcon sx={{ fontSize: 40, color: '#6A1B9A' }} />; // Reduced icon size
+      case 'spa':
+        return <SpaIcon sx={{ fontSize: 40, color: '#388E3C' }} />;
+      case 'skincare':
+        return <FaceIcon sx={{ fontSize: 40, color: '#1976D2' }} />;
+      case 'massage':
+        return <HealthAndSafetyIcon sx={{ fontSize: 40, color: '#D32F2F' }} />;
+      default:
+        return <ContentCutIcon sx={{ fontSize: 40, color: '#6A1B9A' }} />;
+    }
+  };
 
   return (
-    <Box sx={{ padding: '2rem' }}>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', mb: 4 }}>
-        List of Services
+    <Box sx={{ padding: '1.5rem' }}>
+      <Typography variant="h4" component="h2" gutterBottom sx={{ textAlign: '', fontWeight: 'medium', mb: 3 }}>
+      Discover Our Services
       </Typography>
       <Grid container spacing={3}>
-        {services.map((service, index) => (
-          <Grid item key={service.id} xs={12} sm={6} md={4} lg={3}>
+        {services.map((service) => (
+          <Grid item key={service.id} xs={12} sm={6} md={4}>
             <Card 
               sx={{ 
-                backgroundColor: colors[index % colors.length], // Apply different background colors
-                color: '#fff', // Text color
-                boxShadow: 3, // Add some shadow for a 3D effect
-                borderRadius: '10px', // Rounded corners
-                '&:hover': { boxShadow: 6 }, // Elevate shadow on hover
+                textAlign: 'center', 
+                boxShadow: 2, 
+                borderRadius: '8px', // Slightly smaller border radius
+                padding: '1.5rem', // Reduced padding
+                '&:hover': { boxShadow: 4 },
               }}
             >
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
+              <CardContent>
+                {getServiceIcon(service.name)}
+                <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', mt: 1.5 }}>
                   {service.name}
                 </Typography>
-                {/* Additional details or description if needed */}
               </CardContent>
             </Card>
           </Grid>

@@ -20,12 +20,12 @@ function Home() {
       {/* Container with equal left and right margins */}
       <div className="mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-8 flex flex-col md:flex-row justify-between"> {/* Adjust margins and layout here */}
         {/* Left section for Search */}
-        <div className="flex-1 mr-4"> {/* Flex-1 to take available space */}
+        <div className="flex-1 mr-4 pt-24"> 
           <Search />
         </div>
 
         {/* Right section for Services */}
-        <div className="flex-1 ml-4"> {/* Flex-1 to take available space */}
+        <div className="flex-1 ml-4">
           <Services />
         </div>
       </div>

@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     extend: {
-      olors: {
+      colors: {
         primary: '#1D3557', // Deep navy
         accent: '#457B9D',  // Light blue
         background: '#F1FAEE', // Soft white

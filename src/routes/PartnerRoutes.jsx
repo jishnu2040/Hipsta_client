@@ -7,10 +7,13 @@ import Services from '../components/partner/Services';
 import TeamSize from '../components/partner/TeamSize';
 import Location from '../components/partner/Location';
 import VerifyData from '../components/partner/VerifyData'
+import Registration from '../Pages/partner/Registration';
 
 const PartnerRoutes = () => {
   return (
     <Routes>
+      <Route path="/registration" element={<Registration />}>
+      </Route>
       <Route path="/partner" element={<PartnerDashboard />} />
       <Route path="/partner-details" element={<BasicInfo />} />
       <Route path="/services" element={<Services />} />

@@ -28,7 +28,7 @@ function Search() {
   };
 
   return (
-    <div className="-screen flex  justify-center items-center bg-gradient-to-r from-teal-400 to-blue-500 p-2 rounded-xl">
+    <div className="-screen flex  justify-center items-center bg-gradient-to-r from-green-400 to-gray-500 p-2 rounded-xl">
       <div className="bg-white p-4 rounded-xl shadow-2xl w-full max-w-4xl flex flex-col items-center">
         <h1 className="text-lg font-bold text-gray-800 mb-4">Find Your Favourite Salon</h1>
         <div className="flex w-full gap-2">
