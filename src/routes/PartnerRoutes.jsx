@@ -12,8 +12,7 @@ import Registration from '../Pages/partner/Registration';
 const PartnerRoutes = () => {
   return (
     <Routes>
-      <Route path="/registration" element={<Registration />}>
-      </Route>
+      <Route path="/registration" element={<Registration />} />
       <Route path="/partner" element={<PartnerDashboard />} />
       <Route path="/partner-details" element={<BasicInfo />} />
       <Route path="/services" element={<Services />} />
