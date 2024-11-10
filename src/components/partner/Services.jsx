@@ -14,14 +14,6 @@ const spinnerStyles = {
   animation: 'spin 2s linear infinite',
 };
 
-// Keyframes for the spinning animation
-const styles = {
-  '@keyframes spin': {
-    '0%': { transform: 'rotate(0deg)' },
-    '100%': { transform: 'rotate(360deg)' },
-  },
-};
-
 const Services = ({ nextStep, previousStep }) => {
   const [serviceCategories, setServiceCategories] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -45,6 +37,19 @@ const Services = ({ nextStep, previousStep }) => {
 
     fetchServiceTypes();
   }, []);
+
+  // Load selected services from localStorage on mount
+  useEffect(() => {
+    const savedServices = JSON.parse(localStorage.getItem('selectedServices'));
+    if (savedServices) {
+      setSelectedServices(savedServices);
+    }
+  }, []);
+
+  // Save selected services to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+  }, [selectedServices]);
 
   const handleServiceSelect = (serviceId) => {
     setSelectedServices((prevSelected) =>
@@ -122,13 +127,13 @@ const Services = ({ nextStep, previousStep }) => {
           <button
             type="button"
             onClick={previousStep}
-            className=" text-gray-800 px-6 py-2 rounded-lg font-semibold hover:text-blue-600 transition duration-200"
+            className="text-gray-800 px-6 py-2 rounded-lg font-semibold hover:text-blue-600 transition duration-200"
           >
             Previous
           </button>
           <button
             type="button"
-            onClick={nextStep}
+            onClick={handleSubmit}
             className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
           >
             Next

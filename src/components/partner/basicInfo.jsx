@@ -59,57 +59,57 @@ const BasicInfo = ({ nextStep, previousStep }) => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-1">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {['business_name', 'website', 'phone'].map((field, idx) => (
-              <div key={idx} className="relative mb-4">
-                <input
-                  type={field === 'website' ? 'url' : 'text'}
-                  id={field}
-                  name={field}
-                  value={partnerData[field]}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {['business_name', 'website', 'phone'].map((field, idx) => (
+                <div key={idx} className="relative mb-4">
+                  <input
+                    type={field === 'website' ? 'url' : 'text'}
+                    id={field}
+                    name={field}
+                    value={partnerData[field]}
+                    onChange={handleChange}
+                    required={field !== 'website'}
+                    className="w-full px-4 pt-3 pb-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 peer"
+                  />
+                  <label
+                    htmlFor={field}
+                    className="absolute left-4 text-gray-500 bg-white px-1 transform -translate-y-1/2 scale-90 peer-focus:top-1 peer-focus:text-blue-500 peer-focus:scale-90 peer-focus:px-1 transition duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0"
+                  >
+                    {field.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                  </label>
+                  {errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>}
+                </div>
+              ))}
+
+              <div className="relative mb-4 md:col-span-2">
+                <textarea
+                  id="address"
+                  name="address"
+                  value={partnerData.address}
                   onChange={handleChange}
-                  required={field !== 'website'}
-                  className="w-full px-4 pt-3 pb-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 peer"
+                  required
+                  className="w-full px-4 pt-5 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 peer"
                 />
                 <label
-                  htmlFor={field}
-                  className="absolute  left-4  text-gray-500 bg-white px-1 transform -translate-y-1/2 scale-90 peer-focus:top-1 peer-focus:text-blue-500 peer-focus:scale-90 peer-focus:px-1 transition duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0"
+                  htmlFor="address"
+                  className="absolute left-4 top-2 text-gray-500 bg-white px-1 transform -translate-y-1/2 scale-90 peer-focus:top-1 peer-focus:text-blue-500 peer-focus:scale-90 peer-focus:px-1 transition duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0"
                 >
-                  {field.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                  Address
                 </label>
-                {errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>}
+                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
               </div>
-            ))}
-
-            <div className="relative mb-4 md:col-span-2">
-              <textarea
-                id="address"
-                name="address"
-                value={partnerData.address}
-                onChange={handleChange}
-                required
-                className="w-full px-4 pt-5 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 peer"
-              />
-              <label
-                htmlFor="address"
-                className="absolute left-4 top-2 text-gray-500 bg-white px-1 transform -translate-y-1/2 scale-90 peer-focus:top-1 peer-focus:text-blue-500 peer-focus:scale-90 peer-focus:px-1 transition duration-200 peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0"
-              >
-                Address
-              </label>
-              {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
             </div>
-          </div>
 
-          <div className="flex justify-end items-center space-x-4">
-          <button
-            type="button"
-            onClick={nextStep}
-            className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
-          >
-            Next
-          </button>
-          </div>
-        </form>
+            <div className="flex justify-end items-center space-x-4">
+              <button
+                type="submit" // Change type to submit
+                className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
+              >
+                Next
+              </button>
+            </div>
+      </form>
+
         <ToastContainer />
       </div>
     </div>

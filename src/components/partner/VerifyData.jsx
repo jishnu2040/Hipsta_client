@@ -1,72 +1,72 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
 
-const VerifyData = () => {
-  const {
-    userId,
-    businessName,
-    websiteName,
-    serviceType,
-    selectedTeamSize,
-    lat,
-    lng
-  } = useSelector((state) => state.partner);
 
-  const navigate = useNavigate();
+
+const VerifyData = ({previousStep}) => {
+  const [userData, setUserData] = useState({
+    businessName: '',
+    website: '',
+    phone: '',
+    address: '',
+    selectedServices: [],
+    teamSize: '',
+    latitude: '',
+    longitude: '',
+  });
+
 
   useEffect(() => {
-    if (!userId || !businessName || !serviceType || !selectedTeamSize || lat == null || lng == null) {
-      toast.error('Incomplete partner data. Please complete all steps before verifying.');
-      navigate('/partner/registration');
-    }
-  }, [userId, businessName, serviceType, selectedTeamSize, lat, lng, navigate]);
+    // Retrieve data from localStorage
+    const partnerData = JSON.parse(localStorage.getItem('partnerData'));
+    const latitude = localStorage.getItem('latitude');
+    const longitude = localStorage.getItem('longitude');
+    const selectedServices = JSON.parse(localStorage.getItem('selectedServices'));
+    const selectedTeam = localStorage.getItem('selectedTeam');
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/partner/create-partner/', {
-        user: userId,
-        business_name: businessName,
-        website: websiteName,
-        service_type: serviceType,
-        team_size: parseInt(selectedTeamSize, 10),
-        lat: parseFloat(lat),
-        lng: parseFloat(lng)
+    if (partnerData) {
+      setUserData({
+        businessName: partnerData.business_name,
+        website: partnerData.website,
+        phone: partnerData.phone,
+        address: partnerData.address,
+        selectedServices: selectedServices || [],
+        teamSize: selectedTeam || '',
+        latitude: latitude || '',
+        longitude: longitude || '',
       });
-
-      if (response.status === 201) {
-        toast.success("Account created successfully");
-        console.log('Partner creation successful:', response.data);
-        navigate('/partner/dashboard');
-      }
-    } catch (error) {
-      console.error('Error creating partner:', error);
-      toast.error('Failed to submit partner data. Please try again later.');
     }
-  };
+  }, []);
 
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center">Verify Data</h2>
         <div className="mb-4">
-          <p><strong>User ID:</strong> {userId}</p>
-          <p><strong>Business Name:</strong> {businessName}</p>
-          <p><strong>Website Name:</strong> {websiteName}</p>
-          <p><strong>Service Type:</strong> {Array.isArray(serviceType) ? serviceType.join(', ') : serviceType}</p>
-          <p><strong>Selected Team Size:</strong> {selectedTeamSize}</p>
-          <p><strong>Latitude:</strong> {lat}</p>
-          <p><strong>Longitude:</strong> {lng}</p>
+          <p><strong>Business Name:</strong> {userData.businessName}</p>
+          <p><strong>Website:</strong> {userData.website}</p>
+          <p><strong>Phone:</strong> {userData.phone}</p>
+          <p><strong>Address:</strong> {userData.address}</p>
+          <p><strong>Selected Services:</strong> {userData.selectedServices.join(', ')}</p>
+          <p><strong>Team Size:</strong> {userData.teamSize}</p>
+          <p><strong>Latitude:</strong> {userData.latitude}</p>
+          <p><strong>Longitude:</strong> {userData.longitude}</p>
         </div>
-        <button
+        <div className="flex justify-between mt-8">
+          <button
+            type="button"
+            onClick={previousStep}
+            className="text-gray-800 px-6 py-2 rounded-lg font-semibold hover:text-blue-600 transition duration-200"
+          >
+            Previous
+          </button>
+          <button
           type="button"
-          onClick={handleSubmit}
+          onClick={() => alert('Data verified successfully!')}
           className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          Verify and Submit Data
+          Verify Data
         </button>
+    </div>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { useDispatch } from 'react-redux';
 import { setLat, setLng } from '../../Redux/slices/partnerSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,12 +16,11 @@ const center = {
 const libraries = ['places'];
 const googleMapsApiKey = 'AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4';
 
-const Location = () => {
+const Location = ({ nextStep, previousStep}) => {
   const [mapPosition, setMapPosition] = useState(center);
   const [address, setAddress] = useState('');
   const mapRef = useRef(null);
   const autocompleteRef = useRef(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { isLoaded, loadError } = useJsApiLoader({
@@ -45,15 +43,16 @@ const Location = () => {
         const lat = newPosition.lat();
         const lng = newPosition.lng();
         setMapPosition({ lat, lng });
-        dispatch(setLat(lat));
-        dispatch(setLng(lng));
+        localStorage.setItem('latitude', lat);
+        localStorage.setItem('longitude', lng);
+
       });
 
       return () => {
         google.maps.event.clearListeners(marker, 'dragend');
       };
     }
-  }, [isLoaded, mapPosition, dispatch]);
+  }, [isLoaded, mapPosition]);
 
   useEffect(() => {
     if (isLoaded && window.google) {
@@ -72,19 +71,21 @@ const Location = () => {
             lng
           });
           setAddress(place.formatted_address);
-          dispatch(setLat(lat));
-          dispatch(setLng(lng));
+          localStorage.setItem('latitude', lat);
+          localStorage.setItem('longitude', lng);
+         
         }
       });
       autocompleteRef.current = autocomplete;
     }
-  }, [isLoaded, dispatch]);
+  }, [isLoaded]);
 
   const handleSubmit = () => {
-    console.log('Submitting:', { address, lat: mapPosition.lat, lng: mapPosition.lng });
-    dispatch(setLat(mapPosition.lat));
-    dispatch(setLng(mapPosition.lng));
-    navigate('verify-page');
+    if (mapPosition.length === 0) {
+      alert('Please mark your point.');
+      return;
+    }
+    nextStep();
   };
 
   if (loadError) return <div>Map cannot be loaded right now, sorry.</div>;
@@ -92,36 +93,51 @@ const Location = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: '10px' }}>
-        <input
-          id="address-input"
-          type="text"
-          placeholder="Enter your address"
-          style={{ width: '100%', padding: '8px' }}
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
-      <div style={{ height: '500px', width: '100%' }}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={mapPosition}
-          zoom={14}
-          onLoad={(map) => {
-            mapRef.current = map;
-          }}
-          onClick={(e) => {
-            const lat = e.latLng.lat();
-            const lng = e.latLng.lng();
-            setMapPosition({ lat, lng });
-            setAddress('');
-          }}
-        />
-      </div>
-      <button onClick={handleSubmit} style={{ marginTop: '10px' }}>
-        Submit
-      </button>
+    <div style={{ marginBottom: '10px' }}>
+      <input
+        id="address-input"
+        type="text"
+        placeholder="Enter your address"
+        style={{ width: '100%', padding: '8px' }}
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+      />
     </div>
+    <div style={{ height: '500px', width: '100%' }}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={mapPosition}
+        zoom={14}
+        onLoad={(map) => {
+          mapRef.current = map;
+        }}
+        onClick={(e) => {
+          const lat = e.latLng.lat();
+          const lng = e.latLng.lng();
+          setMapPosition({ lat, lng });
+          setAddress('');
+          localStorage.setItem('latitude', lat);
+          localStorage.setItem('longitude', lng);
+        }}
+      />
+    </div>
+    <div className="flex justify-between mt-8">
+          <button
+            type="button"
+            onClick={previousStep}
+            className="text-gray-800 px-6 py-2 rounded-lg font-semibold hover:text-blue-600 transition duration-200"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
+          >
+            Next
+          </button>
+    </div>
+  </div>
   );
 };
 

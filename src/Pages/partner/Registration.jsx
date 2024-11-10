@@ -4,11 +4,23 @@ import BasicInfo from '../../components/partner/basicInfo';
 import Services from '../../components/partner/Services';
 import TeamSize from '../../components/partner/TeamSize';
 import Location from '../../components/partner/Location';
-// import VerifyData from '../../components/partner/VerifyData';
+import VerifyData from '../../components/partner/VerifyData';
 
 const Registration = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const steps = ['Basic Info', 'Services', 'Team Size', 'Location', 'Verify Data'];
+
+
+    // moving to last visited page , info collecting from Local storage
+    useEffect(() => {
+        const lastPage = localStorage.getItem('lastPage');
+        if (lastPage) {
+            const savedStep = steps.indexOf(lastPage);
+            if (savedStep !== -1) {
+                setCurrentStep(savedStep);
+            }
+        }
+    }, []);
 
     // Update the last page in localStorage whenever currentStep changes
     useEffect(() => {
@@ -44,12 +56,12 @@ const Registration = () => {
         <div className="flex h-screen mx-6 md:mx-8 lg:mx-16 xl:mx-32">
             <div className="flex flex-col md:flex-row w-full h-w-screen">
     
-                {/* Left section for Stepper */}
+                {/* Left---Stepper */}
                 <div className="w-1/3 border-gray-300 p-4 flex-shrink-0 flex items-center"> 
                     <Stepper steps={steps} currentStep={currentStep} setCurrentStep={setCurrentStep} />
                 </div>
 
-                {/* Right section for step content - full width */}
+                {/* Right-- step content */}
                 <div className="w-full p-4"> 
                     {renderStepContent()}
                 </div>
