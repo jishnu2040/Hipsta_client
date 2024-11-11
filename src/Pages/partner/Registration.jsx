@@ -3,12 +3,13 @@ import Stepper from './Stepper';
 import BasicInfo from '../../components/partner/basicInfo';
 import Services from '../../components/partner/Services';
 import TeamSize from '../../components/partner/TeamSize';
+import FileUpload from '../../components/partner/FileUpload';
 import Location from '../../components/partner/Location';
 import VerifyData from '../../components/partner/VerifyData';
 
 const Registration = () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const steps = ['Basic Info', 'Services', 'Team Size', 'Location', 'Verify Data'];
+    const steps = ['Basic Info', 'Services', 'Team Size','File Upload', 'Location', 'Verify Data'];
 
 
     // moving to last visited page , info collecting from Local storage
@@ -44,8 +45,10 @@ const Registration = () => {
             case 2:
                 return <TeamSize nextStep={nextStep} previousStep={previousStep} />;
             case 3:
-                return <Location nextStep={nextStep} previousStep={previousStep} />;
+                return <FileUpload nextStep={nextStep} previousStep={previousStep} />;
             case 4:
+                return <Location nextStep={nextStep} previousStep={previousStep} />;
+            case 5:
                 return <VerifyData nextStep={nextStep} previousStep={previousStep} />;
             default:
                 return <BasicInfo nextStep={nextStep} previousStep={previousStep} />;
