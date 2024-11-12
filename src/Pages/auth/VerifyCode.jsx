@@ -32,7 +32,7 @@ const VerifyCode = () => {
 
         setTimeout(() => {
           if (user_type === 'partner') {
-            navigate('/partner-details'); // Navigate to partner details page
+            navigate('/registration'); // Navigate to partner details page
           } else {
             navigate('/login'); // Navigate to login page for customers
           }

@@ -9,7 +9,14 @@ import VerifyData from '../../components/partner/VerifyData';
 
 const Registration = () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const steps = ['Basic Info', 'Services', 'Team Size','File Upload', 'Location', 'Verify Data'];
+    const steps = [
+        'Personal Info',
+        'Services',
+        'Team',
+        'Documents',
+        'Location',
+        'Review'
+      ];
 
 
     // moving to last visited page , info collecting from Local storage
