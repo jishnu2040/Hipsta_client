@@ -3,16 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaCut, FaSpa, FaLeaf, FaHands } from 'react-icons/fa';
 
-// CSS spinner styles
-const spinnerStyles = {
-  display: 'inline-block',
-  width: '50px',
-  height: '50px',
-  border: '5px solid #f3f3f3',
-  borderTop: '5px solid #3498db',
-  borderRadius: '50%',
-  animation: 'spin 2s linear infinite',
-};
+// CSS spinner styles using Tailwind classes
+const spinnerStyles = 'inline-block w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin';
 
 const Services = ({ nextStep, previousStep }) => {
   const [serviceCategories, setServiceCategories] = useState([]);
@@ -87,7 +79,7 @@ const Services = ({ nextStep, previousStep }) => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
           <div className="flex justify-center items-center space-x-4">
-            <div style={spinnerStyles}></div>
+            <div className={spinnerStyles}></div>
             <p>Loading Services...</p>
           </div>
         </div>
@@ -103,15 +95,14 @@ const Services = ({ nextStep, previousStep }) => {
     <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
         <h2 className="text-2xl font-bold mb-4 text-center">What services are you looking for?</h2>
-        <p className="text-center mb-6">Please let us know what role best describes you.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <p className="text-center mb-6 sm:block hidden">Please let us know what role best describes you.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {serviceCategories.map((service) => (
             <div
               key={service.id}
-              className={`flex flex-col items-center justify-center border p-8 rounded-lg cursor-pointer hover:bg-gray-200 ${
+              className={`flex flex-col items-center justify-center border p-4 rounded-lg cursor-pointer hover:bg-gray-200 ${
                 selectedServices.includes(service.id) ? 'bg-indigo-200' : ''
               }`}
-              style={{ width: '150px', height: '120px' }} // Adjust card size here
               onClick={() => handleServiceSelect(service.id)}
             >
               <label className="flex flex-col items-center">

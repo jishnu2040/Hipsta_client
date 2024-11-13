@@ -37,7 +37,7 @@ const TeamSize = ({ nextStep, previousStep }) => {
         <p className="text-lg text-gray-700 mb-6 text-center">
           Please select the Size of the Team for tailored services.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {teamSize.map((team) => (
             <div
               key={team.id}

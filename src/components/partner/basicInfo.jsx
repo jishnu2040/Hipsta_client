@@ -49,12 +49,18 @@ const BasicInfo = ({ nextStep, previousStep }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full p-4">
+    <div className="flex items-center justify-center min-h-screen w-full">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full">
-        <h3 className="text-3xl text-gray-900 font-medium mb-6 text-center">
-          Let’s Start with Your Business Information
-        </h3>
-        <p className="text-lg text-gray-700 mb-6 text-center">
+        <div className="text-center mb-6">
+            <h3 className="text-3xl justify-start text-gray-900 font-medium sm:hidden">
+              Let’s start
+            </h3>
+        
+            <h3 className="hidden sm:block text-3xl text-gray-900 font-medium">
+              Let’s Start with Your Business Information
+            </h3>
+        </div>
+        <p className="sm:block hidden text-lg text-gray-700 mb-6 text-center">
           Please fill in the details below so we can connect with you regarding our services and partnership opportunities.
         </p>
 

@@ -10,7 +10,7 @@ const Stepper = ({ steps, currentStep, setCurrentStep }) => {
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-200 ease-in-out ${
                                 currentStep >= index
-                                    ? 'bg-blue-500 text-white border-blue-500'
+                                    ? 'bg-blue-600 text-white border-blue-500'
                                     : 'bg-white text-gray-500 border-gray-300 hover:bg-blue-100 hover:text-blue-500'
                             }`}
                             onClick={() => setCurrentStep(index)}
@@ -22,8 +22,8 @@ const Stepper = ({ steps, currentStep, setCurrentStep }) => {
                         {/* Vertical Connecting Line */}
                         {index < steps.length - 1 && (
                             <div
-                                className={`absolute left-4 top-8  w-px h-full ${
-                                    currentStep > index ? 'bg-blue-500' : 'bg-gray-300'
+                                className={`absolute bol left-3 top-8  w-1 h-full ${
+                                    currentStep > index ? 'bg-blue-500' : 'bg-gray-600'
                                 }`}
 
                             />

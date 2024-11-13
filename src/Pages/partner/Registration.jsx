@@ -63,16 +63,16 @@ const Registration = () => {
     };
 
     return (
-        <div className="flex h-screen mx-6 md:mx-8 lg:mx-16 xl:mx-32">
+        <div className="flex md:mx-8 lg:mx-16 xl:mx-32">
             <div className="flex flex-col md:flex-row w-full h-w-screen">
     
                 {/* Left---Stepper */}
-                <div className="w-1/3 border-gray-300 p-4 flex-shrink-0 flex items-center"> 
+                <div className="w-1/3 border-gray-300 p-4 sm:flex hidden items-center  "> 
                     <Stepper steps={steps} currentStep={currentStep} setCurrentStep={setCurrentStep} />
                 </div>
 
                 {/* Right-- step content */}
-                <div className="w-full p-4"> 
+                <div className="w-full"> 
                     {renderStepContent()}
                 </div>
              </div>
