@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Stepper from './Stepper';
-import BasicInfo from '../../components/partner/basicInfo';
-import Services from '../../components/partner/Services';
-import TeamSize from '../../components/partner/TeamSize';
-import FileUpload from '../../components/partner/FileUpload';
-import Location from '../../components/partner/Location';
-import VerifyData from '../../components/partner/VerifyData';
+import BasicInfo from '../../components/partner/registration/basicInfo';
+import Services from '../../components/partner/registration/Services';
+import TeamSize from '../../components/partner/registration/TeamSize';
+import FileUpload from '../../components/partner/registration/FileUpload';
+import Location from '../../components/partner/registration/Location';
+import VerifyData from '../../components/partner/registration/VerifyData';
 
 const Registration = () => {
     const [currentStep, setCurrentStep] = useState(0);

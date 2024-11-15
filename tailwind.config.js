@@ -9,8 +9,9 @@ export default {
       colors: {
         primary: '#1D3557', // Deep navy
         accent: '#457B9D',  // Light blue
-        background: '#F1FAEE', // Soft white
-        textPrimary: '#333', // Dark text color
+        background: '#CE003D',
+        textPrimary: '#333',
+        auxilery: '#006e49' 
       },
     },
   },

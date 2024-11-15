@@ -59,7 +59,7 @@ function MainHeader() {
   };
 
   return (
-    <header className="  max-h-24 p-3 border-b-2 mx-2 md:mx-6 lg:mx-8">
+    <header className="bg-background max-h-24 p-3 border-b-2 mx-2 md:mx-6 lg:mx-8">
       <div className="flex items-center justify-between h-full mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-4">
         <div className="flex items-center">
           <img src={img} alt="Logo" className="h-10" />

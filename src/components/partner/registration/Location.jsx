@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { setLat, setLng } from '../../Redux/slices/partnerSlice';
+import { setLat, setLng } from '../../../Redux/slices/partnerSlice';
 import { useNavigate } from 'react-router-dom';
 
 const containerStyle = {
