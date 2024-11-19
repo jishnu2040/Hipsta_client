@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
-import ContentCutIcon from '@mui/icons-material/ContentCut'; // Salon icon
-import SpaIcon from '@mui/icons-material/Spa'; // Spa icon
-import FaceIcon from '@mui/icons-material/Face'; // Skincare icon
-import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'; // Massage icon
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -13,9 +8,9 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/partner/service_type/`);
+        const response = await axios.get(`${baseUrl}/core/service_type/`);
         if (response.status === 200) {
-          setServices(response.data); // Assuming your API response is an array of service objects
+          setServices(response.data); // API response is an array of service objects
         }
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -25,49 +20,27 @@ const Services = () => {
     fetchServices();
   }, []);
 
-  const getServiceIcon = (serviceName) => {
-    switch (serviceName.toLowerCase()) {
-      case 'salon':
-        return <ContentCutIcon sx={{ fontSize: 40, color: '#6A1B9A' }} />; // Reduced icon size
-      case 'spa':
-        return <SpaIcon sx={{ fontSize: 40, color: '#388E3C' }} />;
-      case 'skincare':
-        return <FaceIcon sx={{ fontSize: 40, color: '#1976D2' }} />;
-      case 'massage':
-        return <HealthAndSafetyIcon sx={{ fontSize: 40, color: '#D32F2F' }} />;
-      default:
-        return <ContentCutIcon sx={{ fontSize: 40, color: '#6A1B9A' }} />;
-    }
-  };
-
   return (
-    <Box sx={{ padding: '1.5rem' }}>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ textAlign: '', fontWeight: 'medium', mb: 3 }}>
-      Discover Our Services
-      </Typography>
-      <Grid container spacing={3}>
+    <div >
+      <h2 className="text-4xl font-medium mb-3 text-start">Discover Our Services</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {services.map((service) => (
-          <Grid item key={service.id} xs={12} sm={6} md={4}>
-            <Card 
-              sx={{ 
-                textAlign: 'center', 
-                boxShadow: 2, 
-                borderRadius: '8px', // Slightly smaller border radius
-                padding: '1.5rem', // Reduced padding
-                '&:hover': { boxShadow: 4 },
-              }}
-            >
-              <CardContent>
-                {getServiceIcon(service.name)}
-                <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', mt: 1.5 }}>
-                  {service.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <div key={service.id} className="max-w-sm mx-auto h-32  bg-white shadow-md rounded-lg p-2 hover:shadow-xl transition-shadow duration-300">
+            {service.image && (
+              <img
+                src={service.image}
+                alt={service.name}
+                className="w-full h-full object-contain "
+              />
+            )}
+            <div className="text-center mt-1">
+              <h3 className="text-lg font-bold ">{service.name}</h3>
+
+            </div>
+          </div>
         ))}
-      </Grid>
-    </Box>
+      </div>
+    </div>
   );
 };
 

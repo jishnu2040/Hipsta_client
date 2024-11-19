@@ -22,7 +22,7 @@ const Stepper = ({ steps, currentStep, setCurrentStep }) => {
                         {/* Vertical Connecting Line */}
                         {index < steps.length - 1 && (
                             <div
-                                className={`absolute bol left-3 top-8  w-1 h-full ${
+                                className={`absolute bol left-3 top-8  w-0.5 h-full ${
                                     currentStep > index ? 'bg-blue-500' : 'bg-gray-600'
                                 }`}
 

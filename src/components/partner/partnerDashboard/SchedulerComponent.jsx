@@ -11,25 +11,86 @@ const employees = [
 
 // Sample data for appointments
 const appointments = [
-  {
-    text: 'Meeting with Client A',
-    startDate: new Date(2024, 11, 15, 10, 0),
-    endDate: new Date(2024, 11, 15, 11, 0),
-    employeeId: 1, // Assigned to Alice
-  },
-  {
-    text: 'Project Discussion',
-    startDate: new Date(2024, 11, 15, 12, 0),
-    endDate: new Date(2024, 11, 15, 13, 0),
-    employeeId: 2, // Assigned to Bob
-  },
-  {
-    text: 'Team Meeting',
-    startDate: new Date(2024, 11, 15, 14, 0),
-    endDate: new Date(2024, 11, 15, 15, 0),
-    employeeId: 3, // Assigned to Charlie
-  },
-];
+    {
+      text: 'Meeting with Client A',
+      startDate: new Date(2024, 11, 15, 10, 0),
+      endDate: new Date(2024, 11, 15, 11, 0),
+      employeeId: 1, // Assigned to Alice
+    },
+    {
+      text: 'Project Discussion',
+      startDate: new Date(2024, 11, 15, 12, 0),
+      endDate: new Date(2024, 11, 15, 13, 0),
+      employeeId: 2, // Assigned to Bob
+    },
+    {
+      text: 'Team Meeting',
+      startDate: new Date(2024, 11, 15, 14, 0),
+      endDate: new Date(2024, 11, 15, 15, 0),
+      employeeId: 3, // Assigned to Charlie
+    },
+    {
+      text: 'Strategy Planning',
+      startDate: new Date(2024, 11, 15, 9, 0),
+      endDate: new Date(2024, 11, 15, 10, 30),
+      employeeId: 4, // Assigned to Diana
+    },
+    {
+      text: 'Sales Call with Client B',
+      startDate: new Date(2024, 11, 15, 11, 30),
+      endDate: new Date(2024, 11, 15, 12, 30),
+      employeeId: 5, // Assigned to Evan
+    },
+    {
+      text: 'Product Demo',
+      startDate: new Date(2024, 11, 15, 13, 30),
+      endDate: new Date(2024, 11, 15, 14, 30),
+      employeeId: 1, // Assigned to Alice
+    },
+    {
+      text: 'Marketing Meeting',
+      startDate: new Date(2024, 11, 15, 15, 30),
+      endDate: new Date(2024, 11, 15, 16, 30),
+      employeeId: 2, // Assigned to Bob
+    },
+    {
+      text: 'Client Feedback Session',
+      startDate: new Date(2024, 11, 15, 16, 0),
+      endDate: new Date(2024, 11, 15, 17, 0),
+      employeeId: 3, // Assigned to Charlie
+    },
+    {
+      text: 'Team Building Workshop',
+      startDate: new Date(2024, 11, 15, 9, 30),
+      endDate: new Date(2024, 11, 15, 11, 0),
+      employeeId: 4, // Assigned to Diana
+    },
+    {
+      text: 'Internal Review Meeting',
+      startDate: new Date(2024, 11, 15, 10, 30),
+      endDate: new Date(2024, 11, 15, 11, 30),
+      employeeId: 5, // Assigned to Evan
+    },
+    {
+      text: 'Tech Talk',
+      startDate: new Date(2024, 11, 15, 17, 0),
+      endDate: new Date(2024, 11, 15, 18, 0),
+      employeeId: 1, // Assigned to Alice
+    },
+    {
+      text: 'Final Project Review',
+      startDate: new Date(2024, 11, 15, 13, 0),
+      endDate: new Date(2024, 11, 15, 14, 30),
+      employeeId: 2, // Assigned to Bob
+    },
+    {
+      text: 'Budget Planning',
+      startDate: new Date(2024, 11, 15, 15, 0),
+      endDate: new Date(2024, 11, 15, 16, 0),
+      employeeId: 3, // Assigned to Charlie
+    },
+  ];
+  
 
 const SchedulerComponent = () => {
   return (

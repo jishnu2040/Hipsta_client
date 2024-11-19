@@ -38,6 +38,7 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
+        localStorage.setItem("userId", response.data.user_id)
 
         dispatch(setUserId(user.userId));
         toast.success("Login successful");
@@ -69,25 +70,27 @@ const Login = () => {
         <h2 className="text-3xl font-semibold text-gray-700 text-center">Login</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="relative">
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <label
-              htmlFor="email"
-              className="absolute -top-2 left-3 bg-white px-1 text text-gray-500 font-medium font-medium text-sm"
-              
-            >
-              Email 
-            </label>
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-          </div>
+        <div className="relative">
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <label
+            htmlFor="email"
+            className={`absolute transition-all duration-200 transform ${
+              formData.email ? '-top-5 text-gray-700 text-sm' : 'top-2 text-gray-500'
+            } left-3 bg-white px-1 font-medium`}
+          >
+            Email
+          </label>
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+        </div>
+
 
           <div className="relative">
             <input

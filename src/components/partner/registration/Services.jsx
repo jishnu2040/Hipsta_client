@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaCut, FaSpa, FaLeaf, FaHands } from 'react-icons/fa';
 
 // CSS spinner styles using Tailwind classes
 const spinnerStyles = 'inline-block w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin';
@@ -18,7 +17,7 @@ const Services = ({ nextStep, previousStep }) => {
     const fetchServiceTypes = async () => {
       setStatus('loading');
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/partner/service_type/');
+        const response = await axios.get('http://localhost:8000/api/v1/core/service_type/');
         setServiceCategories(response.data);
         setStatus('succeeded');
       } catch (err) {
@@ -59,21 +58,6 @@ const Services = ({ nextStep, previousStep }) => {
     nextStep();
   };
 
-  const getServiceIcon = (serviceName) => {
-    switch (serviceName.toLowerCase()) {
-      case 'salon':
-        return <FaCut className="text-indigo-500 text-3xl" />;
-      case 'spa':
-        return <FaSpa className="text-indigo-500 text-3xl" />;
-      case 'skin-care':
-        return <FaLeaf className="text-indigo-500 text-3xl" />;
-      case 'massage':
-        return <FaHands className="text-indigo-500 text-3xl" />;
-      default:
-        return null;
-    }
-  };
-
   if (status === 'loading') {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -106,7 +90,7 @@ const Services = ({ nextStep, previousStep }) => {
               onClick={() => handleServiceSelect(service.id)}
             >
               <label className="flex flex-col items-center">
-                {getServiceIcon(service.name)}
+                <img src={service.image} alt={service.name} className="w-24 h-24 object-cover mb-2 rounded-lg" />
                 <span className="mt-2 text-lg font-medium text-center">{service.name}</span>
               </label>
             </div>

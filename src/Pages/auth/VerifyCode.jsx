@@ -3,14 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
-import { setUserId } from '../../Redux/slices/partnerSlice';
 
 const VerifyCode = () => {
   const [code, setCode] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setCode(e.target.value);
@@ -27,16 +24,16 @@ const VerifyCode = () => {
         toast.success(message);
         setErrors({});
         
-        // Dispatch the user ID to Redux store
-        dispatch(setUserId(user_id));
+        // Store the user ID in localStorage
+        localStorage.setItem('user_id', user_id);
 
         setTimeout(() => {
           if (user_type === 'partner') {
-            navigate('/registration'); // Navigate to partner details page
+            navigate('/partner/registration'); // Navigate to partner details page
           } else {
             navigate('/login'); // Navigate to login page for customers
           }
-        }, 3000);
+        }, 2000);
       } else if (response.status === 204) {
         toast.info(message);
         setErrors({});

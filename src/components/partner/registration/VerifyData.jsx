@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { Navigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyData = ({ previousStep }) => {
-  const userId = useSelector((state) => state.partner.userId);
+  // Retrieve the user ID from localStorage
+  const userId = localStorage.getItem('user_id');
+  
+  // Handle case where userId is not available in localStorage
+  if (!userId) {
+    console.error('User ID not found in localStorage!');
+    // Optionally, you can redirect to another page or show an error here
+  }
+
   const [userData, setUserData] = useState({
     businessName: '',
     website: '',
@@ -20,9 +29,11 @@ const VerifyData = ({ previousStep }) => {
 
   const serviceMapping = {
     1: 'Salon',
-    4: 'Spa',
-    7: 'Skin Care',
-    8: 'Massage',
+    2: 'Spa',
+    3: 'Makeup',
+    4: 'Bride',
+    5: 'Aromatherapy',
+    6: 'Wellness',
   };
 
   useEffect(() => {
@@ -42,15 +53,15 @@ const VerifyData = ({ previousStep }) => {
         uploadedFileKey: uploadedFileKey || '',
       });
     }
-  }, [userId]);
+  }, []);
 
   const handleVerifyData = async () => {
     // Retrieve latitude and longitude from localStorage
     const latitude = localStorage.getItem('latitude');
     const longitude = localStorage.getItem('longitude');
-
+  
     const dataToSend = {
-      user: userId,
+      user: userId,  // Ensure user_id is being passed correctly
       business_name: userData.businessName,
       address: userData.address,
       phone: userData.phone,
@@ -58,14 +69,14 @@ const VerifyData = ({ previousStep }) => {
       selected_services: userData.selectedServices,
       team_size: userData.teamSize,
       license_certificate_image: userData.uploadedFileKey,
-      latitude,  // Add latitude
-      longitude, // Add longitude
+      latitude, 
+      longitude, 
     };
-
+  
     try {
       const response = await axios.post('http://localhost:8000/api/v1/partner/create/', dataToSend);
-      if (response.status === 201) {
-        alert('Partner data verified and submitted successfully!');
+      if (response.status === 201 || response.status === 200) {
+        toast.success('Partner data submitted successfully!');
         // Clear localStorage after submission
         localStorage.removeItem('partnerData');
         localStorage.removeItem('selectedServices');
@@ -75,18 +86,19 @@ const VerifyData = ({ previousStep }) => {
         localStorage.removeItem('longitude');
         
         // Set redirect state
-        setRedirectToDashboard(true);
+        setTimeout(() => setRedirectToDashboard(true), 3000);
       } else {
-        alert('Failed to verify data. Please try again.');
+        toast.error('Failed to verify data. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting partner data:', error);
-      alert('An error occurred while verifying the data.');
+      toast.error('An error occurred while verifying the data.');
     }
   };
+  
 
   if (redirectToDashboard) {
-    return <Navigate to="/partner/dashboard" />;
+    return <Navigate to="/login" />;
   }
 
   return (
@@ -151,6 +163,9 @@ const VerifyData = ({ previousStep }) => {
           </button>
         </footer>
       </div>
+
+      {/* Toast Container for showing notifications */}
+      <ToastContainer />
     </div>
   );
 };

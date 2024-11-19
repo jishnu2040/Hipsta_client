@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import img from '../../../assets/hipsta-high-resolution-logo-transparent.png';
+import { FiMenu, FiX, FiLogIn } from 'react-icons/fi';
+import img from '../../../assets/hipsta-high-resolution-logo-transparent1.png';
 import axiosInstance from '../../../utlils/axiosinstance';
 import { toast } from 'react-toastify';
 
-// Utility function to safely get items from localStorage
+
 const getItemFromLocalStorage = (key) => {
   try {
     const item = localStorage.getItem(key);
@@ -16,6 +17,7 @@ const getItemFromLocalStorage = (key) => {
 };
 
 function MainHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const user = getItemFromLocalStorage('user');
   const refresh = getItemFromLocalStorage('refresh');
@@ -59,36 +61,96 @@ function MainHeader() {
   };
 
   return (
-    <header className="bg-background max-h-24 p-3 border-b-2 mx-2 md:mx-6 lg:mx-8">
-      <div className="flex items-center justify-between h-full mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-4">
+    <header className="bg-white shadow-md p-4 px-24 border-b-2 ">
+      <div className="container mx-auto px-24 flex items-center justify-between h-full">
         <div className="flex items-center">
-          <img src={img} alt="Logo" className="h-10" />
+          <Link to="/" className="flex items-center">
+            <img src={img} alt="Logo" className="h-11 w-auto" />
+          </Link>
         </div>
-        <div className="flex space-x-4">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex space-x-4 items-center">
           {user ? (
-            <>
-              <p className="text-black font-bold hidden md:block">{user?.name}</p>
-              <button
-                onClick={handleProfile}
-                className="bg-green-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-green-600"
-              >
-                Profile
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </>
+            <UserActions
+              user={user}
+              handleProfile={handleProfile}
+              handleLogout={handleLogout}
+            />
           ) : (
-            <Link to="/login" className="bg-blue-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-blue-600">
-              Login
+            <Link
+              to="/login"
+              className="flex items-center bg-gray-800 text-white font-bold px-2 py-2 rounded-lg hover:bg-gray-900"
+              aria-label="Login"
+            >
+              <FiLogIn size={20} className="mr-2" /> 
+              login
             </Link>
+
           )}
+        </nav>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-gray-700 hover:text-gray-900 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="md:hidden mt-4">
+          <nav className="flex flex-col space-y-2 items-center">
+            {user ? (
+              <UserActions
+                user={user}
+                handleProfile={handleProfile}
+                handleLogout={handleLogout}
+                isMobile={true}
+              />
+            ) : (
+              <Link
+                to="/login"
+                className="w-full text-center bg-gray-800 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-900"
+                aria-label="Login"
+              >
+                Login
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
+  );
+}
+
+// Component for User Actions (Profile & Logout)
+function UserActions({ user, handleProfile, handleLogout, isMobile = false }) {
+  return (
+    <div className={`flex ${isMobile ? 'flex-col items-center' : 'space-x-4'}`}>
+      <p className={`text-black font-bold ${isMobile ? 'mb-2' : 'hidden md:block'}`}>
+        {user?.name}
+      </p>
+      <button
+        onClick={handleProfile}
+        className="bg-green-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-green-600"
+        aria-label="Go to Profile"
+      >
+        Profile
+      </button>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-red-600"
+        aria-label="Logout"
+      >
+        Logout
+      </button>
+    </div>
   );
 }
 

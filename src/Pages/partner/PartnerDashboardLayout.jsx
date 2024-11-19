@@ -9,7 +9,7 @@ const PartnerDashboardLayout = () => {
       <div className="w-full lg:w-1/6 border border-gray-500 rounded-md lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
         <SideBar />
       </div>
-      <div className="w-full lg:w-5/6 border border-gray-500 rounded-lg p-2 overflow-y-auto">
+      <div className="w-full lg:w-5/6 rounded-lg  overflow-y-auto">
         <Outlet />
       </div>
     </div>
