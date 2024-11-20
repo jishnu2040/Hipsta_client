@@ -10,9 +10,9 @@ const UserManagement = () => {
         const token = localStorage.getItem('access_token'); 
         console.log('Access Token:', token); // Check if token is being retrieved
         const response = await axios.get('http://localhost:8000/api/v1/auth/users/', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          // headers: {
+          //   Authorization: `Bearer ${token}`
+          // }
         });
         const customers = response.data.filter(user => user.user_type === 'customer'); 
         setUsers(customers);

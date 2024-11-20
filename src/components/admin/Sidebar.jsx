@@ -28,7 +28,7 @@ const Sidebar = () => (
         <FaCogs className="text-xl mr-3" />
         <span>Service Type Management</span>
       </Link>
-      {/* Add more links as needed */}
+     
     </nav>
   </div>
 );

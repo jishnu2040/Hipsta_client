@@ -15,8 +15,7 @@ function App() {
         <AuthRoutes />
         <CustomerRoutes />
         <PartnerRoutes />
-      
-      <AdminRoutes />
+        <AdminRoutes />
     </Router>
   );
 }

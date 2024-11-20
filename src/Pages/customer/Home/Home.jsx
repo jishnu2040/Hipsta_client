@@ -7,6 +7,7 @@ import UserLocation from '../../../components/customer/UserLocation/UserLocation
 import Grid from '../../../components/customer/Grid/bentoGrid';
 import Stats from '../../../components/customer/stats/Stats';
 import Footer from '../../../components/customer/footer/Footer';
+import ServicesList from '../../../components/customer/Service_list/ServicesList';
 
 function Home() {
   // Check localStorage to see if the prompt was previously dismissed
@@ -52,6 +53,9 @@ function Home() {
           <Services />
         </div>
       </div>
+      <div className='px-24'>
+          <ServicesList />
+        </div>
 
         <div className='px-24'>
           <Grid />

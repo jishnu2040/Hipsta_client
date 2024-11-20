@@ -1,112 +1,146 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import EditServiceModal from './EditServiceModal';
 
-function Catalog() {
+const Catalog = () => {
   const [services, setServices] = useState([]);
-  const [serviceTypes, setServiceTypes] = useState([]);
-  const [selectedService, setSelectedService] = useState('');
-  const [userId, setUserId] = useState(''); // Manage user ID locally
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedService, setSelectedService] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Retrieve userId from local storage
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    // Retrieve user ID and access token from local storage
-    const user = JSON.parse(localStorage.getItem('user'));
-    const accessToken = localStorage.getItem('access_token');
-    if (user && accessToken) {
-      setUserId(user.userId);
+    // Fetch services for the partner based on userId
+    const fetchServices = async () => {
+      if (!userId) {
+        setError('User ID not found. Please log in again.');
+        setLoading(false);
+        return;
+      }
 
-      // Fetch partner services
-      axios.get(`http://127.0.0.1:8000/api/v1/partner/${user.userId}/services/`, {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      })
-        .then(response => {
-          setServices(response.data.service_type);
-        })
-        .catch(error => {
-          console.error('There was an error fetching the services!', error);
-        });
+      try {
+        const response = await axios.get(`http://localhost:8000/api/v1/core/${userId}/services/`);
+        setServices(response.data);
+        setLoading(false);
 
-      // Fetch all service types
-      axios.get('http://127.0.0.1:8000/api/v1/partner/service-types/', {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      })
-        .then(response => {
-          setServiceTypes(response.data);
-        })
-        .catch(error => {
-          console.error('There was an error fetching the service types!', error);
-        });
-    }
-  }, []);
+        // Assuming the partner id is available in the response data
+        if (response.data && response.data.length > 0) {
+          // Save the partner ID in local storage, assuming the first service belongs to the partner
+          const partnerId = response.data[0].partner_id; // Adjust based on your actual API response structure
+          localStorage.setItem('partnerId', partnerId);
+        }
+      } catch (error) {
+        setError('Failed to fetch services. Please try again later.');
+        setLoading(false);
+      }
+    };
 
-  const handleAddService = () => {
-    if (selectedService) {
-      const accessToken = localStorage.getItem('access_token');
-      axios.patch(`http://127.0.0.1:8000/api/v1/partner/${userId}/services/add/`, 
-        { service_type: [selectedService] }, 
-        { headers: { 'Authorization': `Bearer ${accessToken}` } }
-      )
-      .then(response => {
-        setServices(response.data.service_type);
-        setSelectedService('');
-      })
-      .catch(error => {
-        console.error('There was an error adding the service!', error);
+    fetchServices();
+  }, [userId]);
+
+  const openModal = (service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedService(null);
+    setIsModalOpen(false);
+  };
+
+  const handleUpdate = () => {
+    // Refresh services after update
+    if (userId) {
+      axios.get(`http://localhost:8000/api/v1/core/${userId}/services/`).then((response) => {
+        setServices(response.data);
       });
     }
   };
 
-  const handleDeleteService = (serviceId) => {
-    const accessToken = localStorage.getItem('access_token');
-    axios.delete(`http://127.0.0.1:8000/api/v1/partner/${userId}/services/add/`, 
-      { 
-        data: { service_type: serviceId },
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      }
-    )
-    .then(response => {
-      setServices(response.data.service_type);
-    })
-    .catch(error => {
-      console.error('There was an error deleting the service!', error);
-    });
-  };
-
-  return (
-    <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Service Catalog</h2>
-      <ul className="mb-4">
-        {services.map(service => (
-          <li key={service.id} className="mb-2 flex justify-between items-center">
-            {service.name}
-            <button
-              onClick={() => handleDeleteService(service.id)}
-              className="ml-2 px-2 py-1 bg-red-500 text-white rounded-lg"
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className="flex mb-4">
-        <select
-          value={selectedService}
-          onChange={e => setSelectedService(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">Select a Service</option>
-          {serviceTypes.map(service => (
-            <option key={service.id} value={service.id}>{service.name}</option>
-          ))}
-        </select>
-        <button
-          onClick={handleAddService}
-          className="ml-2 px-4 py-2 bg-indigo-500 text-white rounded-lg"
-        >
-          Add Service
-        </button>
+  // Simple Loader Component
+  const Loader = () => (
+    <div className="flex justify-center items-center my-10">
+      <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-current border-t-transparent rounded-full" role="status">
+        <span className="visually-hidden">Loading...</span>
       </div>
     </div>
   );
-}
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-500'; // Green for active
+      case 'inactive':
+        return 'bg-blue-500'; // Blue for inactive
+      case 'suspended':
+        return 'bg-red-500'; // Red for suspended
+      default:
+        return 'bg-gray-500'; // Default color if status is unknown
+    }
+  };
+
+  if (loading) return <Loader />;
+  if (error) return <p className="text-red-500">{error}</p>;
+
+  return (
+    <div className="container mx-auto p-8 bg-white rounded-lg shadow-lg max-w-6xl">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-4xl font-bold text-gray-900">Services Catalog</h2>
+        <Link
+          to="/partner/catalog/new-service"
+          className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-gray-900 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg transition-all transform hover:scale-105"
+        >
+          + Add New Service
+        </Link>
+      </div>
+
+      {/* Services List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {services.length > 0 ? (
+          services.map((service) => (
+            <div
+              key={service.id}
+              className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200"
+            >
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">{service.name}</h3>
+              <p className="text-gray-600 mb-3">{service.description}</p>
+              <p className="text-gray-600 mb-3">Duration: <span className="font-medium">{service.duration}</span></p>
+              <div className="flex justify-between items-center mt-4">
+                <p className="text-lg font-semibold text-gray-700">Price :
+                  {parseFloat(service.price).toFixed(2)}
+                </p>
+                <div className={`px-3 py-1 text-white rounded-md ${getStatusColor(service.status)}`}>
+                  {service.status.charAt(0).toUpperCase() + service.status.slice(1)}
+                </div>
+                <button
+                  onClick={() => openModal(service)}
+                  className="text-sm font-medium text-indigo-500 hover:text-indigo-700 transition-colors"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No services available. Please add a new service.</p>
+        )}
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <EditServiceModal
+          service={selectedService}
+          onClose={closeModal}
+          onUpdate={handleUpdate}
+        />
+      )}
+    </div>
+  );
+};
 
 export default Catalog;

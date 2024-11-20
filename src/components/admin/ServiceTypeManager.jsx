@@ -14,7 +14,7 @@ const ServiceTypeManager = () => {
 
   const fetchServiceTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/partner/service-types/');
+      const response = await axios.get('http://localhost:8000/api/v1/core/service_type/');
       setServiceTypes(response.data);
     } catch (error) {
       console.error('Error fetching service types:', error);
