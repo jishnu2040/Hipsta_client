@@ -23,13 +23,9 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white shadow-md">
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center space-x-4">
-          <div className="text-2xl font-bold">
-            Admin Dashboard
-          </div>
-        </div>
+    <header className="bg-wjite text-gray-800 shadow-md">
+      <div className="flex items-center justify-end p-3">
+  
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
             <>

@@ -20,24 +20,33 @@ const PartnerRoutes = () => {
   return (
     <Routes>
       <Route path="partner/registration" element={<Registration />} />
+
+
       <Route path="/partner" element={<ThemeProvider> <PartnerDashboardLayout /> </ThemeProvider>} >
         <Route index element={<Dashboard />} />
+
         <Route path='calendar' element={<SchedulerComponent />}>
           <Route path='addservice' element={<NewService />} />
         </Route>
+
         <Route path='catalog' element={<Catalog />} />
         <Route path='catalog/new-service' element={<NewService />} />
+
         <Route path='team' element={<Team />}>
           <Route index element={<TeamMembers />} />
           <Route path='scheduleShift' element={<ScheduledShift />} />
         </Route>
+
         <Route path='team/new-member' element={< AddEmployee/>}/>
         <Route path='profile' element={<Profile />}>
           <Route index element={<PartnerProfile />} />
           <Route path='workplace' element={<WorkPlace />} />
           <Route path='logout' element={<Logout />} />
         </Route>
+        
       </Route>
+
+      
     </Routes>
   );
 };
