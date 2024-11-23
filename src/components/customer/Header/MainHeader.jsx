@@ -16,11 +16,18 @@ const getItemFromLocalStorage = (key) => {
   }
 };
 
+
+
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const user = getItemFromLocalStorage('user');
   const refresh = getItemFromLocalStorage('refresh');
+
+  
+  const userId = localStorage.getItem('userId');
+    console.log("User ID:", userId);
+
 
   const handleLogout = async () => {
     try {
@@ -50,7 +57,7 @@ function MainHeader() {
 
   const handleProfile = async () => {
     try {
-      const resp = await axiosInstance.get("/auth/profile/");
+      const resp = await axiosInstance.get(`/auth/profile/${userId}/`);
       if (resp.status === 200) {
         navigate('/profile');
       }
