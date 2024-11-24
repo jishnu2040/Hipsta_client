@@ -8,14 +8,15 @@ const axiosInstance = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('access') ? `Bearer ${localStorage.getItem('access')}` : null
+    'Authorization': localStorage.getItem('access_token') ? `Bearer ${localStorage.getItem('access_token')}` : null
   
   }
 });
 
 axiosInstance.interceptors.request.use(async (req) => {
-  const token = localStorage.getItem('access') ? JSON.parse(localStorage.getItem('access')) : "";
-  const refresh_token = localStorage.getItem('refresh') ? JSON.parse(localStorage.getItem('refresh')) : "";
+  const token = localStorage.getItem('access_token');
+   console.log("Access Token: ", token); 
+  const refresh_token = localStorage.getItem('refresh_token');
 
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
@@ -28,16 +29,16 @@ axiosInstance.interceptors.request.use(async (req) => {
       try {
         const response = await axios.post(`${baseUrl}/auth/token/refresh/`, { refresh: refresh_token });
         if (response.status === 200) {
-          localStorage.setItem('access', JSON.stringify(response.data.access));
+          localStorage.setItem('access_token', response.data.access);
           req.headers.Authorization = `Bearer ${response.data.access}`;
           return req;
         }
       } catch (error) {
         console.error("Token refresh error:", error);
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
-        window.location.href = '/login';
+        window.location.href = '/login'; // Redirect to login if token refresh fails
       }
     }
   }
@@ -46,5 +47,6 @@ axiosInstance.interceptors.request.use(async (req) => {
 }, error => {
   return Promise.reject(error);
 });
+
 
 export default axiosInstance;

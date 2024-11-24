@@ -15,6 +15,7 @@ import NewService from '../components/partner/partnerDashboard/NewService';
 import TeamMembers from '../components/partner/team/TeamMembers';
 import ScheduledShift from '../components/partner/team/ScheduledShift';
 import AddEmployee from '../components/partner/team/AddEmployee';
+import AvailabilityList from '../components/partner/partnerDashboard/AvailabiltyList';
 
 const PartnerRoutes = () => {
   return (
@@ -43,6 +44,7 @@ const PartnerRoutes = () => {
           <Route path='workplace' element={<WorkPlace />} />
           <Route path='logout' element={<Logout />} />
         </Route>
+        <Route path='availabilitylist' element={< AvailabilityList/>}/>
         
       </Route>
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell } from 'react-icons/fa';
+import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell, FaClock } from 'react-icons/fa';
 import ThemeContext from '../../../ThemeContext';
 import avatarImage from '../../../assets/man.png';
 
@@ -11,12 +11,14 @@ const SideBar = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const username = user ? user.name : 'Guest';
 
+
   const data = [
     { title: 'Dashboard', link: '/partner', icon: <FaTachometerAlt /> },
     { title: 'Calendar', link: '/partner/calendar', icon: <FaCalendarAlt /> },
     { title: 'Catalog', link: '/partner/catalog', icon: <FaBook /> },
     { title: 'Team', link: '/partner/team', icon: <FaUsers /> },
     { title: 'Profile', link: '/partner/profile', icon: <FaUsers /> },
+    { title: 'Schedule', link: '/partner/availabilitylist', icon:<FaClock /> }
   ];
 
   return (
