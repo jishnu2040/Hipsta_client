@@ -16,6 +16,7 @@ import TeamMembers from '../components/partner/team/TeamMembers';
 import ScheduledShift from '../components/partner/team/ScheduledShift';
 import AddEmployee from '../components/partner/team/AddEmployee';
 import AvailabilityList from '../components/partner/partnerDashboard/AvailabiltyList';
+import EmployeeAvailability from '../components/partner/partnerDashboard/EmployeeAvailability';
 
 const PartnerRoutes = () => {
   return (
@@ -35,7 +36,7 @@ const PartnerRoutes = () => {
 
         <Route path='team' element={<Team />}>
           <Route index element={<TeamMembers />} />
-          <Route path='scheduleShift' element={<ScheduledShift />} />
+          <Route path='schedule' element={<AvailabilityList />} />
         </Route>
 
         <Route path='team/new-member' element={< AddEmployee/>}/>
@@ -44,9 +45,9 @@ const PartnerRoutes = () => {
           <Route path='workplace' element={<WorkPlace />} />
           <Route path='logout' element={<Logout />} />
         </Route>
-        <Route path='availabilitylist' element={< AvailabilityList/>}/>
         
       </Route>
+      <Route path='employeeAvailability' element ={< EmployeeAvailability/>}/>
 
       
     </Routes>

@@ -18,7 +18,7 @@ const SideBar = () => {
     { title: 'Catalog', link: '/partner/catalog', icon: <FaBook /> },
     { title: 'Team', link: '/partner/team', icon: <FaUsers /> },
     { title: 'Profile', link: '/partner/profile', icon: <FaUsers /> },
-    { title: 'Schedule', link: '/partner/availabilitylist', icon:<FaClock /> }
+    { title: 'employeeAvailability', link: '/employeeAvailability', icon:<FaClock /> }
   ];
 
   return (

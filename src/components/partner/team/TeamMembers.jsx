@@ -60,6 +60,15 @@ const TeamMembers = () => {
               <p className={`text-sm ${employee.is_active ? 'text-green-500' : 'text-red-500'}`}>
                 {employee.is_active ? 'Active' : 'Inactive'}
               </p>
+              <Link
+                  to={{
+                    pathname: "/employeeAvailability",
+                    state: { employeeId: employee.id }  // Passing employee ID through state
+                  }}
+                  className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-gray-900 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg transition-all transform hover:scale-105"
+                >
+                  Schedule
+                </Link>
             </div>
           ))
         ) : (

@@ -4,8 +4,8 @@ import { FaUser, FaBuilding } from 'react-icons/fa';
 
 const TeamMenu = () => {
   const data = [
-    { title: 'Team Members', link: '/partner/team/', icon: <FaUser /> },
-    { title: 'Schedule Shift', link: '/partner/team/scheduleShift', icon: <FaBuilding /> }
+    { title: 'Members', link: '/partner/team/', icon: <FaUser /> },
+    { title: 'Schedule', link: '/partner/team/schedule', icon: <FaBuilding /> }
   ];
 
   return (
