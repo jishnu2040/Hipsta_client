@@ -5,6 +5,8 @@ const PartnerListView = ({ location }) => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log("Partner list location", location);
+  
 
   useEffect(() => {
     const fetchPartners = async () => {

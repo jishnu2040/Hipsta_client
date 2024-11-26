@@ -7,11 +7,13 @@ import UserLocation from '../../../components/customer/UserLocation/UserLocation
 import Grid from '../../../components/customer/Grid/bentoGrid';
 import Stats from '../../../components/customer/stats/Stats';
 import Footer from '../../../components/customer/footer/Footer';
-import ServicesList from '../../../components/customer/Service_list/ServicesList';
+// import ServicesList from '../../../components/customer/Service_list/ServicesList';
 
 function Home() {
   // Check localStorage to see if the prompt was previously dismissed
   const initialLocationPrompt = localStorage.getItem('locationPromptDismissed') !== 'true';
+  console.log("initialLocationPrompt",initialLocationPrompt);
+  
 
   const [showLocationPrompt, setShowLocationPrompt] = useState(initialLocationPrompt);
   const [location, setLocation] = useState({ lat: null, lng: null });
@@ -36,6 +38,8 @@ function Home() {
       localStorage.setItem('locationPromptDismissed', 'true');
     }
   }, [location]);
+  console.log(location);
+  
 
   return (
     <div className="flex flex-col">
@@ -54,7 +58,7 @@ function Home() {
         </div>
       </div>
       <div className='px-24'>
-          <ServicesList />
+          <PartnerListView location={location}  />
         </div>
 
         <div className='px-24'>
