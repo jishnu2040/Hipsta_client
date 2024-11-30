@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,7 +9,7 @@ import { setUserId } from "../../Redux/slices/partnerSlice";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -30,25 +30,25 @@ const Login = () => {
       const user = {
         email: response.data.email,
         name: response.data.full_name,
-        userId: response.data.user_id
+        userId: response.data.user_id,
       };
       const user_type = response.data.user_type;
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("refresh_token", response.data.refresh_token);
-        localStorage.setItem("userId", response.data.user_id)
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
+        localStorage.setItem('userId', response.data.user_id);
 
         dispatch(setUserId(user.userId));
-        toast.success("Login successful");
+        toast.success('Login successful');
         setErrors({});
 
         setTimeout(() => {
           navigate(user_type === 'partner' ? '/partner' : '/');
         }, 1000);
       } else {
-        toast.error("Login failed. Please check your credentials.");
+        toast.error('Login failed. Please check your credentials.');
         setErrors({});
       }
     } catch (error) {
@@ -64,33 +64,89 @@ const Login = () => {
     }
   };
 
+  const handleSignInWithGoogle = async (response) => {
+    const payload = response.credential;
+
+    try {
+      const server_res = await axios.post('http://localhost:8000/api/v1/auth/google/', { access_token: payload });
+
+      if (server_res.status === 200) {
+        const { email, full_name, access_token, refresh_token, userId } = server_res.data;
+
+        localStorage.setItem('user', JSON.stringify({ email, full_name }));
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('refresh_token', refresh_token);
+
+        dispatch(setUserId(userId));
+        toast.success('Google login successful');
+
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      toast.error('Failed to sign in with Google.');
+    }
+  };
+
+  useEffect(() => {
+    const loadGoogleScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        google.accounts.id.initialize({
+          client_id: import.meta.env.VITE_CLIENT_ID,
+          callback: handleSignInWithGoogle,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById('signInDiv'),
+          { theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', width: '300' }
+        );
+      };
+      document.body.appendChild(script);
+    };
+
+    if (!window.google) {
+      loadGoogleScript();
+    } else {
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_CLIENT_ID,
+        callback: handleSignInWithGoogle,
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('signInDiv'),
+        { theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', width: '300' }
+      );
+    }
+  }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full space-y-6">
-        <h2 className="text-3xl font-semibold text-gray-700 text-center">Login</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="relative">
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <label
-            htmlFor="email"
-            className={`absolute transition-all duration-200 transform ${
-              formData.email ? '-top-5 text-gray-700 text-sm' : 'top-2 text-gray-500'
-            } left-3 bg-white px-1 font-medium`}
-          >
-            Email
-          </label>
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-        </div>
+        <h2 className="text-3xl font-semibold text-gray-700 text-center">Welcome Back</h2>
 
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="relative">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <label
+              htmlFor="email"
+              className={`absolute transition-all duration-200 transform ${
+                formData.email ? '-top-5 text-gray-700 text-sm' : 'top-2 text-gray-500'
+              } left-3 bg-white px-1 font-medium`}
+            >
+              Email
+            </label>
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          </div>
 
           <div className="relative">
             <input
@@ -112,7 +168,9 @@ const Login = () => {
           </div>
 
           <div className="flex justify-end">
-            <Link to="/forgotpassword" className="text-sm text-gray-400 hover:text-gray-800">Forgot Password?</Link>
+            <Link to="/forgotpassword" className="text-sm text-gray-600 hover:text-gray-800">
+              Forgot Password?
+            </Link>
           </div>
 
           <button
@@ -121,11 +179,18 @@ const Login = () => {
           >
             Login
           </button>
-
-          <div className="text-center">
-            <p className="text-gray-600">Don't have an account? <Link to="/signup" className="text-gray-900 font-medium hover:text-black">Register</Link></p>
-          </div>
         </form>
+
+        <div id="signInDiv" className="flex justify-center my-4"></div>
+
+        <div className="text-center">
+          <p className="text-gray-600">
+            Don't have an account?{' '}
+            <Link to="/signup" className="text-gray-900 font-medium hover:text-black">
+              Register
+            </Link>
+          </p>
+        </div>
 
         <ToastContainer />
       </div>

@@ -6,7 +6,6 @@ const PartnerListView = ({ location }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   console.log("Partner list location", location);
-  
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -43,7 +42,7 @@ const PartnerListView = ({ location }) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center text-blue-700 mb-8">Our Trusted Partners</h2>
+      <h2 className="text-3xl font-bold text-center text-blue-700 mb-8">Choose a Trusted Partner</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {partners.map(partner => (
           <div
@@ -51,23 +50,30 @@ const PartnerListView = ({ location }) => {
             className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out p-6"
           >
             <h3 className="text-2xl font-semibold text-blue-900 mb-2">{partner.business_name || 'No Business Name'}</h3>
-            <p className="text-blue-700 mb-2">{partner.website || 'No Website'}</p>
+            
+            {/* Display Location */}
+            <p className="text-blue-700 mb-2">{partner.address || 'No Location'}</p>
+            
+            {/* Display Team Size */}
             <p className="text-gray-700 mb-2">Team Size: {partner.team_size || 'N/A'}</p>
-            <p className="text-gray-700 mb-2">Location: {partner.location || 'N/A'}</p>
+
+            {/* Display Selected Services */}
             <div className="flex flex-wrap mt-4">
-              {partner.service_type?.length > 0 ? (
-                partner.service_type.map(service => (
+              {partner.selected_services?.length > 0 ? (
+                partner.selected_services.map(serviceId => (
                   <span
-                    key={service.id}
+                    key={serviceId}
                     className="bg-blue-100 text-blue-900 rounded-full px-3 py-1 text-sm mr-2 mb-2"
                   >
-                    {service.name}
+                    Service {serviceId} {/* Replace with actual service name if available */}
                   </span>
                 ))
               ) : (
                 <span className="text-gray-500">No services available</span>
               )}
             </div>
+            
+  
           </div>
         ))}
       </div>

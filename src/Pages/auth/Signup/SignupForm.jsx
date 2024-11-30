@@ -4,13 +4,9 @@ import { Link } from 'react-router-dom';
 const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
   return (
     <>
-      <div className='flex mb-4 text-gray-700 font-medium'>
-        <h1>Create Account</h1>
-      </div>
-      
       <form onSubmit={handleSubmit} className="flex flex-col">
-        <div className="flex mb-4 space-x-4">
-          <div className="w-1/2">
+        <div className=" flex mb-4 space-x-4">
+          <div className="w-1/2 ">
             <div className="relative">
               <input
                 type="text"
@@ -119,7 +115,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
             value={formData.user_type}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             <option value="customer">Customer</option>
             <option value="partner">Partner</option>
@@ -129,23 +125,18 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
         
         <button
           type="submit"
-          className="w-full bg-black text-white px-4 py-2 rounded-lg font-medium focus:ring-2 focus:ring-indigo-500"
+          className="w-full bg-black text-white px-4 py-2 rounded-lg font-medium focus:ring-2 focus:ring-gray-500"
         >
           Create Account
         </button>
 
         {errors.general && <p className="text-red-500 text-sm mt-2">{errors.general}</p>}
 
-        <div className="mt-4 flex items-center justify-between">
-          <span>Already have an account?</span>
-          <Link to="/login" className="text-indigo-600 hover:text-indigo-500">Login</Link>
-        </div>
-
-        <div className="mt-4 text-center">
-          <span>Or</span>
-        </div>
-
         <div id="signInDiv" className="flex justify-center my-4"></div>
+        <div className="mt-2 flex items-center justify-center">
+          <span>Already have an account?</span>
+          <Link to="/login" className="text-gray-700 ml-4 hover:text-gray-900">Login</Link>
+        </div>
       </form>
     </>
   );

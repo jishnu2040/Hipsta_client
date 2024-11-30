@@ -9,21 +9,23 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [tokenValid, setTokenValid] = useState(false); // To track token validity
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleResetConfirm = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/v1/auth/password-reset-confirm/${uid}/${token}/`);
-
-        // Print the full response data for debugging
-        console.log(response.data); 
-
+        console.log(response.data); // Debugging purpose
         if (!response.data.success) {
+          setTokenValid(false);
           toast.error('Invalid or expired link.');
           navigate('/forgotpassword'); // Redirect if invalid
+        } else {
+          setTokenValid(true);
         }
       } catch (error) {
+        setTokenValid(false);
         toast.error('An error occurred. Please try again.');
         navigate('/forgotpassword'); // Redirect if error
       }
@@ -60,7 +62,8 @@ const ResetPassword = () => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }
+        },
+        withCredentials: true
       });
 
       console.log('Success:', response.data);
@@ -102,11 +105,15 @@ const ResetPassword = () => {
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
+            {/* Display error message immediately if passwords do not match */}
+            {password !== confirmPassword && confirmPassword && (
+              <p className="text-red-500 text-sm mt-2">Passwords do not match.</p>
+            )}
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            disabled={isLoading}
+            className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={isLoading || password !== confirmPassword || !tokenValid}
           >
             {isLoading ? 'Loading...' : 'Reset Password'}
           </button>

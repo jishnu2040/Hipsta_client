@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Reset Password'}

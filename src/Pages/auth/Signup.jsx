@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import SignupForm from './Signup/SignupForm';
 import { toast } from 'react-toastify';
 import Card from './Signup/Card';
-import signup_img from '../../assets/close.jpg';
+
+// parent component
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -97,7 +98,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({}); 
     try {
       const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formData);
       if (response.status === 200 || response.status === 201) {
@@ -117,7 +118,7 @@ const Signup = () => {
     <div className="bg-customBg flex items-center justify-center min-h-screen">
       <Card>
         <div className="w-full h-full p-8 sm:p-6 flex flex-col justify-center">
-          <h2 className="text-center text-2xl font-semibold mb-6 text-lime-900">Sign Up</h2>
+          <h2 className="text-center text-2xl font-semibold mb-6 text-gray-900">Create Account</h2>
           <SignupForm
             formData={formData}
             handleChange={handleChange}
