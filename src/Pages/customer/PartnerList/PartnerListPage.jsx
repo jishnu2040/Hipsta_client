@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import PartnerProfilesPage from './PartnerProfilesPage';
-import MainHeader from '../Header/MainHeader';
+import PartnerList from '../../../components/customer/PartnerListing/PartnerList';
+import MainHeader from '../../../components/customer/Header/MainHeader';
 
-const PartnerPage = () => {
+const PartnerListPage = () => {
   const [partners, setPartners] = useState([]);
-  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,10 +18,9 @@ const PartnerPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch services
-        const servicesResponse = await axios.get(`${baseUrl}/core/service_type/`);
-        setServices(servicesResponse.data);
-        
+
+
+
         // Fetch partners for a specific service
         if (serviceId) {
           const partnersResponse = await axios.get(`${baseUrl}/partner/partnerViewFilterByService?serviceId=${serviceId}`);
@@ -51,13 +49,6 @@ const PartnerPage = () => {
     return <div className="text-red-500">{error}</div>;
   }
 
-  // If serviceId is provided, filter the partners based on selected_services
-  const filteredPartners = serviceId
-    ? partners.filter(partner =>
-        partner.selected_services.includes(parseInt(serviceId))
-      )
-    : partners;
-
   return (
     <div className="flex flex-col">
       {/* Header */}
@@ -65,10 +56,10 @@ const PartnerPage = () => {
 
       {/* Content */}
       <div className="PartnerPage md:mx-32 mt-6">
-        <PartnerProfilesPage partners={filteredPartners} services={services} />
+        <PartnerList partners={partners}  />
       </div>
     </div>
   );
 };
 
-export default PartnerPage;
+export default PartnerListPage;

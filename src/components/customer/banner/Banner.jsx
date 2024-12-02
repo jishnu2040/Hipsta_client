@@ -9,6 +9,7 @@ const Banner = () => {
     const fetchBanners = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/v1/core/banners');
+        console.log(response)
         setBanners(response.data);
       } catch (error) {
         console.error('Error fetching banners', error);
@@ -19,7 +20,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="banner-container">
+    <div className="banner-container mt-6 ">
       {banners.length > 0 ? (
         banners.map((banner) => (
           <div key={banner.id} className="banner-item">
@@ -27,7 +28,7 @@ const Banner = () => {
             <img
               src={`http://localhost:8000${banner.image}`} 
               alt={banner.title} 
-              className="banner-image" 
+              className="banner-image rounded-lg" 
             />
             {/* <div className="banner-content">
               <h2>{banner.title}</h2>

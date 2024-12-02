@@ -8,7 +8,7 @@ const ProfileMenu = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const refreshToken = localStorage.getItem("refresh");
+    const refreshToken = localStorage.getItem("refresh_token");
 
     if (!refreshToken) {
       toast.error("No refresh token found");
@@ -22,9 +22,10 @@ const ProfileMenu = () => {
 
       if (res.status === 204) {
         // Clear local storage on successful logout
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
         localStorage.removeItem("user");
+        localStorage.removeItem("userId")
         navigate("/"); // Redirect to homepage or login page
         toast.success("Logout successful");
       }

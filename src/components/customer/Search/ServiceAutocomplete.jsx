@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSpa } from "react-icons/fa";  // Change the icon here
+import { FaSpa } from "react-icons/fa";
 
 const ServiceAutocomplete = ({ onServiceSelected }) => {
   const [services, setServices] = useState([]);
@@ -11,7 +11,7 @@ const ServiceAutocomplete = ({ onServiceSelected }) => {
       try {
         const response = await fetch("http://127.0.0.1:8000/api/v1/core/services");
         const data = await response.json();
-        setServices(data);
+        setServices(data.map((service) => service.name));
       } catch (error) {
         console.error("Error fetching services:", error);
       }
@@ -43,23 +43,27 @@ const ServiceAutocomplete = ({ onServiceSelected }) => {
   return (
     <div className="relative">
       <div className="flex items-center border p-2 rounded w-full">
-        {/* Service Icon */}
         <FaSpa className="text-gray-500 mr-2" />
         <input
           type="text"
           value={query}
           onChange={handleInputChange}
-          placeholder="Search Services"
+          placeholder="Search Service"
           className="w-full border-none outline-none"
+          aria-label="Search for services"
         />
       </div>
       {suggestions.length > 0 && (
-        <ul className="absolute top-full left-0 w-full bg-white border mt-1 z-20 max-h-48 overflow-y-auto shadow-lg">
-          {suggestions.map((service, index) => (
+        <ul
+          className="absolute top-full left-0 w-full bg-white border mt-1 z-20 max-h-48 overflow-y-auto shadow-lg"
+          role="listbox"
+        >
+          {suggestions.map((service, idx) => (
             <li
-              key={index}
+              key={idx}
               className="p-2 cursor-pointer hover:bg-gray-100"
               onClick={() => handleSuggestionClick(service)}
+              role="option"
             >
               {service}
             </li>

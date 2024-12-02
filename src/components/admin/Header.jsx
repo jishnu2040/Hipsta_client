@@ -1,6 +1,8 @@
 // Header.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Ensure react-toastify is installed and configured
+import axiosInstance from '../../utlils/axiosinstance';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,11 +13,32 @@ const Header = () => {
     setIsLoggedIn(!!token);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    setIsLoggedIn(false);
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    const refresh = localStorage.getItem('refresh_token'); // Retrieve the refresh token
+    if (!refresh) {
+      toast.error('No refresh token found. Logging out locally.');
+      localStorage.clear();
+      navigate('/');
+      return;
+    }
+
+    try {
+      const res = await axiosInstance.post('/auth/logout/', { refresh_token: refresh });
+
+      if (res.status === 204) {
+        localStorage.clear();
+        navigate('/');
+        toast.success('Logout successful');
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+        toast.info('Session expired. Logged out.');
+      } else {
+        toast.error('Logout failed. Please try again.');
+      }
+    }
   };
 
   const handleLogin = () => {
@@ -23,16 +46,16 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-wjite text-gray-800 shadow-md">
+    <header className="bg-white text-gray-800 shadow-md">
       <div className="flex items-center justify-end p-3">
-  
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
             <>
-              <span className="text-xl">👤</span> {/* Admin emoji */}
+              <span className="text-xl" aria-label="Admin emoji">👤</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+                aria-label="Logout"
               >
                 Logout
               </button>
@@ -41,6 +64,7 @@ const Header = () => {
             <button
               onClick={handleLogin}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+              aria-label="Login"
             >
               Login
             </button>

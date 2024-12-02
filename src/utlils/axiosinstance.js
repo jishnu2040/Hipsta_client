@@ -15,7 +15,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (req) => {
   const token = localStorage.getItem('access_token');
-   console.log("Access Token: ", token); 
   const refresh_token = localStorage.getItem('refresh_token');
 
   if (token) {

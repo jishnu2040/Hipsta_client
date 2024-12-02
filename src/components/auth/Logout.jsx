@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Assuming you're using react-router
-import { toast } from "react-toastify"; // For showing notifications
-import axiosInstance from "../../utlils/axiosinstance";
+import { useNavigate } from "react-router-dom"; 
+import { toast } from "react-toastify"; 
+import axiosInstance from '../../utlils/axiosinstance'
 
 const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleLogout = async () => {
-      const refreshToken = localStorage.getItem("refresh");
+      const refreshToken = localStorage.getItem("refresh_token");
+      // console.log(refreshToken);
+      
 
       if (!refreshToken) {
         toast.error("No refresh token found");
