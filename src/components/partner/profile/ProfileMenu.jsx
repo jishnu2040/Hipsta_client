@@ -26,6 +26,7 @@ const ProfileMenu = () => {
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("user");
         localStorage.removeItem("userId")
+        localStorage.removeItem("partnerId")
         navigate("/"); // Redirect to homepage or login page
         toast.success("Logout successful");
       }
