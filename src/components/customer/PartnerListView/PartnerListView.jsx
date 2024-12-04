@@ -10,7 +10,7 @@ const PartnerListView = ({ location }) => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        let url = 'http://localhost:8000/api/v1/partner/partners/';
+        let url = 'http://localhost:8000/api/v1/customer/partners/';
         if (location?.lat && location?.lng) {
           url += `?lat=${location.lat}&lng=${location.lng}`;
         }

@@ -29,9 +29,9 @@ const ServiceTypes = ({ small = false }) => {
   return (
     <div>
       <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium mt-4 text-start`}>
-        {small ? 'Services' : 'Discover Our Services'}
+        {small ?null: 'Discover Our Services'}
       </h2>
-      <div className={`grid ${small ? 'grid-cols-3 gap-2 p-' : 'grid-cols-2 sm:grid-cols-4 gap-6'}`}>
+      <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-3' : 'grid-cols-2 sm:grid-cols-4 gap-6'}`}>
         {services.map((service) => (
           <div
             key={service.id}

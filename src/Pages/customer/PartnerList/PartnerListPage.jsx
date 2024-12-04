@@ -13,23 +13,39 @@ const PartnerListPage = () => {
   const params = new URLSearchParams(location.search);
   const serviceId = params.get('serviceId'); 
 
-  const baseUrl = 'http://localhost:8000/api/v1'; 
+  const baseUrl = 'http://localhost:8000/api/v1';
+
+  // Hardcoded latitude and longitude
+  const hardcodedLocation = { lat: 12.912596087240933, lng: 77.648887193264740 };
+
+  const savedService = localStorage.getItem('selectedServiceId'); // Get saved serviceId from localStorage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let partnersResponse;
 
-
-
-        // Fetch partners for a specific service
         if (serviceId) {
-          const partnersResponse = await axios.get(`${baseUrl}/partner/partnerViewFilterByService?serviceId=${serviceId}`);
-          setPartners(partnersResponse.data);
+          // Fetch partners filtered by serviceId in the URL
+          partnersResponse = await axios.get(`${baseUrl}/customer/partnerViewFilterByService`, {
+            params: { serviceId },
+          });
+        } else if (savedService) {
+          // Use the hardcoded location and saved serviceId for filtering
+          const locationString = `${hardcodedLocation.lat},${hardcodedLocation.lng}`;
+          partnersResponse = await axios.get(`${baseUrl}/partner/filter-partners/`, {
+            params: {
+              service: savedService, // Send saved serviceId
+              location: locationString, // Send hardcoded location
+            },
+          });
         } else {
-          // Fetch all partners if no serviceId
-          const partnersResponse = await axios.get(`${baseUrl}/partner/allPartners`);
-          setPartners(partnersResponse.data);
+          // Fetch all partners if no filters are available
+          partnersResponse = await axios.get(`${baseUrl}/partners`);
         }
+
+        // Set partners data
+        setPartners(partnersResponse.data);
       } catch (error) {
         setError('Failed to load data');
         console.error('Error fetching data:', error);
@@ -38,8 +54,13 @@ const PartnerListPage = () => {
       }
     };
 
-    fetchData();
-  }, [serviceId]);
+    // Fetch data if serviceId or savedService exists
+    if (serviceId || savedService) {
+      fetchData();
+    } else {
+      setLoading(false); // Stop loading spinner if no data is required
+    }
+  }, [serviceId, savedService]); 
 
   if (loading) {
     return <div>Loading...</div>;
@@ -56,7 +77,7 @@ const PartnerListPage = () => {
 
       {/* Content */}
       <div className="PartnerPage md:mx-32 mt-6">
-        <PartnerList partners={partners}  />
+        <PartnerList partners={partners} />
       </div>
     </div>
   );

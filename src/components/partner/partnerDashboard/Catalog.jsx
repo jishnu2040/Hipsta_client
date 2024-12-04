@@ -23,7 +23,7 @@ const Catalog = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8000/api/v1/core/${userId}/services/`);
+        const response = await axios.get(`http://localhost:8000/api/v1/partner/${userId}/services/`);
         setServices(response.data);
         setLoading(false);
 
@@ -55,7 +55,7 @@ const Catalog = () => {
   const handleUpdate = () => {
     // Refresh services after update
     if (userId) {
-      axios.get(`http://localhost:8000/api/v1/core/${userId}/services/`).then((response) => {
+      axios.get(`http://localhost:8000/api/v1/partner/${userId}/services/`).then((response) => {
         setServices(response.data);
       });
     }
@@ -73,13 +73,13 @@ const Catalog = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'active':
-        return 'bg-green-500'; // Green for active
+        return 'bg-green-500'; 
       case 'inactive':
-        return 'bg-blue-500'; // Blue for inactive
+        return 'bg-blue-500'; 
       case 'suspended':
-        return 'bg-red-500'; // Red for suspended
+        return 'bg-red-500'; 
       default:
-        return 'bg-gray-500'; // Default color if status is unknown
+        return 'bg-gray-500';
     }
   };
 

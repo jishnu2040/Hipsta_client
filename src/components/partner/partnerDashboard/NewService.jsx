@@ -69,7 +69,7 @@ const NewService = () => {
 
     try {
       // Send the form data to the backend API
-      const response = await axios.post('http://localhost:8000/api/v1/core/services/create/', data, {
+      const response = await axios.post('http://localhost:8000/api/v1/partner/services/create/', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log('Service created successfully:', response.data);

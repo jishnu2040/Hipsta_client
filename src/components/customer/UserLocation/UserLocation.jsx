@@ -2,42 +2,34 @@ import React, { useState, useEffect } from 'react';
 
 const UserLocation = ({ onClose, setLocation }) => {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading indicator
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('UserLocation component mounted');
-
     if ('geolocation' in navigator) {
-      console.log('Geolocation is available in the navigator.');
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log('Location obtained:', latitude, longitude); // Debug log
           setLocation({ lat: latitude, lng: longitude });
-          console.log('Location state updated');
-          setLoading(false); // Stop loading
-          onClose(); // Close the modal after obtaining the location
-          console.log('onClose callback executed');
+          setLoading(false);
+          onClose(); // Automatically close modal
         },
         (error) => {
-          console.error('Error obtaining location:', error.message); // Debug log for errors
           setError(`Error: ${error.message}`);
-          setLoading(false); // Stop loading if error occurs
+          setLoading(false);
         }
       );
     } else {
-      console.warn('Geolocation is not available in this browser.');
-      setError('Geolocation is not available');
+      setError('Geolocation is not supported by this browser.');
       setLoading(false);
     }
   }, [onClose, setLocation]);
 
   return (
-    <div className="user-location-container">
+    <div className="text-center">
       {loading && !error ? (
-        <p>Getting your location...</p>
+        <div className="text-indigo-500 font-medium">Fetching your location...</div>
       ) : error ? (
-        <p>{error}</p>
+        <div className="text-red-500 font-medium">{error}</div>
       ) : null}
     </div>
   );
