@@ -39,6 +39,7 @@ const Login = () => {
         localStorage.setItem('access_token', response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh_token);
         localStorage.setItem('userId', response.data.user_id);
+        localStorage.setItem('role', response.data.user_type)
 
         dispatch(setUserId(user.userId));
         toast.success('Login successful');

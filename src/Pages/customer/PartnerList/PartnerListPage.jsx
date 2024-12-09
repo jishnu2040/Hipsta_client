@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import PartnerList from '../../../components/customer/PartnerListing/PartnerList';
-import MainHeader from '../../../components/customer/Header/MainHeader';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import PartnerList from "../../../components/customer/PartnerListing/PartnerList";
+import MainHeader from "../../../components/customer/Header/MainHeader";
 
 const PartnerListPage = () => {
   const [partners, setPartners] = useState([]);
@@ -11,56 +11,62 @@ const PartnerListPage = () => {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const serviceId = params.get('serviceId'); 
+  const serviceTypeId = params.get("serviceTypeId");
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const baseUrl = "http://localhost:8000/api/v1";
+  const stateData = location.state || {}; // Extract location and service from state
+  const { location: selectedLocation, service: selectedService } = stateData;
 
-  // Hardcoded latitude and longitude
   const hardcodedLocation = { lat: 12.912596087240933, lng: 77.648887193264740 };
-
-  const savedService = localStorage.getItem('selectedServiceId'); // Get saved serviceId from localStorage
+  const savedServiceType = localStorage.getItem("selectedServiceTypeId");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         let partnersResponse;
 
-        if (serviceId) {
-          // Fetch partners filtered by serviceId in the URL
-          partnersResponse = await axios.get(`${baseUrl}/customer/partnerViewFilterByService`, {
-            params: { serviceId },
-          });
-        } else if (savedService) {
-          // Use the hardcoded location and saved serviceId for filtering
-          const locationString = `${hardcodedLocation.lat},${hardcodedLocation.lng}`;
-          partnersResponse = await axios.get(`${baseUrl}/partner/filter-partners/`, {
+        if (serviceTypeId) {
+          // Fetch partners filtered by serviceTypeId
+          partnersResponse = await axios.get(
+            `${baseUrl}/customer/partnerViewFilterByService`,
+            { params: { serviceTypeId } }
+          );
+        } else if (selectedService && selectedLocation) {
+          // Use the new endpoint for filtering by service and location
+          const locationString = `${selectedLocation.lat},${selectedLocation.lng}`;
+          partnersResponse = await axios.get(`${baseUrl}/customer/partner-filter/`, {
             params: {
-              service: savedService, // Send saved serviceId
-              location: locationString, // Send hardcoded location
+              serviceTypeId: selectedService.id,
+              location: locationString,
             },
           });
-        } else {
-          // Fetch all partners if no filters are available
-          partnersResponse = await axios.get(`${baseUrl}/partners`);
+        } 
+        // else if (savedServiceType) {
+        //   // Fallback: Use hardcoded location and savedServiceType
+        //   const locationString = `${hardcodedLocation.lat},${hardcodedLocation.lng}`;
+        //   partnersResponse = await axios.get(`${baseUrl}/customer/partners/`, {
+        //     params: {
+        //       serviceType: savedServiceType,
+        //       location: locationString,
+        //     },
+        //   });
+        // } 
+        else {
+          // Fetch all partners as a fallback
+          partnersResponse = await axios.get(`${baseUrl}/customer/partners`);
         }
 
-        // Set partners data
         setPartners(partnersResponse.data);
       } catch (error) {
-        setError('Failed to load data');
-        console.error('Error fetching data:', error);
+        setError("Failed to load data");
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    // Fetch data if serviceId or savedService exists
-    if (serviceId || savedService) {
-      fetchData();
-    } else {
-      setLoading(false); // Stop loading spinner if no data is required
-    }
-  }, [serviceId, savedService]); 
+    fetchData();
+  }, [serviceTypeId, selectedService, selectedLocation, savedServiceType]);
 
   if (loading) {
     return <div>Loading...</div>;

@@ -17,7 +17,7 @@ const PartnerAvailability = ({ partnerId }) => {
     const fetchAvailability = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/partner/${partnerId}/availability/`
+          `http://localhost:8000/api/v1/customer/${partnerId}/availability/`
         );
         setAvailabilities(response.data);
       } catch (err) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '../ThemeContext'; 
+import { ThemeProvider } from '../ThemeContext';
 import Registration from '../Pages/partner/Registration';
 import PartnerDashboardLayout from '../Pages/partner/PartnerDashboardLayout';
 import SchedulerComponent from '../components/partner/partnerDashboard/SchedulerComponent';
@@ -17,39 +17,29 @@ import ScheduledShift from '../components/partner/team/ScheduledShift';
 import AddEmployee from '../components/partner/team/AddEmployee';
 import AvailabilityList from '../components/partner/partnerDashboard/AvailabiltyList';
 import EmployeeAvailability from '../components/partner/partnerDashboard/EmployeeAvailability';
+import ProtectedRoute from '../protectRoutes/ProtectedRoute';
 
 const PartnerRoutes = () => {
   return (
     <Routes>
       <Route path="partner/registration" element={<Registration />} />
-
-
-      <Route path="/partner" element={<ThemeProvider> <PartnerDashboardLayout /> </ThemeProvider>} >
+      <Route path="/partner" element={<ThemeProvider> <ProtectedRoute allowedRole={['partner']}><PartnerDashboardLayout /></ProtectedRoute></ThemeProvider>}>
         <Route index element={<Dashboard />} />
-
-        <Route path='calendar' element={<SchedulerComponent />}>
-          <Route path='addservice' element={<NewService />} />
-        </Route>
-
-        <Route path='catalog' element={<Catalog />} />
-        <Route path='catalog/new-service' element={<NewService />} />
-
-        <Route path='team' element={<Team />}>
+        <Route path="calendar" element={<SchedulerComponent />} />
+        <Route path="catalog" element={<Catalog />} />
+        <Route path="catalog/new-service" element={<NewService />} />
+        <Route path="team" element={<Team />}>
           <Route index element={<TeamMembers />} />
-          <Route path='schedule' element={<AvailabilityList />} />
+          <Route path="schedule" element={<AvailabilityList />} />
         </Route>
-
-        <Route path='team/new-member' element={< AddEmployee/>}/>
-        <Route path='profile' element={<Profile />}>
+        <Route path="team/new-member" element={<AddEmployee />} />
+        <Route path="profile" element={<Profile />}>
           <Route index element={<PartnerProfile />} />
-          <Route path='workplace' element={<WorkPlace />} />
-          <Route path='logout' element={<Logout />} />
+          <Route path="workplace" element={<WorkPlace />} />
+          <Route path="logout" element={<Logout />} />
         </Route>
-        
       </Route>
-      <Route path='employeeAvailability' element ={< EmployeeAvailability/>}/>
-
-      
+      <Route path="employeeAvailability" element={<EmployeeAvailability />} />
     </Routes>
   );
 };

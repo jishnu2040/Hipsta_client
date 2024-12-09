@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ServiceTypes = ({ small = false }) => {
-  const [services, setServices] = useState([]);
+  const [serviceTypes, setServices] = useState([]);
   const navigate = useNavigate();
   const baseUrl = 'http://localhost:8000/api/v1';
 
@@ -22,8 +22,8 @@ const ServiceTypes = ({ small = false }) => {
     fetchServices();
   }, []);
 
-  const handleServiceClick = (serviceId) => {
-    navigate(`/partnersView?serviceId=${serviceId}`);
+  const handleServiceClick = (serviceTypeId) => {
+    navigate(`/partnersView?serviceTypeId=${serviceTypeId}`);
   };
 
   return (
@@ -32,7 +32,7 @@ const ServiceTypes = ({ small = false }) => {
         {small ?null: 'Discover Our Services'}
       </h2>
       <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-3' : 'grid-cols-2 sm:grid-cols-4 gap-6'}`}>
-        {services.map((service) => (
+        {serviceTypes.map((service) => (
           <div
             key={service.id}
             className={`max-w-sm mx-auto ${small ? 'h-16 w-20' : 'h-32'} bg-white shadow-md rounded-lg p-2 hover:shadow-xl transition-shadow duration-300`}

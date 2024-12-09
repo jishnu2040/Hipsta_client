@@ -16,6 +16,8 @@
     "@mui/material": "^5.16.0",
     "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.6",
+    "@stripe/react-stripe-js": "^3.0.0",
+    "@stripe/stripe-js": "^5.2.0",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",

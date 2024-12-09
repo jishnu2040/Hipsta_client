@@ -5,30 +5,24 @@ import { useNavigate } from "react-router-dom";
 
 const Search = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [selectedServiceName, setSelectedServiceName] = useState("");
-  const [selectedServiceId, setSelectedServiceId] = useState("");
+  const [selectedService, setSelectedService] = useState(null);
 
   const navigate = useNavigate();
 
   // Handle location selection
   const handlePlaceSelected = (place) => {
-    console.log("Selected Place:", place);
     setSelectedPlace(place);
   };
 
   // Handle service selection
   const handleServiceSelected = (serviceId, serviceName) => {
-    console.log("Selected Service ID:", serviceId, "Name:", serviceName);
-    setSelectedServiceId(serviceId);
-    setSelectedServiceName(serviceName);
-
-    // Save the service ID to localStorage
-    localStorage.setItem("selectedServiceId", serviceId);
+    setSelectedService({ id: serviceId, name: serviceName });
   };
 
   const handleSearch = () => {
-    navigate("/partnersView");
-    // Perform your search logic here
+    navigate("/partnersView", {
+      state: { location: selectedPlace, service: selectedService },
+    });
   };
 
   return (
