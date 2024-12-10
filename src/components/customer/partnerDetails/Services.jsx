@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 const Services = ({ partnerId }) => {
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
-  const [serviceTypes, setServiceTypes] = useState([]); // Dynamically set service types
+  const [serviceTypes, setServiceTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedType, setSelectedType] = useState('all'); // Default to show all services
+  const [selectedType, setSelectedType] = useState('all');
 
   const baseUrl = 'http://localhost:8000/api/v1';
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -24,7 +24,6 @@ const Services = ({ partnerId }) => {
         setServices(servicesData);
         setFilteredServices(servicesData);
 
-        // Dynamically get service types
         const uniqueTypes = [
           'all',
           ...new Set(servicesData.map((service) => service.business_type_name)),
@@ -44,11 +43,9 @@ const Services = ({ partnerId }) => {
   }, [partnerId]);
 
   const handleFilterChange = (type) => {
-    const currentScrollPosition = window.scrollY; // Store the current scroll position
     setSelectedType(type);
-
     if (type === 'all') {
-      setFilteredServices(services); // Show all services
+      setFilteredServices(services);
     } else {
       setFilteredServices(
         services.filter(
@@ -56,44 +53,38 @@ const Services = ({ partnerId }) => {
         )
       );
     }
-
-    // Restore the scroll position after state update
-    setTimeout(() => {
-      window.scrollTo(0, currentScrollPosition);
-    }, 0);
   };
 
   const handleBookClick = (serviceId) => {
-    // Navigate to the appointment page, passing the service ID as a parameter
     navigate(`/appointment/${serviceId}`);
   };
 
   if (loading) {
-    return <div>Loading services...</div>;
+    return <div className="text-center text-gray-600">Loading services...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 text-center">{error}</div>;
   }
 
   if (services.length === 0) {
-    return <div>No services available for this partner.</div>;
+    return <div className="text-gray-600 text-center">No services available for this partner.</div>;
   }
 
   return (
-    <div className="services-container mt-6">
-      <h2 className="text-2xl font-semibold mb-4">Available Services</h2>
+    <div className="services-container mt-2">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Available Services</h2>
 
       {/* Filter Menu */}
-      <div className="mb-6 flex gap-4">
+      <div className="mb-4 flex flex-wrap gap-4">
         {serviceTypes.map((type) => (
           <button
             key={type}
-            className={`px-4 py-2 rounded-lg font-semibold ${
+            className={`px-3 py-2 rounded-full font-medium transition ${
               selectedType === type
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-50 text-gray-700'
-            } hover:bg-gray-400 transition`}
+                ? 'bg-gray-900 text-white shadow-lg'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
             onClick={() => handleFilterChange(type)}
           >
             {type === 'all' ? 'All Services' : type}
@@ -101,34 +92,42 @@ const Services = ({ partnerId }) => {
         ))}
       </div>
 
-      {/* Services List */}
+      {/* Vertical Services List */}
       <ul className="space-y-4">
         {filteredServices.map((service) => (
           <li
             key={service.id}
-            className="p-4 border rounded-lg shadow hover:shadow-lg transition-shadow"
+            className="p-2 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center justify-between">
-              {/* Service Name */}
-              <h3 className="text-lg font-bold">{service.name}</h3>
+            <div className="flex items-center gap-4">
 
-              {/* Service Price and Duration in one line */}
-              <div className="flex gap-4">
-                <p className="font-medium">{service.price}</p>
-                <p className="font-medium">{service.duration}</p>
+              <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-500 text-2xl font-semibold">
+                  {service.name.charAt(0).toUpperCase()}
+                </span>
               </div>
-              <div className="mt-4">
+
+       
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-gray-800">{service.name}</h3>
+                {/* <p className="text-gray-600">{service.description || 'No description available.'}</p> */}
+              </div>
+
+              <div className="flex flex-col  text-right">
+                <span className="text-gray-700 font-medium">₹{service.price}</span>
+                <span className="text-sm text-orange-600">{service.duration} min</span>
+              </div>
+            </div>
+
+            {/* Book Button */}
+            <div className="mt-4 text-right">
               <button
-                className="bg-gray-700 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition"
-                onClick={() => handleBookClick(service.id)} // On click, navigate to the service page
+                className="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition"
+                onClick={() => handleBookClick(service.id)}
               >
-                Book
+                Book Now
               </button>
             </div>
-            </div>
-
-
-            
           </li>
         ))}
       </ul>

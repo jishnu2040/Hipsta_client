@@ -28,9 +28,6 @@ const PartnerListView = ({ location }) => {
     fetchPartners();
   }, [location]);
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
-  }
 
   if (error) {
     return <div className="text-center text-red-500 font-semibold">{error}</div>;

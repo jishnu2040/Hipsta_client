@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import MainHeader from '../../components/customer/Header/MainHeader';
+import MainHeader from '../../../components/customer/Header/MainHeader';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import PartnerDetails from '../../components/customer/partnerDetails/PartnerDetails';
-import Services from '../../components/customer/partnerDetails/Services';
+import PartnerDetails from '../../../components/customer/partnerDetails/PartnerDetails'
 
 const PartnerDetailedPage = () => {
   const { partnerId } = useParams(); // Get partnerId from URL

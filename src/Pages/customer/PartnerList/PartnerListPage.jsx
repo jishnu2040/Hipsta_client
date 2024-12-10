@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import PartnerList from "../../../components/customer/PartnerListing/PartnerList";
 import MainHeader from "../../../components/customer/Header/MainHeader";
+import ShimmerPartnerCard from './ShimmerPartnerCard'
 
 const PartnerListPage = () => {
   const [partners, setPartners] = useState([]);
@@ -26,13 +27,11 @@ const PartnerListPage = () => {
         let partnersResponse;
 
         if (serviceTypeId) {
-          // Fetch partners filtered by serviceTypeId
           partnersResponse = await axios.get(
             `${baseUrl}/customer/partnerViewFilterByService`,
             { params: { serviceTypeId } }
           );
         } else if (selectedService && selectedLocation) {
-          // Use the new endpoint for filtering by service and location
           const locationString = `${selectedLocation.lat},${selectedLocation.lng}`;
           partnersResponse = await axios.get(`${baseUrl}/customer/partner-filter/`, {
             params: {
@@ -40,19 +39,7 @@ const PartnerListPage = () => {
               location: locationString,
             },
           });
-        } 
-        // else if (savedServiceType) {
-        //   // Fallback: Use hardcoded location and savedServiceType
-        //   const locationString = `${hardcodedLocation.lat},${hardcodedLocation.lng}`;
-        //   partnersResponse = await axios.get(`${baseUrl}/customer/partners/`, {
-        //     params: {
-        //       serviceType: savedServiceType,
-        //       location: locationString,
-        //     },
-        //   });
-        // } 
-        else {
-          // Fetch all partners as a fallback
+        } else {
           partnersResponse = await axios.get(`${baseUrl}/customer/partners`);
         }
 
@@ -69,7 +56,21 @@ const PartnerListPage = () => {
   }, [serviceTypeId, selectedService, selectedLocation, savedServiceType]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col">
+        {/* Header */}
+        <MainHeader />
+        
+        {/* Shimmer Placeholder */}
+        <div className="PartnerPage md:mx-32 mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array(6) 
+            .fill("")
+            .map((_, index) => (
+              <ShimmerPartnerCard key={index} />
+            ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {

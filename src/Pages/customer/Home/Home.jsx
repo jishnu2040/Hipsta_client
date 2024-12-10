@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import MainHeader from "../../../components/customer/Header/MainHeader";
 import ServiceTypes from "../../../components/customer/Service_list/ServiceTypes";
 import PartnerListView from "../../../components/customer/PartnerListView/PartnerListView";
-import UserLocation from "../../../components/customer/UserLocation/UserLocation";
 import Stats from "../../../components/customer/stats/Stats";
 import Footer from "../../../components/customer/footer/Footer";
 import Search from "../../../components/customer/Search/Search";
 import Banner from "../../../components/customer/banner/Banner";
+import ShimmerHome from "./ShimmerHome";
 
 function Home() {
+  const [loading, setLoading] = useState(true);
   const initialLocationPrompt = localStorage.getItem("locationPromptDismissed") !== "true";
   const [showLocationPrompt, setShowLocationPrompt] = useState(initialLocationPrompt);
   const [location, setLocation] = useState(() => {
-    // Fetch location from localStorage during initial render
     const storedLocation = localStorage.getItem("userLocation");
     return storedLocation ? JSON.parse(storedLocation) : { lat: null, lng: null };
   });
@@ -28,32 +28,31 @@ function Home() {
   };
 
   const handlePlaceSelected = (selectedLocation) => {
-    console.log("Selected place:", selectedLocation.address);
-    console.log("Latitude:", selectedLocation.lat);
-    console.log("Longitude:", selectedLocation.lng);
     setLocation(selectedLocation);
-    // Save location to localStorage
     localStorage.setItem("userLocation", JSON.stringify(selectedLocation));
   };
 
-  const handleServiceSelected = (service) => {
-    console.log("Selected service:", service);
-  };
-
   useEffect(() => {
-    // Dismiss prompt if location is already set
     if (location.lat && location.lng) {
       setShowLocationPrompt(false);
       localStorage.setItem("locationPromptDismissed", "true");
     }
+
+    // Simulate loading time
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer); // Cleanup timeout on component unmount
   }, [location]);
+
+  if (loading) {
+    return <ShimmerHome />;
+  }
 
   return (
     <div className="flex flex-col">
       <MainHeader />
       <div className="mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-8 flex flex-col md:flex-row justify-between">
-        <div className="flex-1 mr-4 ">
-          <Search onPlaceSelected={handlePlaceSelected} onServiceSelected={handleServiceSelected} />
+        <div className="flex-1 mr-4">
+          <Search onPlaceSelected={handlePlaceSelected} />
           <Banner />
         </div>
         <div className="flex-1 ml-4">
@@ -63,7 +62,7 @@ function Home() {
       <div className="px-24">
         <PartnerListView location={location} />
       </div>
-      <div className="px-24">
+      <div className="px-24 mt-6">
         <Stats />
       </div>
       <Footer />
@@ -76,7 +75,15 @@ function Home() {
             <p className="text-sm text-gray-600 text-center mb-6">
               We need your location to provide better services near you.
             </p>
-            <UserLocation onClose={handleLocationObtained} setLocation={handlePlaceSelected} />
+            <div>
+              {/* Assuming UserLocation manages location fetching */}
+              <button
+                onClick={handleLocationObtained}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
+              >
+                Allow
+              </button>
+            </div>
             <div className="mt-4 flex justify-center">
               <button
                 onClick={handleClosePrompt}
