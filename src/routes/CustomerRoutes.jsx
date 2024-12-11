@@ -6,9 +6,9 @@ import PartnerListPage from '../Pages/customer/PartnerList/PartnerListPage';
 import Tickets from '../components/customer/Ticket/Tickets';
 import CreateTicket from '../components/customer/Ticket/CreateTicket';
 import PartnerDetailedPage from '../Pages/customer/partnerPage/PartnerDetailedPage'
-import Appointment from '../components/customer/partnerDetails/Appointment';
 import BookingPage from '../components/customer/booking/BookingPage';
 import Map from '../components/customer/map/Map';
+import AppointmentBooking from '../components/customer/AppointmentBooking/AppointmentBooking';
 
 
 const CustomerRoutes = () => {
@@ -20,9 +20,9 @@ const CustomerRoutes = () => {
        <Route path="/tickets" element={<Tickets />} />
        <Route path="/create-ticket" element={<CreateTicket />} />
        <Route path="/detaildPage/:partnerId" element={<PartnerDetailedPage/>} />
-       <Route path="/appointment/:serviceId" element={<Appointment/>} />
        <Route path="/payment" element={<BookingPage/>} />
        <Route path='/map' element={<Map/>}/>
+       <Route path='/appointmentBooking/:serviceId' element={<AppointmentBooking/>}/>
     </Routes>
   );
 };

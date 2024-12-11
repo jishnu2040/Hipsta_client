@@ -7,7 +7,7 @@ import ShimmerStats from "../../../components/customer/stats/ShimmerStats";
 const ShimmerHome = () => (
   <div className="flex flex-col">
     {/* Header Placeholder */}
-    <div className="bg-gray-300 h-24 w-full mb-4"></div>
+    <div className="bg-gray-100 h-24 w-full mb-4"></div>
 
     {/* Search and Banner Placeholder */}
     <div className="mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-8 flex flex-col md:flex-row justify-between">

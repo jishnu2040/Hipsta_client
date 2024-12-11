@@ -56,7 +56,7 @@ const Services = ({ partnerId }) => {
   };
 
   const handleBookClick = (serviceId) => {
-    navigate(`/appointment/${serviceId}`);
+    navigate(`/appointmentBooking/${serviceId}`);
   };
 
   if (loading) {
