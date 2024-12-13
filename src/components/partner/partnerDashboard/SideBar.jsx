@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell, FaClock } from 'react-icons/fa';
+import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell, FaClock,FaHeadset } from 'react-icons/fa';
 import ThemeContext from '../../../ThemeContext';
 import avatarImage from '../../../assets/man.png';
 
@@ -18,7 +18,9 @@ const SideBar = () => {
     { title: 'Catalog', link: '/partner/catalog', icon: <FaBook /> },
     { title: 'Team', link: '/partner/team', icon: <FaUsers /> },
     { title: 'Profile', link: '/partner/profile', icon: <FaUsers /> },
-    { title: 'employeeAvailability', link: '/employeeAvailability', icon:<FaClock /> }
+    { title: 'employeeAvailability', link: '/employeeAvailability', icon:<FaClock /> },
+    { title: 'AvailibiltyTable', link: '/partner/AvailibiltyTable', icon:<FaClock /> },
+    { title: 'Help Center', link: '/helpdesk/tickets', icon: <FaHeadset /> },
   ];
 
   return (

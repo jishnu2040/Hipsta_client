@@ -5,6 +5,7 @@ import axios from 'axios';
 const SchedulerComponent = () => {
   const [appointments, setAppointments] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [isTableView, setIsTableView] = useState(false); // State to toggle between table and calendar view
 
   useEffect(() => {
     const partnerId = localStorage.getItem('partnerId'); // Retrieve partnerId from localStorage
@@ -43,34 +44,77 @@ const SchedulerComponent = () => {
 
   return (
     <div className="p-4">
-      <Scheduler
-        dataSource={appointments}
-        defaultCurrentView="day"
-        defaultCurrentDate={new Date(2024, 11, 15)}
-        height={600}
-        startDayHour={8}
-        endDayHour={22}
-        cellDuration={30}
-        showAllDayPanel={false}
-        resources={[{
-          fieldExpr: 'employeeId',
-          allowMultiple: false,
-          dataSource: employees,
-          label: 'Employee',
-          valueExpr: 'id',
-          displayExpr: 'text',
-        }]}
-        groups={['employeeId']}
-        itemTemplate={(itemData) => {
-          const employee = employees.find(e => e.id === itemData.employeeId);
-          return (
-            <div className="flex items-center space-x-2">
-              <img src={employee.avatar} alt={employee.text} className="w-8 h-8 rounded-full" />
-              <span>{employee.text}</span>
-            </div>
-          );
-        }}
-      />
+      <div className="mb-6">
+        {/* Toggle Button */}
+        <button
+          className="mb-4 p-2 bg-blue-500 text-white rounded"
+          onClick={() => setIsTableView(!isTableView)}
+        >
+          {isTableView ? 'Switch to Calendar View' : 'Switch to Table View'}
+        </button>
+      </div>
+
+      {/* Conditional Rendering for Calendar or Table */}
+      {isTableView ? (
+        // Table View
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse border border-gray-300">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border-b">Appointment ID</th>
+                <th className="px-4 py-2 border-b">Service</th>
+                {/* <th className="px-4 py-2 border-b">Employee</th> */}
+                <th className="px-4 py-2 border-b">Start Time</th>
+                <th className="px-4 py-2 border-b">End Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.map((appointment) => {
+                const employee = employees.find(e => e.id === appointment.employeeId);
+                return (
+                  <tr key={appointment.id}>
+                    <td className="px-4 py-2 border-b">{appointment.id}</td>
+                    <td className="px-4 py-2 border-b">{appointment.text}</td>
+                    {/* <td className="px-4 py-2 border-b">{employee ? employee.text : 'Unknown'}</td> */}
+                    <td className="px-4 py-2 border-b">{appointment.startDate}</td>
+                    <td className="px-4 py-2 border-b">{appointment.endDate}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        // Calendar View (Scheduler)
+        <Scheduler
+          dataSource={appointments}
+          defaultCurrentView="day"
+          defaultCurrentDate={new Date(2024, 11, 15)}
+          height={600}
+          startDayHour={8}
+          endDayHour={22}
+          cellDuration={30}
+          showAllDayPanel={false}
+          resources={[{
+            fieldExpr: 'employeeId',
+            allowMultiple: false,
+            dataSource: employees,
+            label: 'Employee',
+            valueExpr: 'id',
+            displayExpr: 'text',
+          }]}
+          groups={['employeeId']}
+          itemTemplate={(itemData) => {
+            const employee = employees.find(e => e.id === itemData.employeeId);
+            return (
+              <div className="flex items-center space-x-2">
+                <img src={employee.avatar} alt={employee.text} className="w-8 h-8 rounded-full" />
+                <span>{employee.text}</span>
+              </div>
+            );
+          }}
+        />
+      )}
     </div>
   );
 };

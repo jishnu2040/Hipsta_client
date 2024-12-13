@@ -4,12 +4,14 @@ import { getPartnerAvailability, deletePartnerAvailability, updatePartnerAvailab
 import AvailabilityForm from './AvailabilityForm';
 import { ToastContainer, toast } from 'react-toastify'; // Import Toast components
 import 'react-toastify/dist/ReactToastify.css'; // Import styles for React-Toastify
+import AddHoliday from './AddHoliday'; // Import the AddHoliday component
 
 const AvailabilityList = () => {
   const [availabilities, setAvailabilities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editAvailability, setEditAvailability] = useState(null);
+  const [showAddHoliday, setShowAddHoliday] = useState(false); // State to control the display of AddHoliday form
 
   const fetchAvailability = async () => {
     try {
@@ -62,6 +64,18 @@ const AvailabilityList = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-semibold mb-6 text-gray-800">Manage Availability</h2>
+
+      {/* Button to toggle the AddHoliday form */}
+      <button
+        onClick={() => setShowAddHoliday(!showAddHoliday)}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+      >
+        {showAddHoliday ? 'Cancel Holiday Form' : 'Add Holiday'}
+      </button>
+
+      {/* Conditionally render AddHoliday component */}
+      {showAddHoliday && <AddHoliday />}
+
       <AvailabilityForm
         refreshAvailability={fetchAvailability}
         editAvailability={editAvailability}

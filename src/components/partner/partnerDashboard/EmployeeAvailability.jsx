@@ -7,6 +7,7 @@ const EmployeeAvailability = () => {
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
   const [appointments, setAppointments] = useState([]); // State to store appointment data
+  const [viewMode, setViewMode] = useState('calendar'); // View mode toggle ("calendar" or "table")
 
   // Function to format date to YYYY-MM-DD
   const formatDate = (date) => {
@@ -55,7 +56,7 @@ const EmployeeAvailability = () => {
   
     getAvailability();
   }, [employeeId]);
-  
+
 const handleCreateBatchAvailability = async (date, startTime, endTime) => {
   const formattedDate = formatDate(date);
   const formattedStartTime = formatTime(new Date(startTime));
@@ -149,9 +150,24 @@ const handleCreateBatchAvailability = async (date, startTime, endTime) => {
 
   return (
     <div>
+      <div className="mb-4">
+        <button
+          className={`px-4 py-2 mr-2 ${viewMode === 'calendar' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+          onClick={() => setViewMode('calendar')}
+        >
+          Calendar View
+        </button>
+        <button
+          className={`px-4 py-2 ${viewMode === 'table' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+          onClick={() => setViewMode('table')}
+        >
+          Table View
+        </button>
+      </div>
+
       {loading ? (
         <div>Loading availability...</div>
-      ) : (
+      ) : viewMode === 'calendar' ? (
         <Scheduler
           dataSource={appointments}
           defaultCurrentView="week"
@@ -173,6 +189,40 @@ const handleCreateBatchAvailability = async (date, startTime, endTime) => {
           onAppointmentUpdating={onAppointmentUpdating}
           onAppointmentDeleting={onAppointmentDeleting} // Add delete handler
         />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table-auto border-collapse border border-gray-300 w-full">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Date</th>
+                <th className="border border-gray-300 px-4 py-2">Start Time</th>
+                <th className="border border-gray-300 px-4 py-2">End Time</th>
+                <th className="border border-gray-300 px-4 py-2">Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              {availability.length > 0 ? (
+                availability.map((slot) => (
+                  <tr key={slot.id}>
+                    <td className="border border-gray-300 px-4 py-2">{slot.date}</td>
+                    <td className="border border-gray-300 px-4 py-2">{slot.start_time}</td>
+                    <td className="border border-gray-300 px-4 py-2">{slot.end_time}</td>
+                    <td className="border border-gray-300 px-4 py-2">{slot.duration}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="text-center border border-gray-300 px-4 py-2"
+                  >
+                    No availability found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

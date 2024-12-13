@@ -20,9 +20,10 @@ const AdminLoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/api/v1/admin/login/', formData);
-      const { access_token, refresh_token } = response.data;
+      const { access_token, refresh_token, user_type } = response.data;
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
+      localStorage.setItem('role', user_type)
       toast.success('Login successful');
       setErrors({});
       setTimeout(() => {

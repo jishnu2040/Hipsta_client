@@ -18,7 +18,7 @@ import AddEmployee from '../components/partner/team/AddEmployee';
 import AvailabilityList from '../components/partner/partnerDashboard/AvailabiltyList';
 import EmployeeAvailability from '../components/partner/partnerDashboard/EmployeeAvailability';
 import ProtectedRoute from '../protectRoutes/ProtectedRoute';
-
+import AddHoliday from '../components/partner/partnerDashboard/AddHoliday';
 const PartnerRoutes = () => {
   return (
     <Routes>
@@ -40,6 +40,8 @@ const PartnerRoutes = () => {
         </Route>
       </Route>
       <Route path="employeeAvailability" element={<EmployeeAvailability />} />
+      <Route path="/holiday" element={<AddHoliday/>} />
+
     </Routes>
   );
 };

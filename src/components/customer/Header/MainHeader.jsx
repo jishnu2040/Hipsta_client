@@ -49,6 +49,10 @@ function MainHeader() {
     }
   };
 
+  const handleHelpDesk = () => {
+    navigate('/helpdesk')
+  }
+
   return (
     <header className="bg-white shadow-md p-4 px-24 border-b-2">
       <div className="container mx-auto px-24 flex items-center justify-between h-full">
@@ -83,6 +87,13 @@ function MainHeader() {
                   >
                     Logout
                   </button>
+                  <button
+                    onClick={handleHelpDesk}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Help Desk
+                  </button>
+                  
                 </div>
               )}
             </div>

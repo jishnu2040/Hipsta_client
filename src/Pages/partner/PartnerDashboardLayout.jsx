@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
 import SideBar from '../../components/partner/partnerDashboard/SideBar';
 import { Outlet } from 'react-router-dom';
 
