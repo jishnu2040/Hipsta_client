@@ -6,7 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { setUserId } from "../../Redux/slices/partnerSlice";
 
-const Login = () => {
+
+const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -43,6 +44,7 @@ const Login = () => {
 
         dispatch(setUserId(user.userId));
         toast.success('Login successful');
+        onLoginSuccess()
         setErrors({});
 
         setTimeout(() => {
@@ -123,9 +125,9 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full space-y-6">
-        <h2 className="text-3xl font-semibold text-gray-700 text-center">Welcome Back</h2>
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div className=" p-4 max-w-md w-full space-y-6">
+        <h2 className="text-4xl font-semibold text-gray-500 text-center mb-16">Welcome Back</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
@@ -136,13 +138,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <label
               htmlFor="email"
               className={`absolute transition-all duration-200 transform ${
-                formData.email ? '-top-5 text-gray-700 text-sm' : 'top-2 text-gray-500'
-              } left-3 bg-white px-1 font-medium`}
+                formData.email ? '-top-3 text-gray-700 text-sm' : 'top-2 text-gray-500'
+              } left-3 bg-gray-50 rounded-lg px-1 font-medium`}
             >
               Email
             </label>

@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiLogIn } from 'react-icons/fi';
-import { FaUserCircle } from 'react-icons/fa'; 
+import { FaUserCircle } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import img from '../../../assets/hipsta-high-resolution-logo-transparent1.png';
 import axiosInstance from '../../../utlils/axiosinstance';
-import { toast } from 'react-toastify';
+import Drawer from '../../../Pages/auth/Drawer';
+import Login from '../../../Pages/auth/Login';
+
 
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for the drawer
   const navigate = useNavigate();
   const user = localStorage.getItem('user');
   const refresh = localStorage.getItem('refresh_token');
@@ -49,6 +53,7 @@ function MainHeader() {
     }
   };
 
+
   const handleHelpDesk = () => {
     navigate('/helpdesk')
   }
@@ -88,24 +93,24 @@ function MainHeader() {
                     Logout
                   </button>
                   <button
-                    onClick={handleHelpDesk}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Help Desk
+                      onClick={handleHelpDesk}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Help Desk
                   </button>
                   
                 </div>
               )}
             </div>
           ) : (
-            <Link
-              to="/login"
+            <button
+              onClick={() => setIsDrawerOpen(true)} 
               className="flex items-center bg-gray-800 text-white font-bold px-2 py-2 rounded-lg hover:bg-gray-900"
               aria-label="Login"
             >
               <FiLogIn size={20} className="mr-2" />
               Login
-            </Link>
+            </button>
           )}
         </nav>
 
@@ -139,19 +144,37 @@ function MainHeader() {
                 >
                   Logout
                 </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-center bg-gray-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-900"
+                >
+                  Logout
+                </button>
+                
+                
               </>
-            ) : (
-              <Link
-                to="/login"
+            ) 
+            : (
+              <button
+                onClick={() => setIsDrawerOpen(true)} 
                 className="w-full text-center bg-gray-800 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-900"
                 aria-label="Login"
               >
                 Login
-              </Link>
+              </button>
             )}
           </nav>
         </div>
       )}
+
+      {/* Drawer */}
+      <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
+        <div className="">
+          <Login  
+          onLoginSuccess={() => setIsDrawerOpen(false)}
+          />
+        </div>
+      </Drawer>
     </header>
   );
 }

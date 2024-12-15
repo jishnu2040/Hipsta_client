@@ -7,7 +7,7 @@ import Card from './Signup/Card';
 
 // parent component
 
-const Signup = () => {
+const Signup = ({onLoginSuccess}) => {
   const [formData, setFormData] = useState({
     email: '',
     first_name: '',

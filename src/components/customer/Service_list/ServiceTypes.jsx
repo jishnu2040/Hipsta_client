@@ -31,21 +31,21 @@ const ServiceTypes = ({ small = false }) => {
 
   return (
     <div>
-      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium mt-4 text-start`}>
+      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium mt-4 ml-10 text-start`}>
         {small ? null : 'Discover Our Services'}
       </h2>
 
       {/* Loading Spinner */}
       {loading ? (
-        <div className="flex justify-center items-center h-48">
+        <div className="flex justify-center items-center h-48 ">
           <div className="border-t-4 border-blue-500 border-solid w-16 h-16 rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-4' : 'grid-cols-2 sm:grid-cols-4 gap-6'}`}>
+        <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-4' : 'grid-cols-2 sm:grid-cols-4 gap-6 p-8'}`}>
           {serviceTypes.map((service) => (
             <div
               key={service.id}
-              className={`max-w-sm mx-auto ${small ? 'h-24 w-20' : 'h-28'} bg-white shadow-md rounded-lg p-2 hover:shadow-xl transition-shadow duration-300`}
+              className={`max-w-sm mx-auto ${small ? 'h-24 w-20' : 'h-28'} bg-white  rounded-lg p-2 hover:shadow-xl transition-shadow duration-300`}
               onClick={() => handleServiceClick(service.id)}
             >
               {service.image && (
