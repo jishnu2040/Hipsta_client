@@ -171,7 +171,7 @@ const Login = ({ onLoginSuccess }) => {
           </div>
 
           <div className="flex justify-end">
-            <Link to="/forgotpassword" className="text-sm text-gray-600 hover:text-gray-800">
+            <Link to="/auth/forgotpassword" className="text-sm text-gray-600 hover:text-gray-800">
               Forgot Password?
             </Link>
           </div>
@@ -189,7 +189,7 @@ const Login = ({ onLoginSuccess }) => {
         <div className="text-center">
           <p className="text-gray-600">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-gray-900 font-medium hover:text-black">
+            <Link to="/auth/signup" className="text-gray-900 font-medium hover:text-black">
               Register
             </Link>
           </p>

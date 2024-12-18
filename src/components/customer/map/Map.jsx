@@ -25,7 +25,7 @@ const Map = ({ partners }) => {
   return (
     <LoadScript googleMapsApiKey="AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4">
       <GoogleMap
-        mapContainerStyle={{ height: "400px", width: "100%" }}
+        mapContainerStyle={{ height: "500px", width: "100%" }}
         center={mapCenter}
         zoom={12} // Adjust zoom level as needed
       >

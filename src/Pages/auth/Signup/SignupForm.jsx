@@ -135,7 +135,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, errors }) => {
         <div id="signInDiv" className="flex justify-center my-4"></div>
         <div className="mt-2 flex items-center justify-center">
           <span>Already have an account?</span>
-          <Link to="/login" className="text-gray-700 ml-4 hover:text-gray-900">Login</Link>
+          <Link to="/auth/login" className="text-gray-700 ml-4 hover:text-gray-900">Login</Link>
         </div>
       </form>
     </>

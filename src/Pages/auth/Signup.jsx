@@ -117,7 +117,7 @@ const Signup = ({onLoginSuccess}) => {
   return (
     <div className="bg-customBg flex items-center justify-center min-h-screen">
       <Card>
-        <div className="w-full h-full p-8 sm:p-6 flex flex-col justify-center">
+        <div className="w-full h-full p-2 sm:p-6 flex flex-col justify-center">
           <h2 className="text-center text-2xl font-semibold mb-6 text-gray-900">Create Account</h2>
           <SignupForm
             formData={formData}

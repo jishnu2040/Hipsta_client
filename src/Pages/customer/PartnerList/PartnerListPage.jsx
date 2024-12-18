@@ -83,7 +83,7 @@ const PartnerListPage = () => {
       <MainHeader />
 
       {/* Content */}
-      <div className="PartnerPage md:mx-32 mt-6">
+      <div className="PartnerPage">
         <PartnerList partners={partners} />
       </div>
     </div>

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Signup, Login, ForgetPassword, VerifyCode, ResetPassword } from '../Pages/auth';
 import Drawer from '../Pages/auth/Drawer';
 
 const AuthRoutes = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true); 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const navigate = useNavigate(); // To programmatically navigate
 
   const handleDrawerClose = () => {
-    setIsDrawerOpen(false); 
+    setIsDrawerOpen(false);
+    navigate('/'); // Redirect to the Home page
   };
 
   return (

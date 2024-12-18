@@ -144,14 +144,6 @@ function MainHeader() {
                 >
                   Logout
                 </button>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-center bg-gray-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-900"
-                >
-                  Logout
-                </button>
-                
-                
               </>
             ) 
             : (

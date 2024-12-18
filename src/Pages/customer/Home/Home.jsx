@@ -16,10 +16,26 @@ function Home() {
     const storedLocation = localStorage.getItem("userLocation");
     return storedLocation ? JSON.parse(storedLocation) : { lat: null, lng: null };
   });
+  const [error, setError] = useState(null);
 
   const handleLocationObtained = () => {
-    setShowLocationPrompt(false);
-    localStorage.setItem("locationPromptDismissed", "true");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const userLocation = { lat: latitude, lng: longitude };
+
+        // Save to state and local storage
+        setLocation(userLocation);
+        localStorage.setItem("userLocation", JSON.stringify(userLocation));
+        localStorage.setItem("locationPromptDismissed", "true");
+        setShowLocationPrompt(false);
+        setError(null);
+      },
+      (err) => {
+        setError("Unable to fetch location. Please try again or enable location access.");
+        console.error("Geolocation error:", err);
+      }
+    );
   };
 
   const handleClosePrompt = () => {
@@ -75,8 +91,12 @@ function Home() {
             <p className="text-sm text-gray-600 text-center mb-6">
               We need your location to provide better services near you.
             </p>
+            {error && (
+              <p className="text-red-500 text-center mb-4">
+                {error}
+              </p>
+            )}
             <div>
-              {/* Assuming UserLocation manages location fetching */}
               <button
                 onClick={handleLocationObtained}
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
