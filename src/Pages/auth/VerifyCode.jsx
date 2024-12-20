@@ -18,13 +18,12 @@ const VerifyCode = () => {
 
     try {
       const response = await axios.post('http://localhost:8000/api/v1/auth/verify-email/', { otp: code });
-      const { message, user_type, user_id } = response.data; // Assuming your API returns 'user_type' and 'user_id' in the response
+      const { message, user_type, user_id } = response.data;
 
       if (response.status === 200) {
         toast.success(message);
         setErrors({});
         
-        // Store the user ID in localStorage
         localStorage.setItem('user_id', user_id);
 
         setTimeout(() => {
@@ -63,8 +62,8 @@ const VerifyCode = () => {
   };
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div className=" flex  justify-center min-h-screen">
+      <div className="bg-white p-8  max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center">Verify Your Account</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

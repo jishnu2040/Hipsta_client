@@ -9,7 +9,7 @@ const AppointmentBooking = () => {
   const { serviceId } = useParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [bookingData, setBookingData] = useState({
-    professional: null,
+    serviceId: serviceId || null, // Initialize serviceId
     employee: null,
     date: '',
     timeSlot: null,
@@ -19,6 +19,10 @@ const AppointmentBooking = () => {
   const [partnerDetails, setPartnerDetails] = useState(null);
   const navigate = useNavigate();
 
+
+  console.log(bookingData);
+  console.log(currentStep);
+  
   const baseUrl = 'http://localhost:8000/api/v1';
   const S3_BASE_URL = 'https://hipsta-s3.s3.ap-south-1.amazonaws.com/';
 

@@ -12,13 +12,12 @@ function App() {
   return (
     <Router>
       <ToastContainer />
+      <CustomerRoutes />
+      <PartnerRoutes />
+      <AdminRoutes />
+      <TicketRoutes />
       <Routes>
-        {/* Main routes */}
-        <Route path="/*" element={<CustomerRoutes />} />
         <Route path="/auth/*" element={<AuthRoutes />} />
-        <Route path="/partner/*" element={<PartnerRoutes />} />
-        <Route path="/admin/*" element={<AdminRoutes />} />
-        <Route path="/tickets/*" element={<TicketRoutes />} />
       </Routes>
     </Router>
   );

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { HiChevronRight, HiChevronLeft } from 'react-icons/hi';
-import { Dialog } from '@headlessui/react';
 import axios from 'axios';
 
 const TimeSelection = ({ setBookingData, bookingData }) => {
   const [availableTimes, setAvailableTimes] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
-  const [openCalendar, setOpenCalendar] = useState(false);
 
   const baseUrl = 'http://localhost:8000/api/v1';
-
   const selectedEmployee = bookingData?.employee?.id;
 
   const getNextSevenDays = () => {
@@ -47,14 +44,6 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
     setBookingData({ ...bookingData, timeSlot });
   };
 
-  const handleOpenCalendar = () => {
-    setOpenCalendar(true);
-  };
-
-  const handleCloseCalendar = () => {
-    setOpenCalendar(false);
-  };
-
   useEffect(() => {
     if (bookingData.date) {
       setSelectedDate(bookingData.date);
@@ -66,32 +55,18 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
     <div className="p-4">
       <h2 className="text-3xl font-semibold mb-6">Select Date and Time</h2>
 
-      {/* Calendar Pop-up */}
-      <Dialog open={openCalendar} onClose={handleCloseCalendar}>
-        <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-        <Dialog.Panel className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg">
-          <button onClick={handleCloseCalendar} className="absolute top-2 right-2 text-xl text-gray-500">
-            ✕
-          </button>
-          <h3 className="text-2xl mb-4">Select Date</h3>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => handleDateChange(e.target.value)}
-            className="p-2 border rounded-lg"
-          />
-        </Dialog.Panel>
-      </Dialog>
+      {/* New Date Picker */}
+      <div className="mb-4">
+    
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => handleDateChange(e.target.value)}
+          className="p-2 border rounded-lg w-full"
+        />
+      </div>
 
-      {/* Open Calendar Button */}
-      <button
-        onClick={handleOpenCalendar}
-        className="px-4 py-2 text-white bg-gray-800 rounded-lg mb-4"
-      >
-        Open Calendar
-      </button>
-
-      {/* Date Navigation */}
+      {/* Circle Date Navigation */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => handleDateChange(getNextSevenDays()[0].toISOString().split('T')[0])}
@@ -106,7 +81,7 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
               <button
                 onClick={() => handleDateChange(day.toISOString().split('T')[0])}
                 className={`w-12 h-12 flex items-center justify-center rounded-full text-white ${
-                  selectedDate === day.toISOString().split('T')[0] ? 'bg-gray-800' : 'bg-gray-300'
+                  selectedDate === day.toISOString().split('T')[0] ? 'bg-gray-800' : 'bg-blue-300'
                 }`}
               >
                 {day.getDate()}
@@ -126,22 +101,38 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
 
       {/* Time Slots */}
       <ul className="mt-6">
-        {availableTimes.length === 0 ? (
-          <p className="text-gray-500">No available times for the selected date.</p>
-        ) : (
-          availableTimes.map((timeSlot) => (
-            <li
-              key={timeSlot.id}
-              onClick={() => handleTimeSelection(timeSlot)}
-              className={`p-4 border rounded-lg cursor-pointer ${
-                bookingData.timeSlot?.id === timeSlot.id ? 'bg-green-500 text-white' : 'bg-white'
-              }`}
-            >
-              {timeSlot.start_time} - {timeSlot.end_time}
-            </li>
-          ))
-        )}
-      </ul>
+  {availableTimes.length === 0 ? (
+    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg  ">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M18 12H6"
+        />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 6v12"
+        />
+      
+      <p className="text-xl font-semibold text-gray-700">No available times for the selected date</p>
+      <p className="text-sm text-gray-500 mt-2">Please select another date or try again later</p>
+    </div>
+  ) : (
+    availableTimes.map((timeSlot) => (
+      <li
+        key={timeSlot.id}
+        onClick={() => handleTimeSelection(timeSlot)}
+        className={`p-4 border rounded-lg cursor-pointer ${
+          bookingData.timeSlot?.id === timeSlot.id ? 'bg-green-500 text-white' : 'bg-white'
+        }`}
+      >
+        {timeSlot.start_time} - {timeSlot.end_time}
+      </li>
+    ))
+  )}
+</ul>
+
+
     </div>
   );
 };
