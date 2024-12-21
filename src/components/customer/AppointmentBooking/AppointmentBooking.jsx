@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from '../../../utlils/axiosinstance';
 import Professional from './Steps/Professional';
 import TimeSelection from './Steps/TimeSelection';
 import Confirmation from './Steps/Confirmation';
@@ -33,6 +34,7 @@ const AppointmentBooking = () => {
         setServiceDetails(serviceResponse.data);
 
         const partnerId = serviceResponse.data.partner;
+        setBookingData((prev) => ({ ...prev, partnerId: partnerId}));
         const partnerResponse = await axios.get(`${baseUrl}/customer/partner-detail/${partnerId}/`);
         setPartnerDetails(partnerResponse.data);
 
@@ -101,11 +103,23 @@ const AppointmentBooking = () => {
         }
         break;
       case 2: // Confirmation Step
-        // No additional validation required for confirmation
-        // here we are going to write booking submit logic, if booking successfull,
-        // then need to release the lock call 
-        // if (bookingData.lockedSlot) { await releaseSlot(bookingData.lockedSlot); }  navigate('/');
-        break;
+        try{
+          const response = await axiosInstance.post('booking/book-appointment/', bookingData);
+          toast.success('Appointment booked successfully!')
+
+          if (bookingData.lockedSlot) {
+            await releaseSlot(bookingData.lockedSlot);
+          }
+
+          // navigate('/appointments/confirmation', { state: { bookingData: response.data } });
+          navigate('/')
+        }catch (error) {
+          console.log('faild to book appointment!')
+          toast.error('Faild to book appointment. please try again ..')
+        }
+        return;
+
+        
       default:
         break;
     }

@@ -17,10 +17,14 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
     for (let i = 0; i < 7; i++) {
       const nextDay = new Date(currentDate);
       nextDay.setDate(currentDate.getDate() + i);
-      days.push(nextDay);
+  
+      // Adjust to local timezone
+      const localDate = new Date(nextDay.getTime() - nextDay.getTimezoneOffset() * 60000);
+      days.push(localDate);
     }
     return days;
   };
+  
 
   const fetchAvailableTimes = async (date) => {
     if (!selectedEmployee) return;
@@ -38,7 +42,7 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setBookingData({ ...bookingData, date });
+    setBookingData({ ...bookingData, date: date });
     fetchAvailableTimes(date);
   };
 
@@ -140,7 +144,7 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
             key={category}
             onClick={() => setTimeCategory(category)}
             className={`px-4 py-2 rounded-full ${
-              timeCategory === category ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-700'
+              timeCategory === category ? 'bg-gray-800 text-white' : 'text-gray-700'
             }`}
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}

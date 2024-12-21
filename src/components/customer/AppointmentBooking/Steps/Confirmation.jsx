@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { FaCashRegister } from 'react-icons/fa';
 
-const Confirmation = ({ bookingData }) => {
-  const [notes, setNotes] = useState('');
+const Confirmation = ({ bookingData, setBookingData }) => {
+  const [notes, setNotes] = useState(bookingData.notes || '');
 
   const handleNotesChange = (event) => {
-    setNotes(event.target.value);
+    const newNotes = event.target.value;
+    setNotes(newNotes);
+    setBookingData((prevData) => ({
+      ...prevData,
+      notes: newNotes, 
+    }));
   };
 
   return (
@@ -17,7 +22,9 @@ const Confirmation = ({ bookingData }) => {
           <FaCashRegister className="text-green-500 h-6 w-6" />
           <span className="text-lg font-medium text-gray-700">Pay at Venue</span>
         </div>
-        <p className="text-sm text-gray-500 mt-2">This payment option allows you to pay directly at the venue during your appointment.</p>
+        <p className="text-sm text-gray-500 mt-2">
+          This payment option allows you to pay directly at the venue during your appointment.
+        </p>
       </div>
 
       {/* Booking Notes Section */}
