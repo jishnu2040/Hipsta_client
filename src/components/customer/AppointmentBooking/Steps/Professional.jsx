@@ -63,7 +63,7 @@ const Professional = ({ setBookingData, bookingData, partnerId }) => {
                   className="w-16 h-16 rounded-full object-cover border border-gray-200"
                 />
               ) : (
-                <FaUserCircle className="w-16 h-16 text-gray-400" /> // Avatar icon for missing avatar
+                <FaUserCircle className="w-16 h-16 text-gray-400" /> 
               )}
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-700">{employee.name}</h3>
