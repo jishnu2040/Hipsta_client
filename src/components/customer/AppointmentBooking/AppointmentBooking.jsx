@@ -7,6 +7,8 @@ import TimeSelection from './Steps/TimeSelection';
 import Confirmation from './Steps/Confirmation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Lottie from 'lottie-react';
+import bookingSuccessAnimation from './animations/successAnimation.json'
 
 const AppointmentBooking = () => {
   const { serviceId } = useParams();
@@ -21,9 +23,9 @@ const AppointmentBooking = () => {
   });
   const [serviceDetails, setServiceDetails] = useState(null);
   const [partnerDetails, setPartnerDetails] = useState(null);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
   const navigate = useNavigate();
- console.log(bookingData);
- 
+
   const baseUrl = 'http://localhost:8000/api/v1';
   const S3_BASE_URL = 'https://hipsta-s3.s3.ap-south-1.amazonaws.com/';
 
@@ -34,7 +36,7 @@ const AppointmentBooking = () => {
         setServiceDetails(serviceResponse.data);
 
         const partnerId = serviceResponse.data.partner;
-        setBookingData((prev) => ({ ...prev, partnerId: partnerId}));
+        setBookingData((prev) => ({ ...prev, partnerId: partnerId }));
         const partnerResponse = await axios.get(`${baseUrl}/customer/partner-detail/${partnerId}/`);
         setPartnerDetails(partnerResponse.data);
 
@@ -49,7 +51,6 @@ const AppointmentBooking = () => {
 
     fetchDetails();
 
-    // Clean up function to release the lock if user leaves the page
     return () => {
       if (bookingData.lockedSlot) {
         releaseSlot(bookingData.lockedSlot);
@@ -80,55 +81,52 @@ const AppointmentBooking = () => {
   };
 
   const handleContinue = async () => {
-    // Validate current step
     switch (currentStep) {
-      case 0: 
+      case 0:
         if (!bookingData.employee) {
           toast.warning('Please select a professional.');
           return;
         }
         break;
-      case 1: // Time Selection Step
+      case 1:
         if (!bookingData.date || !bookingData.timeSlot) {
           toast.warning('Please select a date and time slot.');
           return;
         }
 
         if (bookingData.lockedSlot !== bookingData.timeSlot) {
-          console.log(bookingData.lockedSlot)
-          // Release the previously locked slot
           await releaseSlot(bookingData.lockedSlot);
-          // Lock the new slot
           await lockSlot(bookingData.timeSlot.id);
         }
         break;
-      case 2: // Confirmation Step
-        try{
+      case 2:
+        try {
           const response = await axiosInstance.post('booking/book-appointment/', bookingData);
-          toast.success('Appointment booked successfully!')
+          toast.success('Appointment booked successfully!');
+
+          // Show success animation
+          setShowSuccessAnimation(true);
+          setTimeout(() => {
+            setShowSuccessAnimation(false);
+            navigate('/');
+          }, 3000);
 
           if (bookingData.lockedSlot) {
             await releaseSlot(bookingData.lockedSlot);
           }
-
-          // navigate('/appointments/confirmation', { state: { bookingData: response.data } });
-          navigate('/')
-        }catch (error) {
-          console.log('faild to book appointment!')
-          toast.error('Faild to book appointment. please try again ..')
+        } catch (error) {
+          console.error('Failed to book appointment!');
+          toast.error('Failed to book appointment. Please try again.');
         }
         return;
 
-        
       default:
         break;
     }
 
-    // Move to the next step if validation passes
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
     } else {
-      // Navigate to payment on the last step
       navigate('/payment', { state: bookingData });
     }
   };
@@ -154,27 +152,36 @@ const AppointmentBooking = () => {
     { id: 3, label: 'Confirm', component: <Confirmation bookingData={bookingData} /> },
   ];
 
+  
+
   return (
     <div>
-      {/* Toast Container */}
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Stepper Navigation */}
+      {showSuccessAnimation && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <Lottie
+              animationData={bookingSuccessAnimation}
+              loop={true}
+              style={{ height: 300, width: 300 }}
+            />
+          </div>
+        )}
+
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-4 mb-6 flex justify-between items-center">
         <button onClick={handleBack} className="text-gray-700 font-extrabold">&larr;</button>
         <button onClick={handleDiscard} className="text-red-600 font-semibold">&times; Discard</button>
       </div>
 
-      {/* Main Content */}
       <div className="flex justify-center">
         <div className="w-full max-w-7xl flex overflow-hidden">
-          {/* Left Side */}
           <div className="w-8/12">
             <div className="text-gray-600 font-medium p-4">
               {steps.map((step, index) => (
                 <span
                   key={step.id}
-                  className={`${
+                  className={`$ {
                     currentStep === index ? 'text-gray-600 font-bold' : 'text-gray-400'
                   }`}
                 >
@@ -186,10 +193,8 @@ const AppointmentBooking = () => {
             <div>{steps[currentStep]?.component}</div>
           </div>
 
-          {/* Right Side: Booking Summary */}
           <div className="w-4/12">
             <div className="sticky top-4 mt-20 self-start bg-white border border-gray-300 rounded-xl p-4 space-y-4">
-              {/* Partner Details */}
               {partnerDetails && (
                 <div>
                   <h4 className="text-lg font-semibold">Partner Details</h4>
@@ -207,7 +212,6 @@ const AppointmentBooking = () => {
                 </div>
               )}
 
-              {/* Service Details */}
               {serviceDetails && (
                 <div>
                   <h4 className="text-lg font-semibold">Service Details</h4>
@@ -219,14 +223,12 @@ const AppointmentBooking = () => {
                 </div>
               )}
 
-              {/* Booking Data */}
               <ul className="space-y-2">
                 {bookingData.employee?.name && <li>Profession: {bookingData.employee.name}</li>}
                 {bookingData.date && <li>Date: {bookingData.date}</li>}
                 {bookingData.timeSlot?.start_time && <li>Time: {bookingData.timeSlot.start_time}</li>}
               </ul>
 
-              {/* Total Price */}
               <div className="mt-4 border-t pt-4">
                 <h4 className="text-lg font-semibold">Total Price</h4>
                 <p className="text-xl font-bold text-gray-600">
@@ -234,7 +236,6 @@ const AppointmentBooking = () => {
                 </p>
               </div>
 
-              {/* Continue Button */}
               <button
                 onClick={handleContinue}
                 className="mt-4 w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900"
@@ -244,6 +245,7 @@ const AppointmentBooking = () => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
