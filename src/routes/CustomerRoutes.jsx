@@ -7,6 +7,7 @@ import PartnerDetailedPage from '../Pages/customer/partnerPage/PartnerDetailedPa
 import BookingPage from '../components/customer/booking/BookingPage';
 import Map from '../components/customer/map/Map';
 import AppointmentBooking from '../components/customer/AppointmentBooking/AppointmentBooking';
+import BusinessHome from '../Pages/customer/Business/BusinessHome';
 // import HelpDesk from '../Pages/customer/CustomerTickets/HelpDesk';
 
 const CustomerRoutes = () => {
@@ -19,6 +20,7 @@ const CustomerRoutes = () => {
        <Route path="/payment" element={<BookingPage/>} />
        <Route path='/map' element={<Map/>}/>
        <Route path='/appointmentBooking/:serviceId' element={<AppointmentBooking/>}/>
+       <Route path='/for-business' element={<BusinessHome />}/>
        {/* <Route path='/helpdesk' element= {<HelpDesk />}/> */}
     </Routes>
   );

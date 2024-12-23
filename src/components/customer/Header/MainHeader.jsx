@@ -59,7 +59,7 @@ function MainHeader() {
   }
 
   return (
-    <header className="bg-white shadow-md p-4 px-24 border-b-2">
+    <header className="bg-white shadow-sm p-4 px-24">
       <div className="container mx-auto px-24 flex items-center justify-between h-full">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">

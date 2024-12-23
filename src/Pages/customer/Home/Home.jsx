@@ -6,6 +6,7 @@ import Stats from "../../../components/customer/stats/Stats";
 import Footer from "../../../components/customer/footer/Footer";
 import Search from "../../../components/customer/Search/Search";
 import Banner from "../../../components/customer/banner/Banner";
+import Business from "../../../components/customer/CTA/Business";
 import ShimmerHome from "./ShimmerHome";
 
 function Home() {
@@ -80,6 +81,9 @@ function Home() {
       </div>
       <div className="px-24 mt-6">
         <Stats />
+      </div>
+      <div className="px-24 ">
+        <Business />
       </div>
       <Footer />
       {showLocationPrompt && (

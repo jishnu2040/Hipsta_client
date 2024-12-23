@@ -29,6 +29,8 @@ const AppointmentBooking = () => {
   const baseUrl = 'http://localhost:8000/api/v1';
   const S3_BASE_URL = 'https://hipsta-s3.s3.ap-south-1.amazonaws.com/';
 
+
+  console.log(bookingData)
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -149,7 +151,7 @@ const AppointmentBooking = () => {
   const steps = [
     { id: 1, label: 'Professional', component: <Professional setBookingData={setBookingData} bookingData={bookingData} partnerId={serviceDetails?.partner} /> },
     { id: 2, label: 'Time', component: <TimeSelection setBookingData={setBookingData} bookingData={bookingData} /> },
-    { id: 3, label: 'Confirm', component: <Confirmation bookingData={bookingData} /> },
+    { id: 3, label: 'Confirm', component: <Confirmation bookingData={bookingData} setBookingData={setBookingData} /> },
   ];
 
   
