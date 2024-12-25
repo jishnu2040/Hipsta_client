@@ -1,49 +1,53 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const baseUrl = 'http://localhost:8000/api/v1';
+
 export default function ServiceProvide() {
-    return (
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 className="text-center text-lg/8 font-semibold text-gray-900">
-            Trusted by the world’s most innovative teams
-          </h2>
-          <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <img
-              alt="Transistor"
-              src="https://tailwindui.com/plus/img/logos/158x48/transistor-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <img
-              alt="Reform"
-              src="https://tailwindui.com/plus/img/logos/158x48/reform-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <img
-              alt="Tuple"
-              src="https://tailwindui.com/plus/img/logos/158x48/tuple-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            />
-            <img
-              alt="SavvyCal"
-              src="https://tailwindui.com/plus/img/logos/158x48/savvycal-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-            />
-            <img
-              alt="Statamic"
-              src="https://tailwindui.com/plus/img/logos/158x48/statamic-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-            />
-          </div>
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/core/service_type/`);
+        setServices(response.data); // Assuming response data is an array of services
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  return (
+    <div className="bg-gray-50 py-20 sm:py-12">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <h2 className="text-center text-3xl font-semibold text-gray-800 sm:text-4xl">
+          Services Provided by Hipsta
+        </h2>
+        <p className="mt-4 text-center text-lg text-gray-600">
+          Explore a wide range of premium services tailored to your needs.
+        </p>
+        <div className="mx-auto mt-16 grid max-w-lg grid-cols-2 gap-x-10 gap-y-12 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-6">
+          {services.map((service) => (
+            <div
+              key={service.id}
+              className="group flex flex-col items-center space-y-4 rounded-lg bg-white p-6"
+            >
+              <div className="h-24 w-24 rounded-full bg-gray-100 overflow-hidden">
+                <img
+                  alt={service.name}
+                  src={service.image} // Assuming the service object contains an 'image' field
+                  className="h-full w-full object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <p className="text-center text-lg font-medium text-gray-800 group-hover:text-blue-600">
+                {service.name}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-    )
-  }
-  
+    </div>
+  );
+}

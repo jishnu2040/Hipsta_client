@@ -1,35 +1,40 @@
-import { FiCheck } from 'react-icons/fi'; 
+import { FiCheck } from 'react-icons/fi';
 
 const tiers = [
   {
-    name: 'Hobby',
-    id: 'tier-hobby',
+    name: 'Free',
+    id: 'tier-free',
     href: '#',
-    priceMonthly: '$29',
-    description: "The perfect plan if you're just getting started with our product.",
-    features: ['25 products', 'Up to 10,000 subscribers', 'Advanced analytics', '24-hour support response time'],
+    priceMonthly: '0',
+    description: 'A great way to explore the platform at no cost.',
+    features: [
+      '10 products',
+      'Up to 1,000 subscribers',
+      'Basic analytics',
+      'Community support',
+    ],
     featured: false,
   },
   {
-    name: 'Enterprise',
-    id: 'tier-enterprise',
+    name: 'Pro',
+    id: 'tier-pro',
     href: '#',
-    priceMonthly: '$99',
-    description: 'Dedicated support and infrastructure for your company.',
+    priceMonthly: '850',
+    description: 'Unlock all premium features with this subscription.',
     features: [
       'Unlimited products',
       'Unlimited subscribers',
       'Advanced analytics',
-      'Dedicated support representative',
+      'Priority support',
       'Marketing automations',
       'Custom integrations',
     ],
     featured: true,
   },
-]
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Pricing() {
@@ -45,14 +50,12 @@ export default function Pricing() {
         />
       </div>
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-base/7 font-semibold text-indigo-600">Pricing</h2>
-        <p className="mt-2 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
-          Choose the right plan for you
+        <p className="mt-2 text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+          Flexible Plans for Everyone
         </p>
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-pretty text-center text-lg font-medium text-gray-600 sm:text-xl/8">
-        Choose an affordable plan that’s packed with the best features for engaging your audience, creating customer
-        loyalty, and driving sales.
+        Get started for free or unlock all features with our Pro plan.
       </p>
       <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
         {tiers.map((tier, tierIdx) => (
@@ -105,21 +108,9 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <a
-              href={tier.href}
-              aria-describedby={tier.id}
-              className={classNames(
-                tier.featured
-                  ? 'bg-indigo-500 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline-indigo-500'
-                  : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline-indigo-600',
-                'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10',
-              )}
-            >
-              Get started today
-            </a>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }

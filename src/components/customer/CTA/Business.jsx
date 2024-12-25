@@ -4,7 +4,7 @@ import business from '../../../assets/dashbrd.png';
 const Business = () => {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-4">
+      <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-8 lg:px-4">
         <div className="relative isolate overflow-hidden bg-white px-6 pt-8 sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
           <svg
             viewBox="0 0 1024 1024"
@@ -38,7 +38,7 @@ const Business = () => {
           </div>
           <div className="relative mt-16 h-80 lg:mt-8 lg:w-1/2 flex-none">
             <img
-              src={business}
+              src="https://cdn.visily.ai/editor/production/thumbnails/f4a0fde0-9637-4372-937f-33fc73392731-large-size"
               alt="Business Dashboard"
               width={1824}
               height={1080}

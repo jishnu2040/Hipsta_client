@@ -11,10 +11,10 @@ const BusinessHome = () => {
     
     <>
     <Heroes />
+    <Promo />
+    <ServiceProvide />
     <Feature />
     <Pricing />
-    <ServiceProvide />
-    <Promo />
     <TechicalSupport />
     <Footer />
     </>
