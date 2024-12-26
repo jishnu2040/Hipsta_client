@@ -19,10 +19,16 @@ import AvailabilityList from '../components/partner/partnerDashboard/Availabilty
 import EmployeeAvailability from '../components/partner/partnerDashboard/EmployeeAvailability';
 import ProtectedRoute from '../protectRoutes/ProtectedRoute';
 import AddHoliday from '../components/partner/partnerDashboard/AddHoliday';
+import SubscriptionRenewal from '../components/partner/subscription/SubscriptionRenewal';
+import Pricing from '../components/partner/subscription/Pricing';
+// import PaymentPage from '../components/partner/subscription/PaymentPage';
 const PartnerRoutes = () => {
   return (
     <Routes>
       <Route path="partner/registration" element={<Registration />} />
+      <Route path="/subs" element={<SubscriptionRenewal/>} />
+      <Route path="/sub" element={<Pricing/>} />
+      {/* <Route path="/pay" element={<PaymentPage/>} /> */}
       <Route path="/partner" element={<ThemeProvider> <ProtectedRoute allowedRole={['partner']}><PartnerDashboardLayout /></ProtectedRoute></ThemeProvider>}>
         <Route index element={<Dashboard />} />
         <Route path="calendar" element={<SchedulerComponent />} />
