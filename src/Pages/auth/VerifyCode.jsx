@@ -30,7 +30,7 @@ const VerifyCode = () => {
           if (user_type === 'partner') {
             navigate('/partner/registration'); // Navigate to partner details page
           } else {
-            navigate('/login'); // Navigate to login page for customers
+            navigate('/auth/login'); // Navigate to login page for customers
           }
         }, 2000);
       } else if (response.status === 204) {

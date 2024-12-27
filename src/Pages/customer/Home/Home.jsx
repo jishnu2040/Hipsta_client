@@ -79,45 +79,36 @@ function Home() {
       <div className="px-24">
         <PartnerListView location={location} />
       </div>
-      <div className="px-24 mt-6">
+      {/* <div className="px-24 mt-6">
         <Stats />
-      </div>
+      </div> */}
       <div className="px-24 ">
         <Business />
       </div>
       <Footer />
       {showLocationPrompt && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">
-              Allow Location Access
-            </h2>
-            <p className="text-sm text-gray-600 text-center mb-6">
-              We need your location to provide better services near you.
-            </p>
-            {error && (
-              <p className="text-red-500 text-center mb-4">
-                {error}
-              </p>
-            )}
-            <div>
-              <button
-                onClick={handleLocationObtained}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
-              >
-                Allow
-              </button>
-            </div>
-            <div className="mt-4 flex justify-center">
-              <button
-                onClick={handleClosePrompt}
-                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition"
-              >
-                Close
-              </button>
-            </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">Allow Location Access</h2>
+          <p className="text-sm text-gray-500 mb-4">We need your location to provide better services near you.</p>
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          <div className="space-x-4">
+            <button
+              onClick={handleLocationObtained}
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg"
+            >
+              Allow
+            </button>
+            <button
+              onClick={handleClosePrompt}
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
+            >
+              Close
+            </button>
           </div>
         </div>
+      </div>
+      
       )}
     </div>
   );

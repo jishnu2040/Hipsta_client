@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 
 const Chat = ({ ticketId }) => {
   const [messages, setMessages] = useState([]);
@@ -6,26 +7,52 @@ const Chat = ({ ticketId }) => {
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
 
-  // WebSocket connection for chat
+  // Fetch the initial chat messages when the component loads
   useEffect(() => {
-    socket.current = new WebSocket(`ws://localhost:8000/ws/chat/${ticketId}/`);
+    const token = localStorage.getItem('access_token');
+    
+    // Fetch chat history from the API
+    axios
+      .get(`http://localhost:8000/api/v1/ticket/${ticketId}/chatmessages/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching chat messages:', error);
+      });
+
+    // WebSocket setup
+    socket.current = new WebSocket(
+      `ws://localhost:8000/ws/chat/${ticketId}/?token=${token}`
+    );
 
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setMessages((prev) => [...prev, data]);
     };
 
+    socket.current.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    socket.current.onclose = () => {
+      console.log('WebSocket closed');
+    };
+
     return () => {
       socket.current.close();
     };
-  }, [ticketId]); 
+  }, [ticketId]);
 
   // Auto-scroll to the latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Send message handler
   const sendMessage = () => {
     if (newMessage.trim()) {
       socket.current.send(JSON.stringify({ message: newMessage }));
@@ -37,9 +64,11 @@ const Chat = ({ ticketId }) => {
     <div className="bg-gray-100 p-4 rounded-lg shadow-lg max-w-3xl mx-auto">
       <div className="h-96 overflow-y-auto space-y-4">
         {messages.map((msg, index) => (
-          <div key={index} className="flex items-start space-x-2">
-            <div className="font-semibold text-blue-600">{msg.sender}:</div>
-            <div className="bg-gray-200 p-3 rounded-md shadow-sm">{msg.message}</div>
+          <div key={index} className="flex justify-start">
+            <div className="font-semibold text-blue-600 mr-2">{msg.sender}:</div>
+            <div className="bg-gray-200 p-3 rounded-md shadow-sm max-w-xs">
+              {msg.message}
+            </div>
           </div>
         ))}
         <div ref={messagesEndRef} />

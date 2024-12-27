@@ -19,7 +19,7 @@ const tiers = [
     name: 'Pro',
     id: 'tier-pro',
     href: '#',
-    priceMonthly: '850',
+    priceMonthly: '900',
     description: 'Unlock all premium features with this subscription.',
     features: [
       'Unlimited products',

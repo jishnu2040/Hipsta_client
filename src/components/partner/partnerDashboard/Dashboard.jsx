@@ -1,8 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import ThemeContext from "../../../ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate();
   const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -18,7 +21,12 @@ const Dashboard = () => {
           `http://localhost:8000/api/v1/partner/get-partner-id/${userId}/`
         );
         const partnerId = response.data.partner_id;
+        const subscription_status = response.data.subscription_status;
         localStorage.setItem("partnerId", partnerId); // Store partnerId in local storage
+
+        if (subscription_status === "inactive") {
+          navigate("/partner-subscription");
+        }
       } catch (error) {
         console.error("Failed to fetch partner ID:", error.response?.data || error.message);
       }

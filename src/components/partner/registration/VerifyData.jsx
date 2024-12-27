@@ -98,7 +98,7 @@ const VerifyData = ({ previousStep }) => {
   
 
   if (redirectToDashboard) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return (

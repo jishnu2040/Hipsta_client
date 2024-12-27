@@ -102,7 +102,7 @@ const Signup = ({onLoginSuccess}) => {
     try {
       const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formData);
       if (response.status === 200 || response.status === 201) {
-        navigate('/verify');
+        navigate('/auth/verify');
       }
     } catch (error) {
       if (error.response) {

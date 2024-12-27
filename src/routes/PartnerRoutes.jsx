@@ -27,7 +27,7 @@ const PartnerRoutes = () => {
     <Routes>
       <Route path="partner/registration" element={<Registration />} />
       <Route path="/subs" element={<SubscriptionRenewal/>} />
-      <Route path="/sub" element={<Pricing/>} />
+      <Route path="/partner-subscription" element={<Pricing/>} />
       {/* <Route path="/pay" element={<PaymentPage/>} /> */}
       <Route path="/partner" element={<ThemeProvider> <ProtectedRoute allowedRole={['partner']}><PartnerDashboardLayout /></ProtectedRoute></ThemeProvider>}>
         <Route index element={<Dashboard />} />

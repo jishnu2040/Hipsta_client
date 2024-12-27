@@ -35,7 +35,7 @@ export default function Heroes() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {/* Using a <a> tag with an onClick event to navigate */}
             <a
-              href="/signup"
+              href="/auth/signup"
               onClick={handleLoginNavigation}
               className="text-sm font-semibold text-gray-900"
             >
