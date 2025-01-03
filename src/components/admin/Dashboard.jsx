@@ -1,18 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from './DashBoard/Card';
-import { FaCalendarCheck, FaDollarSign, FaUsers } from 'react-icons/fa';
+import { FaCalendarCheck, FaUsers } from 'react-icons/fa';
+import axios from 'axios'; // Ensure you install axios: npm install axios
 
 const Dashboard = () => {
-  // Example data for left section cards
+  const [totalBookings, setTotalBookings] = useState(0);
+  const [partners, setPartners] = useState(0);
+  const [activeUsers, setActiveUsers] = useState(0);
+
+  // Fetch data from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch total bookings
+        const bookingsResponse = await axios.get('http://localhost:8000/api/v1/booking/total-bookings/');
+        const totalBookingsData = bookingsResponse.data.total_bookings;
+
+        // Fetch partner count
+        const partnersResponse = await axios.get('http://localhost:8000/api/v1/partner/partner-count/');
+        const partnerCountData = partnersResponse.data.partner_count;
+
+        // Fetch active user count
+        const usersResponse = await axios.get('http://localhost:8000/api/v1/auth/user-count/');
+        const userCountData = usersResponse.data.user_count;
+
+        // Update state variables with backend data
+        setTotalBookings(totalBookingsData);
+        setPartners(partnerCountData);
+        setActiveUsers(userCountData);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Dynamic card data
   const leftCards = [
-    { title: 'Total Bookings', value: 1200, icon: <FaCalendarCheck /> },
-    { title: 'Revenue', value: '$25,000', icon: <FaDollarSign /> },
-    { title: 'Partners', value: 150, icon: <FaUsers /> },
+    { title: 'Total Bookings', value: totalBookings, icon: <FaCalendarCheck /> },
+    { title: 'Partners', value: partners, icon: <FaUsers /> },
   ];
 
-  // Example data for right section cards
   const rightCards = [
-    { title: 'Active Users', value: 450, icon: <FaUsers /> },
+    { title: 'Active Users', value: activeUsers, icon: <FaUsers /> },
   ];
 
   return (
@@ -20,7 +51,7 @@ const Dashboard = () => {
       {/* Left Section (8/12) */}
       <div className="col-span-12 md:col-span-8 space-y-6">
         {/* Top Three Square Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {leftCards.map((item, index) => (
             <Card
               key={index}
@@ -43,14 +74,14 @@ const Dashboard = () => {
       {/* Right Section (4/12) */}
       <div className="col-span-12 md:col-span-4 space-y-6">
         {/* Two Equal-Width Cards */}
-        <div className="grid grid-cols-1 gap-6 ">
+        <div className="grid grid-cols-1 gap-6">
           {rightCards.map((item, index) => (
             <Card
               key={index}
               title={item.title}
               value={item.value}
               icon={item.icon}
-              className="h-56 bg-yellow-600" 
+              className="h-56 bg-yellow-600"
             />
           ))}
         </div>

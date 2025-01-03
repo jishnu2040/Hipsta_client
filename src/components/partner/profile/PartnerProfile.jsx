@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; 
+import axiosInstance from "../../../utlils/axiosinstance";
 import avatarImage from '../../../assets/man.png';
 
 const PartnerProfile = () => {
@@ -14,7 +14,7 @@ const PartnerProfile = () => {
     const token = localStorage.getItem('access_token'); 
 
     if (userId && token) {
-      axios.get(`http://localhost:8000/api/v1/auth/profile/${userId}/`, {
+      axiosInstance.get(`http://localhost:8000/api/v1/auth/profile/${userId}/`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -91,7 +91,7 @@ const PartnerProfile = () => {
 
       {/* Edit Button */}
       <div className="flex justify-end mt-8">
-        <button className="px-6 py-3 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-md">
+        <button className="px-6 py-3 text-sm text-white bg-gray-500">
           Edit Profile
         </button>
       </div>

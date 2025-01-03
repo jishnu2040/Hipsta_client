@@ -8,7 +8,7 @@ const BookingList = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/bookings/');
+        const response = await axios.get('http://localhost:8000/api/v1/booking/bookings/');
         setBookings(response.data);
       } catch (error) {
         console.error('Error fetching bookings:', error);

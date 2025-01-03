@@ -19,12 +19,12 @@ const SideBar = () => {
     { title: 'Team', link: '/partner/team', icon: <FaUsers /> },
     { title: 'Profile', link: '/partner/profile', icon: <FaUsers /> },
     { title: 'employeeAvailability', link: '/employeeAvailability', icon:<FaClock /> },
-    { title: 'AvailibiltyTable', link: '/partner/AvailibiltyTable', icon:<FaClock /> },
+    // { title: 'AvailibiltyTable', link: '/partner/AvailibiltyTable', icon:<FaClock /> },
     { title: 'Help Center', link: '/helpdesk/tickets', icon: <FaHeadset /> },
   ];
 
   return (
-    <div className={`w-full h-full flex flex-col ${isDarkMode ? 'bg-gray-900' : 'bg-white'} transition-all duration-300 rounded-xl shadow-lg`}>
+    <div className={`w-full h-full flex flex-col ${isDarkMode ? 'bg-gray-900' : 'bg-white'} transition-all duration-300 `}>
 
       <div className="flex items-center px-2 py-2 mb-6 ">
         <img

@@ -62,7 +62,7 @@ const AvailabilityList = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6  min-h-screen">
       <h2 className="text-3xl font-semibold mb-6 text-gray-800">Manage Availability</h2>
 
       {/* Button to toggle the AddHoliday form */}
@@ -91,11 +91,11 @@ const AvailabilityList = () => {
       ) : (
         <div className="mt-8">
           {availabilities.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="flex">
               {availabilities.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
+                  className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
                 >
                   <div className="flex flex-col">
                     <div className="text-lg font-semibold text-gray-800 mb-2">

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const AddEmployee = () => {
-  const navigate = useNavigate(); // Use useNavigate hook
+const AddEmployee = ({ closeDrawer }) => {
+  const navigate = useNavigate(); 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [specialization, setSpecialization] = useState('');
@@ -33,45 +33,47 @@ const AddEmployee = () => {
     event.preventDefault();
     setLoading(true);
     setError(''); // Clear previous errors
-
+  
     const partnerId = localStorage.getItem('partnerId');
     if (!partnerId) {
       setError('Partner ID is missing. Please log in first.');
       setLoading(false);
       return;
     }
-
-    // Basic phone number validation (can be more complex depending on your needs)
+  
+    // Basic phone number validation
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phone)) {
       setError('Please enter a valid phone number.');
       setLoading(false);
       return;
     }
-
+  
     try {
       const newEmployee = {
         name,
         phone,
-        specialization: { name: "Bridal makeup" },
+        specialization, // Send specialization ID directly
         is_available: isAvailable,
-        is_active: isActive, // Partner ID is sent with the employee data
-        partner: partnerId
+        is_active: isActive,
+        partner: partnerId,
       };
-
+  
       const response = await axios.post(
-        `http://localhost:8000/api/v1/partner/${partnerId}/employees/create/`, // Adjust endpoint with partnerId
+        `http://localhost:8000/api/v1/partner/employees/${partnerId}/`,
         newEmployee
       );
-
+  
       setLoading(false);
-      navigate('/partner/team'); // Use navigate instead of history.push
+      closeDrawer(); 
     } catch (error) {
       setLoading(false);
       console.error('Error creating employee:', error);
       setError('Failed to create employee. Please try again.');
     }
   };
+  
+  
 
   return (
     <div className="container mx-auto p-8">

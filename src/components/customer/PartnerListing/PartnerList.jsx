@@ -100,7 +100,7 @@ const PartnerList = ({ partners }) => {
                             >
                               <span>{service.name}</span>
                               <span className="text-sm text-gray-500">
-                                {service.duration} • {service.price}
+                                {service.duration} {service.price}
                               </span>
                             </li>
                           ))}

@@ -14,7 +14,7 @@ const TicketDashboard = () => {
             .get('/ticket/tickets/')
             .then((response) => {
                 setTickets(response.data);
-                setFilteredTickets(response.data); // Set initial data to show all tickets
+                setFilteredTickets(response.data); 
             })
             .catch((error) => console.error('Error fetching tickets:', error));
     }, []);

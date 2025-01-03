@@ -6,31 +6,39 @@ const PartnerListView = ({ location }) => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [nextPage, setNextPage] = useState(null);
+  const [prevPage, setPrevPage] = useState(null);
 
   const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
+  const fetchPartners = async (url) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(url);
+      setPartners(response.data.results);
+      setNextPage(response.data.next);
+      setPrevPage(response.data.previous);
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to load partners. Please try again later.");
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPartners = async () => {
-      try {
-        let url = "http://localhost:8000/api/v1/customer/partners/";
-        if (location?.lat && location?.lng) {
-          url += `?lat=${location.lat}&lng=${location.lng}`;
-        }
-        const response = await axios.get(url);
-        setPartners(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError("Failed to load partners. Please try again later.");
-        setLoading(false);
-      }
-    };
-
-    fetchPartners();
+    let url = "http://localhost:8000/api/v1/customer/partners/";
+    if (location?.lat && location?.lng) {
+      url += `?lat=${location.lat}&lng=${location.lng}`;
+    }
+    fetchPartners(url);
   }, [location]);
-
 
   if (error) {
     return <div className="text-center text-red-500 font-semibold">{error}</div>;
+  }
+
+  if (loading) {
+    return <div className="text-center text-gray-500">Loading...</div>;
   }
 
   if (!partners.length) {
@@ -39,7 +47,7 @@ const PartnerListView = ({ location }) => {
 
   return (
     <div className="container mx-auto px-10 py-1">
-      <h2 className="text-2xl font-bold text-start  text-gray-800 mb-4">Nearest Partners</h2>
+      <h2 className="text-2xl font-bold text-start text-gray-800 mb-4">Nearest Partners</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {partners.map((partner) => (
           <Link to={`/detaildPage/${partner.id}`} key={partner.id}>
@@ -89,6 +97,24 @@ const PartnerListView = ({ location }) => {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={() => prevPage && fetchPartners(prevPage)}
+          disabled={!prevPage}
+          className="bg-gray-300 px-4 py-2 rounded-md disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => nextPage && fetchPartners(nextPage)}
+          disabled={!nextPage}
+          className="bg-gray-300 px-4 py-2 rounded-md disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

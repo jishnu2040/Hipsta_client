@@ -24,7 +24,7 @@ const EditServiceModal = ({ service, onClose, onUpdate }) => {
 
     try {
       await axios.put(`http://localhost:8000/api/v1/partner/services/${service.id}/`, formData);
-      onUpdate(); // Call the onUpdate function to refresh the service list
+      onUpdate();
       onClose();  // Close the modal after successful update
     } catch (error) {
       setError('Failed to update service. Please try again.');
