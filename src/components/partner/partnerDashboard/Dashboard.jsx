@@ -41,39 +41,39 @@ const Dashboard = () => {
     fetchPartnerId();
   }, []);
 
-  useEffect(() => {
-    const partnerId = 'b2456763-8e2e-4144-b354-ea80bfdc1530'; // Replace with actual partner ID
+  // useEffect(() => {
+  //   const partnerId = 'b2456763-8e2e-4144-b354-ea80bfdc1530'; // Replace with actual partner ID
 
-    const socket = new WebSocket(
-      `ws://localhost:8000/ws/notifications/${partnerId}/`
-    );
+  //   const socket = new WebSocket(
+  //     `ws://localhost:8000/ws/notifications/${partnerId}/`
+  //   );
 
-    socket.onopen = () => {
-      console.log("Connected to WebSocket server.");
-    //   socket.send(JSON.stringify({
-    //     message: "New appointment booked!"
-    // }));
-    };
+  //   socket.onopen = () => {
+  //     console.log("Connected to WebSocket server.");
+  //   //   socket.send(JSON.stringify({
+  //   //     message: "New appointment booked!"
+  //   // }));
+  //   };
 
-    socket.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      console.log("Received message:", data.message);
-      // Handle the received message (e.g., show a notification)
-    };
+  //   socket.onmessage = (e) => {
+  //     const data = JSON.parse(e.data);
+  //     console.log("Received message:", data.message);
+  //     // Handle the received message (e.g., show a notification)
+  //   };
 
-    socket.onerror = (e) => {
-      console.log("WebSocket error:", e);
-    };
+  //   socket.onerror = (e) => {
+  //     console.log("WebSocket error:", e);
+  //   };
 
-    socket.onclose = () => {
-      console.log("WebSocket connection closed.");
-    };
+  //   socket.onclose = () => {
+  //     console.log("WebSocket connection closed.");
+  //   };
 
-    // Cleanup WebSocket connection when component unmounts
-    return () => {
-      socket.close();
-    };
-  }, []);
+  //   // Cleanup WebSocket connection when component unmounts
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, []);
   
 
   return (

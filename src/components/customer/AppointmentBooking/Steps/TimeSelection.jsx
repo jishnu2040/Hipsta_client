@@ -17,13 +17,11 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
     for (let i = 0; i < 7; i++) {
       const nextDay = new Date(currentDate);
       nextDay.setDate(currentDate.getDate() + i);
-  
-      // Adjust to local timezone
-      const localDate = new Date(nextDay.getTime() - nextDay.getTimezoneOffset() * 60000);
-      days.push(localDate);
+      days.push(nextDay);
     }
     return days;
   };
+  
   
 
   const fetchAvailableTimes = async (date) => {
