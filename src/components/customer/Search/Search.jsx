@@ -27,7 +27,7 @@ const Search = () => {
 
   return (
     <div className="p-3 rounded shadow">
-      <h2 className="text-xl font-bold mb-2">Search for a Service</h2>
+      <h2 className="text-xl font-bold ">Search for a Service</h2>
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Location Autocomplete */}
         <div className="flex-1">

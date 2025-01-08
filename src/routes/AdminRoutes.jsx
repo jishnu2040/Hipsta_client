@@ -8,9 +8,11 @@ import PartnerManagement from '../components/admin/PartnerManagement';
 import Notification from '../components/admin/Notification';
 import Report from '../components/admin/Report';
 import Settings from '../components/admin/Settings';
+import Banner from '../components/admin/banner';
 import Support from '../components/admin/Support';
 import Dashboard from '../components/admin/Dashboard';
 import ProtectedAdminRoute from '../protectRoutes/ProtectedAdminRoute';
+
 
 const AdminRoutes = () => {
   return (
@@ -24,6 +26,7 @@ const AdminRoutes = () => {
         <Route path="notification" element={<Notification />} />
         <Route path="report" element={<Report />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="banner" element={<Banner />} />
       </Route>
       <Route path="/support" element={<Support />} />
     </Routes>

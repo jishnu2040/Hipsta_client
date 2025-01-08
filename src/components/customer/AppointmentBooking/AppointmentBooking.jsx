@@ -168,37 +168,39 @@ const AppointmentBooking = () => {
               style={{ height: 300, width: 300 }}
             />
           </div>
-        )}
+        )}  
 
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-4 mb-6 flex justify-between items-center">
-        <button onClick={handleBack} className="text-gray-700 font-extrabold">&larr;</button>
-        <button onClick={handleDiscard} className="text-red-600 font-semibold">&times; Discard</button>
-      </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-4 mb-6 flex justify-between items-center">
+          <button onClick={handleBack} className="text-gray-700 font-extrabold">&larr;</button>
+          <button onClick={handleDiscard} className="text-red-600 font-semibold">&times; Discard</button>
+        </div>
 
-      <div className="flex justify-center">
-        <div className="w-full max-w-7xl flex overflow-hidden">
-          <div className="w-8/12">
-            <div className="text-gray-600 font-medium p-4">
-              {steps.map((step, index) => (
-                <span
-                  key={step.id}
-                  className={`$ {
-                    currentStep === index ? 'text-gray-600 font-bold' : 'text-gray-400'
-                  }`}
-                >
-                  {step.label}
-                  {index < steps.length - 1 && <span className="mx-2">&gt;</span>}
-                </span>
-              ))}
+        <div className="flex justify-center">
+          <div className="w-full max-w-7xl flex flex-col lg:flex-row overflow-hidden">
+            <div className="lg:w-8/12 w-full">
+              <div className="text-gray-600 font-medium p-4">
+                {steps.map((step, index) => (
+                  <span
+                    key={step.id}
+                    className={`${
+                      currentStep === index ? 'text-gray-600 font-bold' : 'text-gray-400'
+                    }`}
+                  >
+                    {step.label}
+                    {index < steps.length - 1 && <span className="mx-2">&gt;</span>}
+                  </span>
+                ))}
+              </div>
+              <div>{steps[currentStep]?.component}</div>
             </div>
-            <div>{steps[currentStep]?.component}</div>
-          </div>
 
-          <div className="w-4/12">
-            <div className="sticky top-4 mt-20 self-start bg-white border border-gray-300 rounded-xl p-4 space-y-4">
+            {/* Summary Section: Right side for large screens (md: and above) */}
+            <div className="lg:w-4/12 w-full mt-6 lg:mt-0 lg:ml-6 sticky top-4 self-start bg-white border border-gray-300 rounded-xl p-4 md:space-y-4">
+              
+              {/* Partner Details: Visible on medium and larger screens */}
               {partnerDetails && (
-                <div>
+                <div className="md:block hidden">
                   <h4 className="text-lg font-semibold">Partner Details</h4>
                   <div className="flex items-center space-x-4">
                     <img
@@ -214,10 +216,11 @@ const AppointmentBooking = () => {
                 </div>
               )}
 
+              {/* Service Details */}
               {serviceDetails && (
                 <div>
-                  <h4 className="text-lg font-semibold">Service Details</h4>
-                  <div className="text-sm text-gray-600 flex justify-between">
+                  <h4 className="md:block hidden text-lg font-semibold">Service Details</h4>
+                  <div className="hidden md:flex text-sm text-gray-600 justify-between">
                     <p>{serviceDetails.name}</p>
                     <p>{serviceDetails.duration} mins</p>
                     <p>{serviceDetails.price}</p>
@@ -225,19 +228,22 @@ const AppointmentBooking = () => {
                 </div>
               )}
 
-              <ul className="space-y-2">
+              {/* Booking Data Summary */}
+              <ul className="md:block hidden space-y-2">
                 {bookingData.employee?.name && <li>Profession: {bookingData.employee.name}</li>}
                 {bookingData.date && <li>Date: {bookingData.date}</li>}
                 {bookingData.timeSlot?.start_time && <li>Time: {bookingData.timeSlot.start_time}</li>}
               </ul>
 
-              <div className="mt-4 border-t pt-4">
+              {/* Total Price */}
+              <div className="md:block hidden mt-4 border-t pt-4">
                 <h4 className="text-lg font-semibold">Total Price</h4>
                 <p className="text-xl font-bold text-gray-600">
                   {bookingData.totalAmount ? bookingData.totalAmount.toFixed(2) : '0.00'}
                 </p>
               </div>
 
+              {/* Continue Button */}
               <button
                 onClick={handleContinue}
                 className="mt-4 w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900"
@@ -248,7 +254,6 @@ const AppointmentBooking = () => {
           </div>
         </div>
 
-      </div>
     </div>
   );
 };

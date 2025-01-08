@@ -49,7 +49,7 @@ const PartnerDetails = ({ partnerDetails }) => {
       </div>
 
       {/* Right Side */}
-      <div className="col-span-12 md:col-span-4 sticky top-4 mt-20 self-start space-y-2">
+      <div className="col-span-12 md:col-span-4 sticky top-4 md:mt-20 self-start space-y-2">
         <div className="bg-gray-100 rounded-md p-4 shadow-md">
           <h1 className="text-2xl font-semibold text-gray-900">{partnerDetails.business_name}</h1>
           <p className="text-gray-800 text-xl mt-2 md:mt-0">{partnerDetails.address}</p>

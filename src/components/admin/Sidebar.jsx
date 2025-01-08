@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaTachometerAlt, FaCalendarCheck, FaUserAlt, FaUsers, FaBell, FaChartLine, FaCogs, FaHeadset } from 'react-icons/fa';
+import { PiFlagBannerFill } from "react-icons/pi";
 import avatarImage from '../../assets/man.png'
 const Sidebar = () => {
 
@@ -12,7 +13,8 @@ const Sidebar = () => {
         { title: 'Notification', Link: '/admin/notification', icon: <FaBell /> },
         { title: 'Report', Link: '/admin/report', icon: <FaChartLine /> },
         { title: 'Settings', Link: '/admin/settings', icon: <FaCogs /> },
-        { title: 'Support', Link: '/support', icon: <FaHeadset /> }
+        { title : 'banner', Link: '/admin/banner', icon: <PiFlagBannerFill /> },
+        { title: 'Support', Link: '/support', icon: <FaHeadset /> },
     ];
 
     return (

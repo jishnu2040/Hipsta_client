@@ -9,7 +9,7 @@ const PartnerList = ({ partners }) => {
   return (
     <div className="flex flex-col">
       {/* Ad Section */}
-      <div className="p-3 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 text-center mb-3 ">
+      <div className="p-3 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 text-center md:mb-3 ">
         <h3 className="text-xl font-semibold text-white">
           Special Offer: 50% off on all services!
         </h3>
@@ -20,12 +20,12 @@ const PartnerList = ({ partners }) => {
         {/* Left Sidebar */}
         <div className="col-span-12 md:col-span-3">
           {/* Service Types Container */}
-          <div className="border border-gray-300 rounded-lg bg-white overflow-hidden sticky top-24 shadow-sm mb-6">
+          <div className="md:block hidden border border-gray-300 rounded-lg bg-white overflow-hidden sticky top-24 shadow-sm mb-6">
             <ServiceTypes small />
           </div>
 
           {/* UC Promise Section */}
-          <div className="border border-gray-300 rounded-lg bg-white overflow-hidden sticky top-24 shadow-md">
+          <div className="md:block hidden border border-gray-300 rounded-lg bg-white overflow-hidden sticky top-24 shadow-md">
             <div className="p-4">
               <h1 className="text-xl font-semibold text-gray-800 mb-4">
                 Hipsta Promise
@@ -96,7 +96,7 @@ const PartnerList = ({ partners }) => {
                           {partner.top_services.map((service, index) => (
                             <li
                               key={index}
-                              className="flex justify-between items-center bg-gray-100 p-3 rounded-lg shadow-sm text-gray-700"
+                              className="flex justify-between items-center p-3  text-gray-700"
                             >
                               <span>{service.name}</span>
                               <span className="text-sm text-gray-500">

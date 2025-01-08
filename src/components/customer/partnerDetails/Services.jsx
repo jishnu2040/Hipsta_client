@@ -93,7 +93,7 @@ const Services = ({ partnerId }) => {
       </div>
 
       {/* Vertical Services List */}
-      <ul className="space-y-4">
+    <ul className="md:space-y-4">
         {filteredServices.map((service) => (
           <li
             key={service.id}

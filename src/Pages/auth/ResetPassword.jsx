@@ -68,7 +68,7 @@ const ResetPassword = () => {
 
       console.log('Success:', response.data);
       toast.success('Password reset successful');
-      navigate('/login'); // Redirect after successful password reset
+      navigate('/auth/login'); // Redirect after successful password reset
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to reset password. Please try again.');

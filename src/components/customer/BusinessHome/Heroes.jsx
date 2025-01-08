@@ -9,7 +9,7 @@ export default function Heroes() {
 
   // Custom handler to navigate to the login page
   const handleLoginNavigation = () => {
-    navigate('/login');
+    navigate('/auth/signup');
   };
 
   return (
@@ -66,7 +66,7 @@ export default function Heroes() {
                 onClick={handleLoginNavigation}
                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50"
               >
-                Log in
+                Become a Partner
               </a>
             </div>
           </div>

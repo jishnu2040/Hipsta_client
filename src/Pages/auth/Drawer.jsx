@@ -9,7 +9,7 @@ const Drawer = ({ isOpen, onClose, children }) => {
       }`}
     >
       <div
-        className={`w-[35%] bg-white h-full relative ml-auto transform transition-transform duration-500 ease-in-out ${
+        className={`w-full md:w-[35%] bg-white h-full relative ml-auto transform transition-transform duration-500 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

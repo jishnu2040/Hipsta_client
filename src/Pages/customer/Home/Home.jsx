@@ -76,13 +76,10 @@ function Home() {
           <ServiceTypes />
         </div>
       </div>
-      <div className="px-24">
+      <div className=" sm:px-24">
         <PartnerListView location={location} />
       </div>
-      {/* <div className="px-24 mt-6">
-        <Stats />
-      </div> */}
-      <div className="px-24 ">
+      <div className=" sm:px-24 ">
         <Business />
       </div>
       <Footer />

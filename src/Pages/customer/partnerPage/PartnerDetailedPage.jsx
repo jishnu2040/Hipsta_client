@@ -38,7 +38,7 @@ const PartnerDetailedPage = () => {
     <div className="flex flex-col">
       {/* Header */}
       <MainHeader />
-      <div className="PartnerDetailsPage md:mx-32 mt-6">
+      <div className="PartnerDetailsPage mx-2 mt-0 md:mx-32 md:mt-6">
         {/* Pass partnerDetails as props to the child component */}
         <PartnerDetails partnerDetails={partnerDetails} />
       </div>
