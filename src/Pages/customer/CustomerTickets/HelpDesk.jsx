@@ -1,5 +1,4 @@
 import React from 'react'
-import MainHeader from '../../../components/customer/Header/MainHeader';
 import HelpDashBoard from './HelpDashBoard';
 
 const HelpDesk = () => {

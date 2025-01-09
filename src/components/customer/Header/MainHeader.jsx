@@ -8,7 +8,6 @@ import axiosInstance from '../../../utlils/axiosinstance';
 import Drawer from '../../../Pages/auth/Drawer';
 import Login from '../../../Pages/auth/Login';
 
-
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,10 +40,9 @@ function MainHeader() {
     }
   };
 
-  const handleProfile = async () => {
+  const handleProfile = () => {
     try {
-      const resp = await axiosInstance.get(`/auth/profile/${userId}/`);
-      if (resp.status === 200) {
+      if (user) {
         navigate('/profile');
       }
     } catch (error) {
@@ -53,10 +51,9 @@ function MainHeader() {
     }
   };
 
-
   const handleHelpDesk = () => {
-    navigate('/helpdesk')
-  }
+    navigate('/helpdesk');
+  };
 
   return (
     <header className="bg-white shadow-sm p-4 px-24">
@@ -93,18 +90,17 @@ function MainHeader() {
                     Logout
                   </button>
                   <button
-                      onClick={handleHelpDesk}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    >
-                      Help Desk
+                    onClick={handleHelpDesk}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Help Desk
                   </button>
-                  
                 </div>
               )}
             </div>
           ) : (
             <button
-              onClick={() => setIsDrawerOpen(true)} 
+              onClick={() => setIsDrawerOpen(true)}
               className="flex items-center bg-gray-800 text-white font-bold px-2 py-2 rounded-lg hover:bg-gray-900"
               aria-label="Login"
             >
@@ -115,13 +111,22 @@ function MainHeader() {
         </nav>
 
         {/* Mobile Menu Toggle */}
-        <div className="md:hidden">
+        <div className="md:hidden flex justify-between space-x-4">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="text-gray-700 hover:text-gray-900 focus:outline-none"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
+
+          {/* Help Desk Button */}
+          <button
+            onClick={handleHelpDesk}
+            className="text-gray-700 hover:text-gray-900 focus:outline-none ml-auto"
+            aria-label="Help Desk"
+          >
+            Desk
           </button>
         </div>
       </div>
@@ -145,10 +150,9 @@ function MainHeader() {
                   Logout
                 </button>
               </>
-            ) 
-            : (
+            ) : (
               <button
-                onClick={() => setIsDrawerOpen(true)} 
+                onClick={() => setIsDrawerOpen(true)}
                 className="w-full text-center bg-gray-800 text-white font-bold px-4 py-2 rounded-lg hover:bg-gray-900"
                 aria-label="Login"
               >
@@ -162,9 +166,7 @@ function MainHeader() {
       {/* Drawer */}
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <div className="">
-          <Login  
-          onLoginSuccess={() => setIsDrawerOpen(false)}
-          />
+          <Login onLoginSuccess={() => setIsDrawerOpen(false)} />
         </div>
       </Drawer>
     </header>
