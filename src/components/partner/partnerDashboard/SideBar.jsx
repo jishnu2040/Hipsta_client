@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell, FaClock, FaHeadset } from 'react-icons/fa';
+import { FaTachometerAlt, FaCalendarAlt, FaBook, FaUsers, FaBell, FaClock, FaHeadset, FaBars } from 'react-icons/fa';
 import ThemeContext from '../../../ThemeContext';
 import avatarImage from '../../../assets/man.png';
 import { toast } from 'react-toastify';
-
-
 
 const SideBar = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
@@ -27,34 +25,34 @@ const SideBar = () => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu visibility
 
   useEffect(() => {
     // Fetch previous notifications
-    fetch('http://localhost:8000/api/v1/notification/list') // Adjust URL as needed
+    fetch('http://localhost:8000/api/v1/notification/list')
       .then((response) => response.json())
       .then((data) => {
-        // Map notifications to a simplified structure
         const formattedNotifications = data.map((notification) => ({
           id: notification.id,
           message: notification.message,
-          created_at: new Date(notification.created_at).toLocaleString(), // Convert to a readable format
+          created_at: new Date(notification.created_at).toLocaleString(),
         }));
-        setNotifications(formattedNotifications); // Set formatted notifications
+        setNotifications(formattedNotifications);
       })
       .catch((error) => {
         console.error('Error fetching notifications:', error);
       });
-  
+
     // WebSocket for new notifications
     let socket = new WebSocket(`ws://localhost:8000/ws/notifications/`);
-  
+
     const connectSocket = () => {
       socket = new WebSocket(`ws://localhost:8000/ws/notifications/`);
-  
+
       socket.onopen = () => {
         console.log('WebSocket connection established');
       };
-  
+
       socket.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
@@ -62,7 +60,7 @@ const SideBar = () => {
             toast.success(data.message); // Show a toast notification
             setNotifications((prev) => [
               ...prev,
-              { message: data.message, created_at: new Date().toLocaleString(-1) }, 
+              { message: data.message, created_at: new Date().toLocaleString(-1) },
             ]);
             setUnreadCount((prev) => prev + 1);
           }
@@ -70,26 +68,33 @@ const SideBar = () => {
           console.error('Error parsing WebSocket message:', error);
         }
       };
-  
+
       socket.onclose = () => {
         console.log('WebSocket closed. Reconnecting...');
         setTimeout(connectSocket, 5000); // Reconnect after 5 seconds
       };
-  
+
       socket.onerror = (error) => {
         console.error('WebSocket error:', error);
       };
     };
-  
+
     connectSocket();
-  
-    return () => socket.close(); // Cleanup socket connection on component unmount
+
+    return () => socket.close();
   }, []);
-  
 
   const handleNotificationClick = () => {
     setUnreadCount(0);
-    setShowNotifications((prev) => !prev); // Toggle notification dropdown
+    setShowNotifications((prev) => !prev);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev); // Toggle mobile menu state
+  };
+
+  const handleLinkClick = () => {
+    setIsMobileMenuOpen(false); // Close the mobile menu when a link is clicked
   };
 
   return (
@@ -117,37 +122,65 @@ const SideBar = () => {
           </button>
 
           {/* Notification Dropdown */}
-              {showNotifications && (
-                <div
-                  className={`absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg ${
-                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-                  }`}
-                >
-                  <ul className="max-h-60 overflow-y-auto">
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <li
-                          key={notification.id} // Use the unique 'id' for the key
-                          className={`p-3 text-sm hover:bg-gray-200 dark:hover:bg-gray-700 ${
-                            isDarkMode ? 'text-gray-300' : 'text-gray-800'
-                          }`}
-                        >
-                          <div>{notification.message}</div>
-                          <div className="text-xs text-gray-500">{notification.created_at}</div> {/* Show creation date */}
-                        </li>
-                      ))
-                    ) : (
-                      <li className="p-3 text-sm text-gray-500">No notifications</li>
-                    )}
-                  </ul>
-                </div>
-              )}
-
+          {showNotifications && (
+            <div
+              className={`absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg ${
+                isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}
+            >
+              <ul className="max-h-60 overflow-y-auto">
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => (
+                    <li
+                      key={notification.id}
+                      className={`p-3 text-sm hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-800'
+                      }`}
+                    >
+                      <div>{notification.message}</div>
+                      <div className="text-xs text-gray-500">{notification.created_at}</div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-3 text-sm text-gray-500">No notifications</li>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
+      {/* Mobile Menu Toggle Button */}
+      <div className="lg:hidden flex justify-end p-4">
+        <button
+          onClick={toggleMobileMenu}
+          className="text-2xl text-gray-800"
+        >
+          <FaBars />
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`lg:hidden ${isMobileMenuOpen ? 'block' : 'hidden'} transition-all duration-300`}>
+        <nav className="flex flex-col px-2">
+          {data.map((item) => (
+            <Link
+              key={item.title}
+              to={item.link}
+              onClick={handleLinkClick} // Close menu when a link is clicked
+              className={`flex items-center space-x-3 p-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white ${
+                isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-800'
+              }`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span>{item.title}</span>
+            </Link>
+          ))}
+        </nav>
+      </div>
+
       {/* Navigation Links */}
-      <nav className="flex-grow px-2">
+      <nav className="flex-grow px-2 hidden lg:block">
         {data.map((item) => (
           <Link
             key={item.title}

@@ -91,13 +91,12 @@ const Bookings = () => {
       {/* Modal */}
       {modalVisible && selectedAppointment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-1/3 shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">Confirm Status Change</h2>
+          <div className="bg-white rounded-lg p-6 w-1/4 shadow-xl">
+            <h2 className="text-xl font-semibold mb-4">Confirm Change</h2>
             <p>
-              Are you sure you want to change the status of the booking with{' '}
-              <strong>{selectedAppointment.partner_name}</strong> to "Cancelled"?
+              Are you sure you want to change the status of the booking ?
             </p>
-            <div className="flex justify-end mt-4 space-x-4">
+            <div className="flex justify-center mt-4 space-x-4">
               <button
                 onClick={() => setModalVisible(false)}
                 className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
@@ -121,7 +120,7 @@ const Bookings = () => {
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">Upcoming Bookings</h2>
           <div className="overflow-x-auto rounded-xl shadow-xl">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-              <thead className="bg-green-900 text-white">
+              <thead className="bg-green-600 text-white">
                 <tr>
                   <th className="py-3 px-6 text-left font-medium">Date</th>
                   <th className="py-3 px-6 text-left font-medium">Partner Name</th>
@@ -168,7 +167,7 @@ const Bookings = () => {
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">Past Bookings</h2>
           <div className="overflow-x-auto rounded-xl shadow-lg">
             <table className="min-w-full bg-white border border-gray-200">
-              <thead className="bg-orange-800 text-white">
+              <thead className="bg-orange-600 text-white">
                 <tr>
                   <th className="py-3 px-6 text-left font-medium">Partner Name</th>
                   <th className="py-3 px-6 text-left font-medium">Date</th>
