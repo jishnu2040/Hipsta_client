@@ -5,7 +5,7 @@ import { useSwipeable } from "react-swipeable";
 
 const PartnerCard = ({ partner, S3_BASE_URL }) => (
   <Link to={`/detaildPage/${partner.id}`}>
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 ease-in-out group">
+    <div className="bg-white rounded-xl shadow overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out group">
       <div className="relative h-48 md:h-56 overflow-hidden">
         {partner.image_slides?.length > 0 ? (
           <img
@@ -93,7 +93,7 @@ const PartnerListView = ({ location }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 ">
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
       </h2>

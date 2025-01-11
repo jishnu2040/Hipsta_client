@@ -75,7 +75,7 @@ function Home() {
         <div className="flex-1 ml-4">
           <ServiceTypes />
         </div>
-      </div>
+      </div>``
       <div className=" sm:px-24">
         <PartnerListView location={location} />
       </div>

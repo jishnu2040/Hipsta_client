@@ -33,7 +33,7 @@ const Banner = () => {
   }
 
   return (
-    <div className="banner-container  relative overflow-hidden w-full h-56 sm:h-48 md:h-64 lg:h-72">
+    <div className="banner-container mt-6 relative overflow-hidden w-full h-56 sm:h-48 md:h-64 lg:h-72">
       {/* Slider */}
       <div
         className="banner-slider flex transition-transform duration-500"
@@ -46,14 +46,14 @@ const Banner = () => {
             <img
               src={banner.image}
               alt={banner.title}
-              className="w-full h-full object-scale-down rounded-lg"
+              className="w-full h-full object-scale-down rounded-xl"
             />
           </div>
         ))}
       </div>
 
       {/* Navigation Dots */}
-      <div className="dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className=" dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {banners.map((_, index) => (
           <button
             key={index}

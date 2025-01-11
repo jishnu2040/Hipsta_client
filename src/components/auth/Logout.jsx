@@ -14,7 +14,7 @@ const Logout = () => {
 
       if (!refreshToken) {
         toast.error("No refresh token found");
-        navigate("/login");
+        navigate("/auth/login");
         return;
       }
 
