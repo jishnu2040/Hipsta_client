@@ -89,12 +89,6 @@ const PartnerProfile = () => {
         </div>
       </div>
 
-      {/* Edit Button */}
-      <div className="flex justify-end mt-8">
-        <button className="px-6 py-3 text-sm text-white bg-gray-500">
-          Edit Profile
-        </button>
-      </div>
     </div>
   );
 };

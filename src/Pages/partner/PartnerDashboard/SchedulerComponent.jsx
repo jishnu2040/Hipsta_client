@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Scheduler } from 'devextreme-react/scheduler';
 import axios from 'axios';
+import ThemeContext from '../../../ThemeContext'; // Assuming a ThemeContext is available
 
 const SchedulerComponent = () => {
   const [appointments, setAppointments] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [isTableView, setIsTableView] = useState(false); // State to toggle between table and calendar view
   const [defaultDate, setDefaultDate] = useState(new Date()); // Default date state
+
+  const { isDarkMode } = useContext(ThemeContext); // Get dark mode state from context
 
   useEffect(() => {
     const partnerId = localStorage.getItem('partnerId'); // Retrieve partnerId from localStorage
@@ -20,13 +23,13 @@ const SchedulerComponent = () => {
           const transformedAppointments = response.data.appointments.map((appointment) => {
             return {
               id: appointment.id,
-              startDate: `${appointment.date}T${appointment.start_time}`, // Use appointment's actual start time
-              endDate: `${appointment.date}T${appointment.end_time}`, // Use appointment's actual end time
-              text: `${appointment.service_name} - ${appointment.customer_name} -() ${appointment.employee_name}`, 
+              startDate: `${appointment.date}T${appointment.start_time}`,
+              endDate: `${appointment.date}T${appointment.end_time}`,
+              text: `${appointment.service_name} - ${appointment.customer_name} - ${appointment.employee_name}`,
               customerName: appointment.customer_name,
               employeeName: appointment.employee_name,
               serviceName: appointment.service_name,
-              date: appointment.date, // Store date for filtering
+              date: appointment.date,
             };
           });
 
@@ -55,14 +58,14 @@ const SchedulerComponent = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <div className="mb-6">
+    <div className={` ${isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-900'}`}>
+      <div className="p-2">
         {/* Toggle Button */}
         <button
-          className="mb-4 p-2 bg-blue-500 text-white rounded"
+          className={`p-2 rounded ${isDarkMode ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'}`}
           onClick={() => setIsTableView(!isTableView)}
         >
-          {isTableView ? 'Switch to Calendar View' : 'Switch to Table View'}
+          {isTableView ? 'Calendar View' : 'Table View'}
         </button>
       </div>
 
@@ -70,7 +73,11 @@ const SchedulerComponent = () => {
       {isTableView ? (
         // Table View
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-300">
+          <table
+            className={`min-w-full table-auto border-collapse ${
+              isDarkMode ? 'border-gray-700' : 'border-gray-300'
+            }`}
+          >
             <thead>
               <tr>
                 <th className="px-4 py-2 border-b">Customer Name</th>
@@ -101,8 +108,13 @@ const SchedulerComponent = () => {
           {/* Employee Names at the top */}
           <div className="flex space-x-4 mb-4">
             {employees.map((employee) => (
-              <div key={employee.id} className="p-2 bg-gray-200 rounded-full">
-                <span className='bg-red-600'>{employee.text}</span>
+              <div
+                key={employee.id}
+                className={`p-2 rounded-full ${
+                  isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
+                }`}
+              >
+                {employee.text}
               </div>
             ))}
           </div>
@@ -111,7 +123,7 @@ const SchedulerComponent = () => {
           <Scheduler
             dataSource={appointments}
             defaultCurrentView="day"
-            defaultCurrentDate={defaultDate} // Dynamically set the default current date
+            defaultCurrentDate={defaultDate}
             height={600}
             startDayHour={8}
             endDayHour={22}
@@ -119,7 +131,7 @@ const SchedulerComponent = () => {
             showAllDayPanel={false}
             resources={[
               {
-                fieldExpr: 'employeeName', // Group by employeeName
+                fieldExpr: 'employeeName',
                 allowMultiple: false,
                 dataSource: employees,
                 label: 'Employee',
@@ -127,7 +139,7 @@ const SchedulerComponent = () => {
                 displayExpr: 'text',
               },
             ]}
-            groups={['employeeName']} // Group by employee to split the calendar vertically
+            groups={['employeeName']}
             itemTemplate={(itemData) => (
               <div className="flex items-center space-x-2">
                 <img

@@ -68,7 +68,7 @@ const EditEmployeeModal = ({ employee, closeModal, refreshEmployees }) => {
       <div className="absolute inset-0 bg-black opacity-50" onClick={closeModal}></div>
 
       {/* Modal Content */}
-      <div className="relative w-1/3 bg-white shadow-lg p-6">
+      <div className="relative w-full sm:w-1/3 bg-white shadow-lg p-6">
         <button
           onClick={closeModal}
           className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"

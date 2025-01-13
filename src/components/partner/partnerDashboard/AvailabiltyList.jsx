@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
 import { getPartnerAvailability, deletePartnerAvailability, updatePartnerAvailability } from '../../../Services/availabilityService';
 import AvailabilityForm from './AvailabilityForm';
-import { ToastContainer, toast } from 'react-toastify'; // Import Toast components
-import 'react-toastify/dist/ReactToastify.css'; // Import styles for React-Toastify
-import AddHoliday from './AddHoliday'; // Import the AddHoliday component
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AddHoliday from './AddHoliday';
+import ThemeContext from '../../../ThemeContext'; // Assuming you have a context for dark mode
 
 const AvailabilityList = () => {
+  const { isDarkMode } = useContext(ThemeContext);
   const [availabilities, setAvailabilities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editAvailability, setEditAvailability] = useState(null);
-  const [showAddHoliday, setShowAddHoliday] = useState(false); // State to control the display of AddHoliday form
+  const [showAddHoliday, setShowAddHoliday] = useState(false);
 
   const fetchAvailability = async () => {
     try {
@@ -62,13 +64,21 @@ const AvailabilityList = () => {
   };
 
   return (
-    <div className="p-6  min-h-screen">
-      <h2 className="text-3xl font-semibold mb-6 text-gray-800">Manage Availability</h2>
+    <div
+      className={`p-6 min-h-screen ${
+        isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'
+      }`}
+    >
+      <h2 className="text-3xl font-semibold mb-6">Manage Availability</h2>
 
       {/* Button to toggle the AddHoliday form */}
       <button
         onClick={() => setShowAddHoliday(!showAddHoliday)}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+        className={`px-4 py-2 rounded-md mb-4 ${
+          isDarkMode
+            ? 'bg-blue-600 text-gray-100 hover:bg-blue-500'
+            : 'bg-blue-500 text-white hover:bg-blue-600'
+        }`}
       >
         {showAddHoliday ? 'Cancel Holiday Form' : 'Add Holiday'}
       </button>
@@ -86,36 +96,46 @@ const AvailabilityList = () => {
 
       {loading ? (
         <div className="flex justify-center items-center py-8">
-          <div className="w-12 h-12 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+          <div
+            className={`w-12 h-12 border-4 border-t-4 ${
+              isDarkMode ? 'border-blue-400' : 'border-blue-500'
+            } border-solid rounded-full animate-spin`}
+          ></div>
         </div>
       ) : (
         <div className="mt-8">
           {availabilities.length > 0 ? (
-            <div className="flex">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {availabilities.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
+                  className={`p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 ${
+                    isDarkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'
+                  }`}
                 >
                   <div className="flex flex-col">
-                    <div className="text-lg font-semibold text-gray-800 mb-2">
+                    <div className="text-lg font-semibold mb-2">
                       {item.is_weekly
                         ? `${item.weekday.charAt(0).toUpperCase() + item.weekday.slice(1)}`
                         : `Date-specific - ${new Date(item.specific_date).toLocaleDateString()}`}
                     </div>
-                    <div className="text-gray-600 text-sm mb-4">
+                    <div className="text-sm mb-4">
                       {`${item.start_time} to ${item.end_time}`}
                     </div>
-                    <div className="flex justify-end items-center">
+                    <div className="flex justify-end items-center space-x-4">
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="text-gray-800 hover:text-red-600 transition-all duration-200 transform hover:scale-105"
+                        className={`transition-all duration-200 transform hover:scale-105 ${
+                          isDarkMode ? 'text-red-400 hover:text-red-500' : 'text-red-600 hover:text-red-700'
+                        }`}
                       >
                         <AiFillDelete size={24} />
                       </button>
                       <button
                         onClick={() => handleEdit(item)}
-                        className="text-blue-500 hover:text-blue-600 transition-all duration-200 transform hover:scale-105"
+                        className={`transition-all duration-200 transform hover:scale-105 ${
+                          isDarkMode ? 'text-blue-400 hover:text-blue-500' : 'text-blue-500 hover:text-blue-600'
+                        }`}
                       >
                         <AiFillEdit size={24} />
                       </button>

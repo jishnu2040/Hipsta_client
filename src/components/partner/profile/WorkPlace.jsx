@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import UploadShopImage from './UploadShopImage'; // Import the UploadShopImage component
+import UploadShopImage from './UploadShopImage';
 
 const WorkPlace = () => {
   const [partnerData, setPartnerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Retrieve partnerId from localStorage
   const partnerId = localStorage.getItem('partnerId');
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const WorkPlace = () => {
   }, []);
 
   const renderSocialMediaLinks = (socialMedia) => (
-    <div className="flex space-x-4">
+    <div className="flex flex-wrap gap-2">
       {socialMedia.facebook && (
         <a
           href={socialMedia.facebook}
@@ -88,37 +87,35 @@ const WorkPlace = () => {
   );
 
   const renderBusinessDetails = () => (
-    <div className="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
-      <h3 className="text-2xl font-semibold text-gray-800 mb-6">
-        Business Details
-      </h3>
-      <div className="space-y-4">
-        <div className="flex items-center space-x-3">
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Business Details</h3>
+      <div className="space-y-4 text-sm sm:text-base">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
           <span className="font-medium text-gray-700 w-36">Business Name:</span>
-          <p className="text-lg text-gray-900">{partnerData.business_name}</p>
+          <p className="text-gray-900">{partnerData.business_name}</p>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
           <span className="font-medium text-gray-700 w-36">Website:</span>
           <a
             href={partnerData.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline text-lg"
+            className="text-blue-600 hover:underline"
           >
             {partnerData.website}
           </a>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
           <span className="font-medium text-gray-700 w-36">Address:</span>
-          <p className="text-lg text-gray-900">{partnerData.address}</p>
+          <p className="text-gray-900">{partnerData.address}</p>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
           <span className="font-medium text-gray-700 w-36">Phone:</span>
-          <p className="text-lg text-gray-900">{partnerData.phone}</p>
+          <p className="text-gray-900">{partnerData.phone}</p>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
           <span className="font-medium text-gray-700 w-36">Team Size:</span>
-          <p className="text-lg text-gray-900">{partnerData.team_size}</p>
+          <p className="text-gray-900">{partnerData.team_size}</p>
         </div>
         {partnerData.social_media && renderSocialMediaLinks(partnerData.social_media)}
       </div>
@@ -127,9 +124,7 @@ const WorkPlace = () => {
 
   const renderSelectedServices = () => (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        Selected Services
-      </h3>
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Selected Services</h3>
       {partnerData.selected_services.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {partnerData.selected_services.map((service) => (
@@ -140,9 +135,9 @@ const WorkPlace = () => {
               <img
                 src={service.image}
                 alt={service.name}
-                className="w-20 h-20 rounded-md object-cover mr-4 shadow-sm"
+                className="w-16 h-16 rounded-md object-cover mr-4"
               />
-              <div className="flex flex-col justify-between">
+              <div>
                 <p className="font-semibold text-gray-900">{service.name}</p>
               </div>
             </li>
@@ -156,15 +151,13 @@ const WorkPlace = () => {
 
   const renderLicenseCertificate = () => (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        License Certificate
-      </h3>
-      <div className="mt-4">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">License Certificate</h3>
+      <div>
         {partnerData.license_certificate_image ? (
           <img
             src={`https://hipsta-s3.s3.ap-south-1.amazonaws.com/${partnerData.license_certificate_image}`}
             alt="License Certificate"
-            className="rounded-lg shadow-md transition-transform transform hover:scale-105"
+            className="rounded-lg shadow-md transition-transform transform hover:scale-105 w-full max-w-md mx-auto"
           />
         ) : (
           <p className="text-sm text-gray-500">No license certificate available.</p>
@@ -177,16 +170,15 @@ const WorkPlace = () => {
   if (error) return renderError();
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-gray-50 shadow-xl rounded-lg mt-10">
-      <h2 className="text-3xl font-bold mb-8 text-gray-900">
+    <div className="max-w-7xl mx-auto p-4 md:p-8 bg-gray-50 shadow-xl rounded-lg mt-10">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900">
         Partner Workplace Overview
       </h2>
       {partnerData ? (
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {renderBusinessDetails()}
           {renderSelectedServices()}
           {renderLicenseCertificate()}
-          {/* Add UploadShopImage component */}
           <UploadShopImage partnerId={partnerId} />
         </div>
       ) : (

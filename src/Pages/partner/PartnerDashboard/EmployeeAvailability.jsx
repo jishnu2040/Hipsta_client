@@ -118,25 +118,10 @@ const EmployeeAvailability = () => {
 
   return (
     <div>
-      <div className="mb-4">
-        <label htmlFor="employeeSelect" className="mr-2">Select Employee:</label>
-        <select
-          id="employeeSelect"
-          value={employeeId || ''}
-          onChange={(e) => setEmployeeId(e.target.value)}
-          className="p-2 border border-gray-300 rounded"
-        >
-          {employees.map((employee) => (
-            <option key={employee.id} value={employee.id}>
-              {employee.name}
-            </option>
-          ))}
-        </select>
-      </div>
 
-      <div className="mb-4">
+      <div className="mb-4 ">
         <button
-          className={`px-4 py-2 mr-2 ${viewMode === 'calendar' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+          className={`px-2 py-2 mr-2 ${viewMode === 'calendar' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
           onClick={() => setViewMode('calendar')}
         >
           Calendar View
@@ -147,6 +132,18 @@ const EmployeeAvailability = () => {
         >
           Table View
         </button>
+        <select
+          id="employeeSelect"
+          value={employeeId || ''}
+          onChange={(e) => setEmployeeId(e.target.value)}
+          className="p-2 ml-2 border border-gray-300 rounded"
+        >
+          {employees.map((employee) => (
+            <option key={employee.id} value={employee.id}>
+              {employee.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {loading ? (

@@ -2,10 +2,10 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import ThemeContext from "../../../ThemeContext";
 import { useNavigate } from "react-router-dom";
-import Chart from "./Chart/Chart";
-import BarChartComponent from "./Chart/BarChartComponent";
+import Chart from "../../../components/partner/partnerDashboard/Chart/Chart";
+import BarChartComponent from "../../../components/partner/partnerDashboard/Chart/BarChartComponent";
 // import RealTimeChart from "./Chart/RealTimeChart";
-import NextAppointment from "./analytics/NextAppointment";
+import NextAppointment from "../../../components/partner/partnerDashboard/analytics/NextAppointment";
 
 const Dashboard = () => {
 
@@ -78,11 +78,11 @@ const Dashboard = () => {
 
   return (
     <div
-      className={`p-6 min-h-screen ${
-        isDarkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-800"
+      className={` min-h-screen ${
+        isDarkMode ? "bg-gray-900 text-gray-600" : "bg-white text-gray-800"
       }`}
     >
-      <div className=" gap-6 p-6">
+      <div className=" gap-6">
       <div className="grid grid-cols-1 md:grid-cols-2 ">
       <BarChartComponent />
       <NextAppointment />
