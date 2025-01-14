@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   BarChart,
   Bar,
@@ -9,29 +10,59 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  { name: 'Mon', booking: 3, checkin: 2 },
-  { name: 'Tue', booking: 4, checkin: 2 },
-  { name: 'Wed', booking: 5, checkin: 3 },
-  { name: 'Thu', booking: 3, checkin: 1 },
-  { name: 'Fri', booking: 6, checkin: 6 },
-];
+const BarChartComponent = () => {
+  const [chartData, setChartData] = useState([]);
+  const partnerId = localStorage.getItem("partnerId");
 
-const BarChartComponent = () => (
-  <div className="">
-    <ResponsiveContainer width="100%" height={280}>
-      <BarChart data={data}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="booking" fill="#BFEFFF" />
-        <Bar dataKey="checkin" fill="#D8BFD8" /> 
+  useEffect(() => {
+    if (partnerId) {
+      axios
+        .get(`http://localhost:8000/api/v1/booking/analysis/${partnerId}/`)
+        .then((response) => {
+          const appointments = response.data.appointments;
+          const groupedData = appointments.reduce((acc, appointment) => {
+            const date = new Date(appointment.date).toLocaleDateString('en-GB', { weekday: 'short' });
+            if (!acc[date]) {
+              acc[date] = { booked: 0, completed: 0 };
+            }
+            if (appointment.status === 'booked') {
+              acc[date].booked += 1;
+            } else if (appointment.status === 'completed') {
+              acc[date].completed += 1;
+            }
+            return acc;
+          }, {});
 
+          const chartFormattedData = Object.keys(groupedData).map((day) => ({
+            name: day,
+            booked: groupedData[day].booked,
+            completed: groupedData[day].completed,
+          }));
 
-      </BarChart>
-    </ResponsiveContainer>
-  </div>
-);
+          setChartData(chartFormattedData);
+        })
+        .catch((error) => {
+          console.error("Error fetching appointments:", error);
+        });
+    } else {
+      console.error("Partner ID not found in local storage");
+    }
+  }, [partnerId]);
+
+  return (
+    <div className="rounded-lg">
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart data={chartData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="booked" fill="#BFEFFF" /> 
+          <Bar dataKey="completed" fill="#D8BFD8" /> 
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 export default BarChartComponent;
