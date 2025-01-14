@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FaRegMessage } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
 import { toast } from 'react-toastify';
-import ThemeContext from '../../../ThemeContext';
-import avatarImage from '../../../assets/man.png';
+import ThemeContext from '../../../../ThemeContext';
+import avatarImage from '../../../../assets/man.png';
 
 const Header = () => {
   const { isDarkMode } = useContext(ThemeContext);

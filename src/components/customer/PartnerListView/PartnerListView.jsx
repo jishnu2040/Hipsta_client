@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useSwipeable } from "react-swipeable";
+import Slider from "react-slick";
 
 const PartnerCard = ({ partner, S3_BASE_URL }) => (
   <Link to={`/detaildPage/${partner.id}`}>
@@ -44,7 +44,6 @@ const PartnerCard = ({ partner, S3_BASE_URL }) => (
           )}
         </div>
       </div>
-      
     </div>
   </Link>
 );
@@ -53,18 +52,15 @@ const PartnerListView = ({ location }) => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [nextPage, setNextPage] = useState(null);
-  const [prevPage, setPrevPage] = useState(null);
 
   const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
-  const fetchPartners = async (url) => {
+  const fetchPartners = async () => {
     try {
       setLoading(true);
+      const url = "http://localhost:8000/api/v1/customer/partners/";
       const response = await axios.get(url);
       setPartners(response.data.results);
-      setNextPage(response.data.next);
-      setPrevPage(response.data.previous);
       setLoading(false);
     } catch (error) {
       setError("Failed to load partners. Please try again later.");
@@ -73,12 +69,8 @@ const PartnerListView = ({ location }) => {
   };
 
   useEffect(() => {
-    let url = "http://localhost:8000/api/v1/customer/partners/";
-    if (location?.lat && location?.lng) {
-      url += `?lat=${location.lat}&lng=${location.lng}`;
-    }
-    fetchPartners(url);
-  }, [location]);
+    fetchPartners();
+  }, []);
 
   if (error) {
     return <div className="text-center text-red-500 font-semibold">{error}</div>;
@@ -92,51 +84,45 @@ const PartnerListView = ({ location }) => {
     return <div className="text-center text-gray-500">No partners found.</div>;
   }
 
+  // Slider settings for react-slick
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // For tablets and smaller screens
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768, // For mobile screens
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
-    <div className="container mx-auto px-4 ">
+    <div className="container mx-auto px-4">
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
       </h2>
 
-      {/* Mobile Carousel */}
-      <div className="block md:hidden relative overflow-hidden">
-        <div className="flex transition-transform duration-300">
-          {partners.map((partner, index) => (
-            <div
-              key={partner.id}
-              className="w-full flex-shrink-0 p-4"
-              style={{ minWidth: "100%" }}
-            >
-              <PartnerCard partner={partner} S3_BASE_URL={S3_BASE_URL} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Desktop Grid */}
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Slider for all screen sizes */}
+      <Slider {...sliderSettings}>
         {partners.map((partner) => (
-          <PartnerCard key={partner.id} partner={partner} S3_BASE_URL={S3_BASE_URL} />
+          <div key={partner.id} className="p-2">
+            <PartnerCard partner={partner} S3_BASE_URL={S3_BASE_URL} />
+          </div>
         ))}
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={() => prevPage && fetchPartners(prevPage)}
-          disabled={!prevPage}
-          className="bg-gray-300 px-4 py-2 rounded-md disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => nextPage && fetchPartners(nextPage)}
-          disabled={!nextPage}
-          className="bg-gray-300 px-4 py-2 rounded-md disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      </Slider>
     </div>
   );
 };

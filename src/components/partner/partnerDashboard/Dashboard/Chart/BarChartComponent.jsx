@@ -4,7 +4,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -19,17 +18,17 @@ const data = [
 ];
 
 const BarChartComponent = () => (
-  <div className="p-4 bg-white ">
-    <h3 className="text-lg font-semibold mb-4">Booking's and Checkedin</h3>
-    <ResponsiveContainer width="100%" height={300}>
+  <div className="">
+    <ResponsiveContainer width="100%" height={280}>
       <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="booking" fill="#8884d8" />
-        <Bar dataKey="checkin" fill="#82ca9d" />
+        <Bar dataKey="booking" fill="#BFEFFF" />
+        <Bar dataKey="checkin" fill="#D8BFD8" /> 
+
+
       </BarChart>
     </ResponsiveContainer>
   </div>

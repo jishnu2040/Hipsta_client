@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../../utlils/axiosinstance";
-import avatarImage from '../../../assets/man.png';
+import axiosInstance from "../../../../utlils/axiosinstance";
+import avatarImage from '../../../../assets/man.png';
 
 const PartnerProfile = () => {
   const [profileData, setProfileData] = useState({});

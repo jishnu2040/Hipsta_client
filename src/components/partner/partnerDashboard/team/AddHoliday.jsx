@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosInstance from '../../../utlils/axiosinstance';
+import axiosInstance from '../../../../utlils/axiosinstance';
 
 const AddHoliday = () => {
   const [holidayDate, setHolidayDate] = useState('');

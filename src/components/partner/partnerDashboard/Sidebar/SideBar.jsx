@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import img from '../../../assets/hipsta-high-resolution-logo-transparent1.png';
+import img from '../../../../assets/hipsta-high-resolution-logo-transparent1.png';
 import {
   FaTachometerAlt,
   FaCalendarAlt,
@@ -12,7 +12,7 @@ import {
   FaChevronRight,
 } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
-import ThemeContext from '../../../ThemeContext';
+import ThemeContext from '../../../../ThemeContext'
 
 const Sidebar = ({ isSidebarMinimized, onToggleSidebar }) => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);

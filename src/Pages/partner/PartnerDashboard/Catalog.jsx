@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import EditServiceModal from '../../../components/partner/partnerDashboard/EditServiceModal';
-import NewService from '../../../components/partner/partnerDashboard/NewService';
+import EditServiceModal from '../../../components/partner/partnerDashboard/Service/EditServiceModal';
+import NewService from '../../../components/partner/partnerDashboard/Service/NewService';
 import ThemeContext from '../../../ThemeContext';
 
 const Catalog = () => {

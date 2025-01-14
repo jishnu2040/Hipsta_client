@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaTachometerAlt, FaCalendarCheck, FaUserAlt, FaUsers, FaBell, FaChartLine, FaCogs, FaHeadset } from 'react-icons/fa';
 import { PiFlagBannerFill } from "react-icons/pi";
-import avatarImage from '../../assets/man.png'
+import avatarImage from '../../../assets/man.png'
 const Sidebar = () => {
 
     const data = [

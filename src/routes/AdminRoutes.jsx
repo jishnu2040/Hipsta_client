@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AdminDashboard from '../Pages/admin/AdminDashBoard';
+import AdminDashboardLayout from '../layouts/AdminDashboardLayout';
 import AdminLoginPage from '../Pages/admin/AdminLoginPage';
-import BookingList from '../components/admin/BookingList';
-import Customer from '../components/admin/Customer';
-import PartnerManagement from '../components/admin/PartnerManagement';
-import Notification from '../components/admin/Notification';
-import Report from '../components/admin/Report';
-import Settings from '../components/admin/Settings';
-import Banner from '../components/admin/banner';
-import Support from '../components/admin/Support';
-import Dashboard from '../components/admin/Dashboard';
+import BookingList from '../Pages/admin/BookingList';
+import Customer from '../Pages/admin/Customer';
+import PartnerManagement from '../Pages/admin/PartnerManagement';
+import Notification from '../Pages/admin/Notification';
+import Report from '../Pages/admin/Report';
+import Settings from '../Pages/admin/Settings';
+import Banner from '../Pages/admin/Banner';
+import Support from '../Pages/admin/Support';
+import Dashboard from '../Pages/admin/Dashboard';
 import ProtectedAdminRoute from '../protectRoutes/ProtectedAdminRoute';
 
 
@@ -18,7 +18,7 @@ const AdminRoutes = () => {
   return (
     <Routes>
       <Route path="/admin/login" element={<AdminLoginPage />} />
-      <Route path="/admin"  element={<ProtectedAdminRoute ><AdminDashboard /></ProtectedAdminRoute>}>
+      <Route path="/admin"  element={<ProtectedAdminRoute ><AdminDashboardLayout /></ProtectedAdminRoute>}>
         <Route index element={<Dashboard />} />
         <Route path="bookings" element={<BookingList />} />
         <Route path="customer" element={<Customer />} />

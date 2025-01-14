@@ -2,7 +2,6 @@ import React from "react";
 import ShimmerSearchBanner from "../../../components/customer/banner/ShimmerSearchBanner"
 import ShimmerServiceTypes from "./../../../components/customer/Service_list/ShimmerServiceTypes";
 import ShimmerPartnerListView from "../../../components/customer/PartnerListView/ShimmerPartnerListView";
-import ShimmerStats from "../../../components/customer/stats/ShimmerStats";
 
 const ShimmerHome = () => (
   <div className="flex flex-col">
@@ -24,10 +23,6 @@ const ShimmerHome = () => (
       <ShimmerPartnerListView />
     </div>
 
-    {/* Stats Placeholder */}
-    <div className="px-24 mt-6">
-      <ShimmerStats />
-    </div>
 
     {/* Footer Placeholder */}
     <div className="bg-gray-300 h-24 w-full mt-6"></div>

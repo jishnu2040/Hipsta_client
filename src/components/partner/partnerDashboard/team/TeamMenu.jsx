@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // useNavigate can be omitted since there's no logout logic
 import { FaUser, FaBuilding } from 'react-icons/fa';
-import ThemeContext from '../../../ThemeContext'; // Assuming you have a context for dark mode
+import ThemeContext from '../../../../ThemeContext'; // Assuming you have a context for dark mode
 
 const TeamMenu = () => {
   const { isDarkMode } = React.useContext(ThemeContext); // Accessing dark mode context

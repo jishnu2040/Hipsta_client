@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Card from './DashBoard/Card';
+import Card from '../../components/admin/DashBoard/Card';
 import { FaCalendarCheck, FaUsers } from 'react-icons/fa';
 import axios from 'axios'; // Ensure you install axios: npm install axios
 

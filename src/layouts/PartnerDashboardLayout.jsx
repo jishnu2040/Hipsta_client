@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/partner/partnerDashboard/Sidebar';
-import Header from '../components/partner/partnerDashboard/Header';
+import Sidebar from '../components/partner/partnerDashboard/Sidebar/SideBar';
+import Header from '../components/partner/partnerDashboard/Header/Header';
 import { Outlet } from 'react-router-dom';
 
 const PartnerDashboardLayout = () => {

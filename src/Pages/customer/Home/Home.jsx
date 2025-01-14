@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import MainHeader from "../../../components/customer/Header/MainHeader";
 import ServiceTypes from "../../../components/customer/Service_list/ServiceTypes";
 import PartnerListView from "../../../components/customer/PartnerListView/PartnerListView";
-import Stats from "../../../components/customer/stats/Stats";
 import Footer from "../../../components/customer/footer/Footer";
 import Search from "../../../components/customer/Search/Search";
 import Banner from "../../../components/customer/banner/Banner";

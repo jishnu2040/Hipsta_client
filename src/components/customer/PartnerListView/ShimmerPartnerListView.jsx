@@ -2,10 +2,10 @@ import React from "react";
 
 const ShimmerPartnerListView = () => {
   return (
-    <div className="container mx-auto px-16 py-1">
+    <div className="container mx-auto px-8 py-1">
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-4"></h2>
       <div className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
-        {Array()
+        {Array(4)
           .fill("")
           .map((_, index) => (
             <div

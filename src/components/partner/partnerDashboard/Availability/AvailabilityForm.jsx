@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createPartnerAvailability } from '../../../Services/availabilityService';
+import { createPartnerAvailability } from '../../../../Services/availabilityService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

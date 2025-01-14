@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../../utlils/axiosinstance';
+import axiosInstance from '../../../../utlils/axiosinstance';
 
 const EditEmployeeModal = ({ employee, closeModal, refreshEmployees }) => {
   const [name, setName] = useState(employee.name || '');

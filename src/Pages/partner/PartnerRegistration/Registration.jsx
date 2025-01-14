@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Stepper from './Stepper';
-import BasicInfo from '../../components/partner/registration/basicInfo';
-import Services from '../../components/partner/registration/Services';
-import TeamSize from '../../components/partner/registration/TeamSize';
-import FileUpload from '../../components/partner/registration/FileUpload';
-import Location from '../../components/partner/registration/Location';
-import VerifyData from '../../components/partner/registration/VerifyData';
+import BasicInfo from '../../../components/partner/registration/basicInfo';
+import Services from '../../../components/partner/registration/Services';
+import TeamSize from '../../../components/partner/registration/TeamSize';
+import FileUpload from '../../../components/partner/registration/FileUpload';
+import Location from '../../../components/partner/registration/Location';
+import VerifyData from '../../../components/partner/registration/VerifyData';
 
 const Registration = () => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -30,7 +30,7 @@ const Registration = () => {
         }
     }, []);
 
-    // Update the last page in localStorage whenever currentStep changes
+
     useEffect(() => {
         localStorage.setItem('lastPage', steps[currentStep]);
     }, [currentStep]);

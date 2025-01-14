@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import ThemeContext from '../../../ThemeContext';
-import TeamMenu from '../../../components/partner/team/TeamMenu';
+import TeamMenu from '../../../components/partner/partnerDashboard/team/TeamMenu';
 
 const Team = () => {
   const { isDarkMode } = useContext(ThemeContext);

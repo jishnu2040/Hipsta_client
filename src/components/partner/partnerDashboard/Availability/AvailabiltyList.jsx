@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
-import { getPartnerAvailability, deletePartnerAvailability, updatePartnerAvailability } from '../../../Services/availabilityService';
+import { getPartnerAvailability, deletePartnerAvailability, updatePartnerAvailability } from '../../../../Services/availabilityService';
 import AvailabilityForm from './AvailabilityForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AddHoliday from './AddHoliday';
-import ThemeContext from '../../../ThemeContext'; // Assuming you have a context for dark mode
+import AddHoliday from '../team/AddHoliday';
+import ThemeContext from '../../../../ThemeContext'; 
 
 const AvailabilityList = () => {
   const { isDarkMode } = useContext(ThemeContext);

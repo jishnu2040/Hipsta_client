@@ -1,5 +1,5 @@
 import React from 'react'
-import TicketDashboard from '../../Pages/Ticket/TicketDashboard'
+import TicketDashboard from '../Ticket/TicketDashboard'
 const Support = () => {
   return (
     <div>
