@@ -19,6 +19,7 @@ import EmployeeAvailability from '../Pages/partner/PartnerDashboard/EmployeeAvai
 import ProtectedRoute from '../protectRoutes/ProtectedRoute';
 import AddHoliday from '../components/partner/partnerDashboard/team/AddHoliday';
 import Pricing from '../components/partner/subscription/Pricing';
+import QRScannerComponent from '../components/partner/partnerDashboard/QRcode/QRScannerComponent';
 // import PaymentPage from '../components/partner/subscription/PaymentPage';
 const PartnerRoutes = () => {
   return (
@@ -33,7 +34,7 @@ const PartnerRoutes = () => {
         <Route path="catalog/new-service" element={<NewService />} />
         <Route path="team" element={<Team />}>
           <Route index element={<TeamMembers />} />
-          <Route path="schedule" element={<AvailabilityList />} />
+        <Route path="schedule" element={<AvailabilityList />} />
         </Route>
         <Route path="team/new-member" element={<AddEmployee />} />
         <Route path="profile" element={<Profile />}>
@@ -41,9 +42,11 @@ const PartnerRoutes = () => {
           <Route path="workplace" element={<WorkPlace />} />
           <Route path="logout" element={<Logout />} />
         </Route>
+        <Route path="qr" element= {<QRScannerComponent />}/>
       </Route>
       <Route path="employeeAvailability" element={<EmployeeAvailability />} />
       <Route path="/holiday" element={<AddHoliday/>} />
+      
 
     </Routes>
   );

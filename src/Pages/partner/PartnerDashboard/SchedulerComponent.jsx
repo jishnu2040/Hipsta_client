@@ -30,6 +30,7 @@ const SchedulerComponent = () => {
               employeeName: appointment.employee_name,
               serviceName: appointment.service_name,
               date: appointment.date,
+              status: appointment.status,
             };
           });
 
@@ -62,7 +63,7 @@ const SchedulerComponent = () => {
       <div className="p-2">
         {/* Toggle Button */}
         <button
-          className={`p-2 rounded ${isDarkMode ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'}`}
+          className={`p-2 rounded ${isDarkMode ? 'bg-green-600 text-white' : 'bg-green-600 text-white'}`}
           onClick={() => setIsTableView(!isTableView)}
         >
           {isTableView ? 'Calendar View' : 'Table View'}
@@ -86,6 +87,7 @@ const SchedulerComponent = () => {
                 <th className="px-4 py-2 border-b">Start Time</th>
                 <th className="px-4 py-2 border-b">End Time</th>
                 <th className="px-4 py-2 border-b">Date</th>
+                <th className="px-4 py-2 border-b">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -97,6 +99,7 @@ const SchedulerComponent = () => {
                   <td className="px-4 py-2 border-b">{appointment.startDate}</td>
                   <td className="px-4 py-2 border-b">{appointment.endDate}</td>
                   <td className="px-4 py-2 border-b">{appointment.date}</td>
+                  <td className="px-4 py-2 border-b">{appointment.status}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import ThemeContext from "../../../../../ThemeContext";
 
 const Cards = () => {
   const [cardData, setCardData] = useState([
@@ -23,6 +24,8 @@ const Cards = () => {
     },
   ]);
   const partnerId = localStorage.getItem("partnerId"); // Fetch partnerId from local storage
+
+  const { isDarkMode } = useContext(ThemeContext); // Access the theme context
 
   useEffect(() => {
     if (partnerId) {
@@ -65,7 +68,9 @@ const Cards = () => {
       {cardData.map((card, index) => (
         <div
           key={index}
-          className={`flex items-center p-6 rounded-lg text-white ${card.bgColor}`}
+          className={`flex items-center p-6 rounded-lg ${
+            isDarkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-black"
+          }`}
         >
           <div className="text-4xl mr-4">{card.icon}</div>
           <div>

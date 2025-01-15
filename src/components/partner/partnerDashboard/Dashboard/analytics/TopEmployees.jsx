@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import ThemeContext from "../../../../../ThemeContext";
 
 const TopEmployees = () => {
   const [employees, setEmployees] = useState([]);
@@ -7,6 +8,9 @@ const TopEmployees = () => {
 
   // Fetch partnerId from localStorage
   const partnerId = localStorage.getItem('partnerId');
+
+  // Access the theme context
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     if (partnerId) {
@@ -32,8 +36,18 @@ const TopEmployees = () => {
   }
 
   return (
-    <div className="p-8 bg-white shadow-lg rounded-lg">
-      <h3 className="text-2xl font-semibold text-gray-800 ">Top Employees</h3>
+    <div
+      className={`p-8 shadow-lg rounded-lg ${
+        isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+      }`}
+    >
+      <h3
+        className={`text-2xl font-semibold ${
+          isDarkMode ? "text-white" : "text-gray-800"
+        }`}
+      >
+        Top Employees
+      </h3>
       <ul>
         {employees.length === 0 ? (
           <li>No employees found.</li>
@@ -41,18 +55,42 @@ const TopEmployees = () => {
           employees.map((employee) => (
             <li
               key={employee.id}
-              className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
+              className={`flex justify-between items-center py-3 border-b ${
+                isDarkMode ? "border-gray-700" : "border-gray-200"
+              } last:border-b-0`}
             >
               <div className="flex items-center space-x-3">
-                <div className="h-12 w-12 bg-blue-200 rounded-full flex items-center justify-center text-xl font-semibold text-white">
+                <div
+                  className={`h-12 w-12 rounded-full flex items-center justify-center text-xl font-semibold ${
+                    isDarkMode
+                      ? "bg-blue-500 text-gray-900"
+                      : "bg-blue-200 text-white"
+                  }`}
+                >
                   {employee.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800">{employee.name}</p>
-                  <p className="text-sm text-gray-600">Total Appointments</p>
+                  <p
+                    className={`font-medium ${
+                      isDarkMode ? "text-white" : "text-gray-800"
+                    }`}
+                  >
+                    {employee.name}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      isDarkMode ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    Total Appointments
+                  </p>
                 </div>
               </div>
-              <span className="text-xl font-semibold text-gray-700">
+              <span
+                className={`text-xl font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-700"
+                }`}
+              >
                 {employee.total_appointments}
               </span>
             </li>

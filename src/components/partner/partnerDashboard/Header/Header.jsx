@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { FaRegMessage } from "react-icons/fa6";
-import { FaBell } from "react-icons/fa";
+import { FaRegMessage, FaBell, FaQrcode } from "react-icons/fa6"; // Added FaQrcode for the QR scanner icon
 import { toast } from 'react-toastify';
 import ThemeContext from '../../../../ThemeContext';
 import avatarImage from '../../../../assets/man.png';
@@ -16,22 +15,20 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
-    // WebSocket for real-time notifications
     let socket;
-  
+
     const connectSocket = () => {
       socket = new WebSocket(`ws://localhost:8000/ws/notifications/`);
-  
+
       socket.onopen = () => console.log('WebSocket connection established');
-  
+
       socket.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
           if (data.message) {
             toast.success(data.message);
-  
+
             setNotifications((prev) => {
-              // Avoid duplicates based on message or id
               if (!prev.some((n) => n.message === data.message)) {
                 return [
                   ...prev,
@@ -40,25 +37,24 @@ const Header = () => {
               }
               return prev;
             });
-  
+
             setUnreadCount((prev) => prev + 1);
           }
         } catch (error) {
           console.error('Error parsing WebSocket message:', error);
         }
       };
-  
+
       socket.onclose = () => {
         console.log('WebSocket closed. Reconnecting...');
         setTimeout(connectSocket, 5000);
       };
-  
+
       socket.onerror = (error) => console.error('WebSocket error:', error);
     };
-  
+
     connectSocket();
-  
-    // Cleanup WebSocket on component unmount or before reconnecting
+
     return () => {
       if (socket) {
         socket.close();
@@ -66,38 +62,39 @@ const Header = () => {
       }
     };
   }, []);
-  
+
+  const navigate = useNavigate();
 
   const handleNotificationClick = () => {
     setUnreadCount(0);
     setShowNotifications((prev) => !prev);
   };
 
-
-  const navigate = useNavigate();
-
   const handleAvatarClick = () => {
     navigate("/partner/profile");
-  }; 
+  };
 
-  
+  const handleQrClick = () => {
+    navigate("/partner/qr");
+  };
+
   return (
     <header
       className={`flex items-center justify-between px-2 py-3 ${
         isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
       }`}
     >
-        <div>
-          <span className="hidden sm:block text-lg font-semibold">🚀 Welcome back 🎀{username}</span>
-        </div>
+      <div>
+        <span className="hidden sm:block text-lg font-semibold">🚀 Welcome back 🎀 {username}</span>
+      </div>
 
-      <div className="flex">
-        <button className="relative p-2 rounded-lg  hover:bg-gray-200">
-        <FaBell className="text-xl"/>
+      <div className="flex items-center space-x-4">
+        <button className="relative p-2 rounded-lg hover:bg-gray-200">
+          <FaBell className="text-xl" />
         </button>
         <button
           onClick={handleNotificationClick}
-          className="relative p-2 rounded-lg  hover:bg-gray-200"
+          className="relative p-2 rounded-lg hover:bg-gray-200"
         >
           <FaRegMessage className="text-xl" />
           {unreadCount > 0 && (
@@ -106,7 +103,14 @@ const Header = () => {
             </span>
           )}
         </button>
-        
+
+        {/* QR Scanner Icon */}
+        <button
+          onClick={handleQrClick}
+          className="p-2 rounded-lg hover:bg-gray-200 flex items-center justify-center"
+        >
+          <FaQrcode className="text-xl" title="QR Scanner" />
+        </button>
 
         {showNotifications && (
           <div
@@ -137,11 +141,10 @@ const Header = () => {
             src={avatarImage}
             alt="User Avatar"
             className="w-10 h-10 mx-4 rounded-full border-2 border-gray-300 shadow-md cursor-pointer"
-            onClick={handleAvatarClick} // Redirect on click
+            onClick={handleAvatarClick}
           />
         </div>
       </div>
-     
     </header>
   );
 };

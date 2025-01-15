@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import ThemeContext from "../../../../../ThemeContext";
 
 const TopServices = () => {
   const [services, setServices] = useState([]);
@@ -7,6 +8,9 @@ const TopServices = () => {
 
   // Fetch partnerId from localStorage
   const partnerId = localStorage.getItem('partnerId');
+
+  // Access the theme context
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     if (partnerId) {
@@ -32,8 +36,18 @@ const TopServices = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg">
-      <h3 className="text-2xl font-semibold text-gray-800 mb-4">Top Services</h3>
+    <div
+      className={`p-6 shadow-lg rounded-lg ${
+        isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+      }`}
+    >
+      <h3
+        className={`text-2xl font-semibold mb-4 ${
+          isDarkMode ? "text-white" : "text-gray-800"
+        }`}
+      >
+        Top Services
+      </h3>
       <ul>
         {services.length === 0 ? (
           <li>No services found.</li>
@@ -41,18 +55,42 @@ const TopServices = () => {
           services.map((service) => (
             <li
               key={service.id}
-              className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0"
+              className={`flex justify-between items-center py-3 border-b ${
+                isDarkMode ? "border-gray-700" : "border-gray-200"
+              } last:border-b-0`}
             >
               <div className="flex items-center space-x-3">
-                <div className="h-12 w-12 bg-blue-200 rounded-full flex items-center justify-center text-xl font-semibold text-white">
+                <div
+                  className={`h-12 w-12 rounded-full flex items-center justify-center text-xl font-semibold ${
+                    isDarkMode
+                      ? "bg-blue-500 text-gray-900"
+                      : "bg-blue-200 text-white"
+                  }`}
+                >
                   {service.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800">{service.name}</p>
-                  <p className="text-sm text-gray-600">Total Appointments</p>
+                  <p
+                    className={`font-medium ${
+                      isDarkMode ? "text-white" : "text-gray-800"
+                    }`}
+                  >
+                    {service.name}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      isDarkMode ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    Total Appointments
+                  </p>
                 </div>
               </div>
-              <span className="text-xl font-semibold text-gray-700">
+              <span
+                className={`text-xl font-semibold ${
+                  isDarkMode ? "text-white" : "text-gray-700"
+                }`}
+              >
                 {service.total_appointments}
               </span>
             </li>
