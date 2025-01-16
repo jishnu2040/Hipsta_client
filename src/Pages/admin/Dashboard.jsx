@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../../components/admin/DashBoard/Card';
+import Chart from '../../components/admin/DashBoard/Chart';
+import TopPartners from '../../components/admin/DashBoard/TopPartners';
 import { FaCalendarCheck, FaUsers } from 'react-icons/fa';
-import axios from 'axios'; // Ensure you install axios: npm install axios
+import axios from 'axios'; 
 
 const Dashboard = () => {
   const [totalBookings, setTotalBookings] = useState(0);
@@ -58,17 +60,13 @@ const Dashboard = () => {
               title={item.title}
               value={item.value}
               icon={item.icon}
-              className="w-32 h-48" // Ensures square shape
+              className="w-32 h-48" 
             />
           ))}
         </div>
 
         {/* Cart Section Below */}
-        <div className="p-6 bg-gray-200 rounded-lg shadow-md h-80">
-          <h2 className="text-xl font-semibold">Cart</h2>
-          {/* Replace with actual cart content */}
-          <p className="text-gray-500">Your cart details go here...</p>
-        </div>
+        <Chart />
       </div>
 
       {/* Right Section (4/12) */}
@@ -87,11 +85,8 @@ const Dashboard = () => {
         </div>
 
         {/* Bottom Larger Card */}
-        <div className="p-6 bg-blue-100 rounded-lg shadow-md h-96">
-          <h2 className="text-xl font-semibold">Detailed Report</h2>
-          {/* Replace with actual detailed report content */}
-          <p className="text-gray-500">Detailed insights and metrics go here...</p>
-        </div>
+    
+        <TopPartners />
       </div>
     </div>
   );

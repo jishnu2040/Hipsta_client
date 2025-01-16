@@ -19,22 +19,32 @@ const Notification = () => {
   };
 
   return (
-    <div>
-      <h2>Create Notification</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Create Notification</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="message">Message:</label>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message:</label>
           <input
             type="text"
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
+            className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <button type="submit">Create</button>
+        <button
+          type="submit"
+          className="w-full py-2 mt-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+        >
+          Create
+        </button>
       </form>
-      {status && <p>{status}</p>}
+      {status && (
+        <p className={`mt-4 text-center font-semibold ${status.includes('success') ? 'text-green-600' : 'text-red-600'}`}>
+          {status}
+        </p>
+      )}
     </div>
   );
 };

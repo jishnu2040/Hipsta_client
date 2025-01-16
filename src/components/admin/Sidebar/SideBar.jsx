@@ -11,8 +11,6 @@ const Sidebar = () => {
         { title: 'Customer', Link: '/admin/customer', icon: <FaUserAlt /> },
         { title: 'Partner', Link: '/admin/partnerManagement', icon: <FaUsers /> },
         { title: 'Notification', Link: '/admin/notification', icon: <FaBell /> },
-        { title: 'Report', Link: '/admin/report', icon: <FaChartLine /> },
-        { title: 'Settings', Link: '/admin/settings', icon: <FaCogs /> },
         { title : 'banner', Link: '/admin/banner', icon: <PiFlagBannerFill /> },
         { title: 'Support', Link: '/support', icon: <FaHeadset /> },
     ];

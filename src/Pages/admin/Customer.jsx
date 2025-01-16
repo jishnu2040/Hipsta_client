@@ -3,18 +3,22 @@ import axios from 'axios';
 
 const Customer = () => {
   const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState('all'); // Add a state for filter
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem('access_token'); 
+        const token = localStorage.getItem('access_token');
         console.log('Access Token:', token); // Check if token is being retrieved
-        const response = await axios.get('http://localhost:8000/api/v1/auth/users/', {
+
+        const response = await axios.get('http://localhost:8000/api/v1/admin/allUsers/', {
+          // Uncomment this when authorization is required
           // headers: {
           //   Authorization: `Bearer ${token}`
           // }
         });
-        const customers = response.data.filter(user => user.user_type === 'customer'); 
+        
+        const customers = response.data.filter(user => user.user_type === 'customer');
         setUsers(customers);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -24,11 +28,12 @@ const Customer = () => {
     fetchUsers();
   }, []);
 
+  // Handle Block User
   const handleBlockUser = async (userId) => {
     try {
       const token = localStorage.getItem('access_token');
-      console.log('Blocking User, Access Token:', token); // Check token for block user
-      await axios.patch(`http://localhost:8000/api/v1/auth/users/${userId}/block/`, {}, {
+      console.log('Blocking User, Access Token:', token);
+      await axios.patch(`http://localhost:8000/api/v1/admin/${userId}/block/`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -39,11 +44,12 @@ const Customer = () => {
     }
   };
 
+  // Handle Unblock User
   const handleUnblockUser = async (userId) => {
     try {
       const token = localStorage.getItem('access_token');
-      console.log('Unblocking User, Access Token:', token); // Check token for unblock user
-      await axios.patch(`http://localhost:8000/api/v1/auth/users/${userId}/unblock/`, {}, {
+      console.log('Unblocking User, Access Token:', token);
+      await axios.patch(`http://localhost:8000/api/v1/admin/${userId}/unblock/`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -54,14 +60,41 @@ const Customer = () => {
     }
   };
 
+  // Filter users based on the selected filter
+  const filteredUsers = filter === 'all' 
+    ? users 
+    : users.filter(user => (filter === 'blocked' ? !user.is_active : user.is_active));
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-2 min-h-screen">
       <h2 className="text-3xl font-semibold mb-6 text-gray-800">Customer Management</h2>
+
+      {/* Filter Buttons */}
+      <div className="mb-2 ">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-4 py-2 rounded-md  ${filter === 'all' ? 'bg-blue-500 text-white' : 'bg-white'}`}
+        >
+          All Users
+        </button>
+        <button
+          onClick={() => setFilter('active')}
+          className={`px-4 py-2 rounded-md ${filter === 'active' ? 'bg-green-500 text-white' : 'bg-white'}`}
+        >
+          Active Users
+        </button>
+        <button
+          onClick={() => setFilter('blocked')}
+          className={`px-4 py-2 rounded-md  ${filter === 'blocked' ? 'bg-red-500 text-white' : 'bg-white'}`}
+        >
+          Blocked Users
+        </button>
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-gray-200 text-gray-700">
             <tr>
-              <th className="py-3 px-4 border-b">ID</th>
               <th className="py-3 px-4 border-b">First Name</th>
               <th className="py-3 px-4 border-b">Last Name</th>
               <th className="py-3 px-4 border-b">Email</th>
@@ -73,9 +106,8 @@ const Customer = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {filteredUsers.map(user => (
               <tr key={user.id} className="bg-white hover:bg-gray-50 transition duration-300">
-                <td className="py-3 px-4 border-b">{user.id}</td>
                 <td className="py-3 px-4 border-b">{user.first_name}</td>
                 <td className="py-3 px-4 border-b">{user.last_name}</td>
                 <td className="py-3 px-4 border-b">{user.email}</td>

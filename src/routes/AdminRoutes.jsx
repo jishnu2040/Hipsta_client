@@ -6,8 +6,6 @@ import BookingList from '../Pages/admin/BookingList';
 import Customer from '../Pages/admin/Customer';
 import PartnerManagement from '../Pages/admin/PartnerManagement';
 import Notification from '../Pages/admin/Notification';
-import Report from '../Pages/admin/Report';
-import Settings from '../Pages/admin/Settings';
 import Banner from '../Pages/admin/Banner';
 import Support from '../Pages/admin/Support';
 import Dashboard from '../Pages/admin/Dashboard';
@@ -24,8 +22,6 @@ const AdminRoutes = () => {
         <Route path="customer" element={<Customer />} />
         <Route path="partnerManagement" element={<PartnerManagement />} />
         <Route path="notification" element={<Notification />} />
-        <Route path="report" element={<Report />} />
-        <Route path="settings" element={<Settings />} />
         <Route path="banner" element={<Banner />} />
       </Route>
       <Route path="/support" element={<Support />} />
