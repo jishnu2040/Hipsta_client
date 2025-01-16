@@ -2,6 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { MdCloudOff } from "react-icons/md"; 
+
+const OfflineUI = () => (
+  <div className="flex flex-col items-center justify-center h-64">
+    <MdCloudOff className="text-gray-400 w-24 h-24 mb-4" />
+    <p className="text-lg font-semibold text-gray-600">You’re offline!</p>
+    <p className="text-sm text-gray-500 mt-2">
+      Please check your internet connection and try again.
+    </p>
+  </div>
+);
+
 
 const PartnerCard = ({ partner, S3_BASE_URL }) => (
   <Link to={`/detaildPage/${partner.id}`}>
@@ -51,7 +63,7 @@ const PartnerCard = ({ partner, S3_BASE_URL }) => (
 const PartnerListView = ({ location }) => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
@@ -63,7 +75,7 @@ const PartnerListView = ({ location }) => {
       setPartners(response.data.results);
       setLoading(false);
     } catch (error) {
-      setError("Failed to load partners. Please try again later.");
+      setError(true); // Set error to true for offline mode
       setLoading(false);
     }
   };
@@ -72,19 +84,18 @@ const PartnerListView = ({ location }) => {
     fetchPartners();
   }, []);
 
-  if (error) {
-    return <div className="text-center text-red-500 font-semibold">{error}</div>;
-  }
-
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
+  }
+
+  if (error) {
+    return <OfflineUI />;
   }
 
   if (!partners.length) {
     return <div className="text-center text-gray-500">No partners found.</div>;
   }
 
-  // Slider settings for react-slick
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -93,14 +104,14 @@ const PartnerListView = ({ location }) => {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1024, // For tablets and smaller screens
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 768, // For mobile screens
+        breakpoint: 768,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -114,8 +125,6 @@ const PartnerListView = ({ location }) => {
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
       </h2>
-
-      {/* Slider for all screen sizes */}
       <Slider {...sliderSettings}>
         {partners.map((partner) => (
           <div key={partner.id} className="p-2">

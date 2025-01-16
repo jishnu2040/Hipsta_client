@@ -85,7 +85,8 @@ const Header = () => {
       }`}
     >
       <div>
-        <span className="hidden sm:block text-lg font-semibold">🚀 Welcome back 🎀 {username}</span>
+        <span className="hidden sm:block text-lg font-semibold">🚀 Welcome back🎀 {username}</span>
+
       </div>
 
       <div className="flex items-center space-x-4">
@@ -135,7 +136,6 @@ const Header = () => {
             </ul>
           </div>
         )}
-
         <div className="flex items-center">
           <img
             src={avatarImage}
