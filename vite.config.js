@@ -81,7 +81,7 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
-              networkTimeoutSeconds: 10, // Fallback to cache if API request takes longer
+              networkTimeoutSeconds: 10, // Fallback to cache if API request takes longer when network available.
             },
           },
         ],
