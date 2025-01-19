@@ -17,6 +17,8 @@ const Login = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,7 +29,7 @@ const Login = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/auth/login/', formData);
+      const response = await axios.post(`${API_BASE_URL}auth/login/`, formData);
       const user = {
         email: response.data.email,
         name: response.data.full_name,
@@ -71,7 +73,7 @@ const Login = ({ onLoginSuccess }) => {
     const payload = response.credential;
 
     try {
-      const server_res = await axios.post('http://localhost:8000/api/v1/auth/google/', { access_token: payload });
+      const server_res = await axios.post(`${API_BASE_URL}auth/google/`, { access_token: payload });
 
       if (server_res.status === 200) {
         const { email, full_name, access_token, refresh_token, userId } = server_res.data;

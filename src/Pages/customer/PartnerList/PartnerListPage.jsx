@@ -14,7 +14,8 @@ const PartnerListPage = () => {
   const params = new URLSearchParams(location.search);
   const serviceTypeId = params.get("serviceTypeId");
 
-  const baseUrl = "http://localhost:8000/api/v1";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   const stateData = location.state || {}; // Extract location and service from state
   const { location: selectedLocation, service: selectedService } = stateData;
 
@@ -28,7 +29,7 @@ const PartnerListPage = () => {
 
         if (serviceTypeId) {
           partnersResponse = await axios.get(
-            `${baseUrl}/customer/partnerViewFilterByService`,
+            `${API_BASE_URL}customer/partnerViewFilterByService`,
             { params: { serviceTypeId } }
           );
         } else if (selectedService && selectedLocation) {

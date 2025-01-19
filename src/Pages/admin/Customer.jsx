@@ -3,19 +3,18 @@ import axios from 'axios';
 
 const Customer = () => {
   const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState('all'); // Add a state for filter
+  const [filter, setFilter] = useState('all'); 
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        console.log('Access Token:', token); // Check if token is being retrieved
+        console.log('Access Token:', token); 
 
-        const response = await axios.get('http://localhost:8000/api/v1/admin/allUsers/', {
-          // Uncomment this when authorization is required
-          // headers: {
-          //   Authorization: `Bearer ${token}`
-          // }
+        const response = await axios.get(`${API_BASE_URL}admin/allUsers/`, {
+      
         });
         
         const customers = response.data.filter(user => user.user_type === 'customer');
@@ -33,7 +32,7 @@ const Customer = () => {
     try {
       const token = localStorage.getItem('access_token');
       console.log('Blocking User, Access Token:', token);
-      await axios.patch(`http://localhost:8000/api/v1/admin/${userId}/block/`, {}, {
+      await axios.patch(`${API_BASE_URL}admin/${userId}/block/`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -49,7 +48,7 @@ const Customer = () => {
     try {
       const token = localStorage.getItem('access_token');
       console.log('Unblocking User, Access Token:', token);
-      await axios.patch(`http://localhost:8000/api/v1/admin/${userId}/unblock/`, {}, {
+      await axios.patch(`${API_BASE_URL}admin/${userId}/unblock/`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }

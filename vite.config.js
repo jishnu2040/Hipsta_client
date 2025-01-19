@@ -66,7 +66,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,ico,jpg,jpeg}'], // Cache common file types
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\//,
+            urlPattern: /^http:\/\/localhost:8000\//,
             handler: 'CacheFirst',
             options: {
               cacheName: 'google-fonts',

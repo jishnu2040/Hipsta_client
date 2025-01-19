@@ -1,7 +1,7 @@
 // Header.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Ensure react-toastify is installed and configured
+import { toast } from 'react-toastify'; 
 import axiosInstance from '../../utlils/axiosinstance';
 
 const Header = () => {
@@ -14,7 +14,7 @@ const Header = () => {
   }, []);
 
   const handleLogout = async () => {
-    const refresh = localStorage.getItem('refresh_token'); // Retrieve the refresh token
+    const refresh = localStorage.getItem('refresh_token'); 
     if (!refresh) {
       toast.error('No refresh token found. Logging out locally.');
       localStorage.clear();

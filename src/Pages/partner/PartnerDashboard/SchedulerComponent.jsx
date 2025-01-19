@@ -11,13 +11,16 @@ const SchedulerComponent = () => {
 
   const { isDarkMode } = useContext(ThemeContext); // Get dark mode state from context
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+
   useEffect(() => {
     const partnerId = localStorage.getItem('partnerId'); // Retrieve partnerId from localStorage
 
     if (partnerId) {
       // Fetch appointments for the specific partner
       axios
-        .get(`http://localhost:8000/api/v1/booking/${partnerId}/`)
+        .get(`${API_BASE_URL}booking/${partnerId}/`)
         .then((response) => {
           // Transform appointments
           const transformedAppointments = response.data.appointments.map((appointment) => {

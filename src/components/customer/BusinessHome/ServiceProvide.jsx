@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ServiceProvide() {
   const [services, setServices] = useState([]);
@@ -9,7 +9,7 @@ export default function ServiceProvide() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/core/service_type/`);
+        const response = await axios.get(`${API_BASE_URL}core/service_type/`);
         setServices(response.data); // Assuming response data is an array of services
       } catch (error) {
         console.error('Error fetching services:', error);

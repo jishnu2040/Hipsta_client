@@ -5,7 +5,7 @@ import axiosInstance from '../../utlils/axiosinstance';
 const TicketDashboard = () => {
     const [tickets, setTickets] = useState([]);
     const [filteredTickets, setFilteredTickets] = useState([]);
-    const [filter, setFilter] = useState('all'); // 'all', 'processing', 'closed'
+    const [filter, setFilter] = useState('all'); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,11 +22,11 @@ const TicketDashboard = () => {
     useEffect(() => {
         // Filter tickets based on selected filter
         if (filter === 'processing') {
-            setFilteredTickets(tickets.filter((ticket) => ticket.status === 'In Progress')); // Status 'In Progress' mapped to 'Processing'
+            setFilteredTickets(tickets.filter((ticket) => ticket.status === 'In Progress')); 
         } else if (filter === 'closed') {
             setFilteredTickets(tickets.filter((ticket) => ticket.status === 'Closed'));
         } else {
-            setFilteredTickets(tickets); // Show all tickets
+            setFilteredTickets(tickets);
         }
     }, [filter, tickets]);
 

@@ -5,11 +5,13 @@ const Banner = () => {
   const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   useEffect(() => {
     // Fetch banners from the backend
     const fetchBanners = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/core/banners/');
+        const response = await axios.get(`${API_BASE_URL}core/banners/`); 
         setBanners(response.data.filter((banner) => banner.is_active));
       } catch (error) {
         console.error('Error fetching banners', error);
@@ -17,7 +19,7 @@ const Banner = () => {
     };
 
     fetchBanners();
-  }, []);
+  }, [API_BASE_URL]);
 
   useEffect(() => {
     // Auto-slide the banners every 3 seconds
@@ -53,7 +55,7 @@ const Banner = () => {
       </div>
 
       {/* Navigation Dots */}
-      <div className=" dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {banners.map((_, index) => (
           <button
             key={index}

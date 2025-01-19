@@ -2,10 +2,11 @@ import axios from "axios";
 import { jwtDecode }from "jwt-decode";
 import dayjs from "dayjs";
 
-const baseUrl = "http://localhost:8000/api/v1";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 
 const axiosInstance = axios.create({
-  baseURL: baseUrl,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Authorization': localStorage.getItem('access_token') ? `Bearer ${localStorage.getItem('access_token')}` : null
@@ -26,7 +27,7 @@ axiosInstance.interceptors.request.use(async (req) => {
       return req;
     } else {
       try {
-        const response = await axios.post(`${baseUrl}/auth/token/refresh/`, { refresh: refresh_token });
+        const response = await axios.post(`${baseUrl}auth/token/refresh/`, { refresh: refresh_token });
         if (response.status === 200) {
           localStorage.setItem('access_token', response.data.access);
           req.headers.Authorization = `Bearer ${response.data.access}`;

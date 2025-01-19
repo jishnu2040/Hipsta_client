@@ -20,12 +20,15 @@ const Signup = ({onLoginSuccess}) => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+
   const handleSignInWithGoogle = async (response) => {
     console.log(response);
     const payload = response.credential;
   
     try {
-      const server_res = await axios.post('http://localhost:8000/api/v1/auth/google/', { access_token: payload });
+      const server_res = await axios.post(`${API_BASE_URL}auth/google/`, { access_token: payload });
       console.log(server_res);
   
 
@@ -100,7 +103,7 @@ const Signup = ({onLoginSuccess}) => {
     e.preventDefault();
     setErrors({}); 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formData);
+      const response = await axios.post(`${API_BASE_URL}auth/register/`, formData);
       if (response.status === 200 || response.status === 201) {
         navigate('/auth/verify');
       }

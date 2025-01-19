@@ -7,12 +7,14 @@ const ServiceTypes = ({ small = false }) => {
   const [serviceTypes, setServices] = useState([]);
   const [loading, setLoading] = useState(true); // Track loading state
   const navigate = useNavigate();
-  const baseUrl = 'http://localhost:8000/api/v1';
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/core/service_type/`);
+        const response = await axios.get(`${API_BASE_URL}core/service_type/`);
         if (response.status === 200) {
           setServices(response.data);
           setLoading(false); // Set loading to false once data is fetched

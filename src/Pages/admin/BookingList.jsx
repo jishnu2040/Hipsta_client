@@ -4,12 +4,14 @@ import axios from 'axios';
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'booked', 'completed', 'canceled'
+  const [statusFilter, setStatusFilter] = useState('all'); 
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/admin/booking-Details/');
+        const response = await axios.get(`${API_BASE_URL}admin/booking-Details/`);
         setBookings(response.data);
       } catch (error) {
         console.error('Error fetching bookings:', error);

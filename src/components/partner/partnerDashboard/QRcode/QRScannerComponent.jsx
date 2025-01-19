@@ -8,6 +8,8 @@ const QRScannerComponent = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [error, setError] = useState(null); // Error state
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const navigate = useNavigate();
 
   const handleScan = async (scanData) => {
@@ -28,7 +30,7 @@ const QRScannerComponent = () => {
     setError(null); // Reset error state
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/booking/verify-booking/', {
+      const response = await axios.post(`${API_BASE_URL}booking/verify-booking/`, {
         booking_id: bookingId, // Booking ID from the scan
       });
 

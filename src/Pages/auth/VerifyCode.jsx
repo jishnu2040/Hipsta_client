@@ -9,6 +9,8 @@ const VerifyCode = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleChange = (e) => {
     setCode(e.target.value);
   };
@@ -17,7 +19,7 @@ const VerifyCode = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/auth/verify-email/', { otp: code });
+      const response = await axios.post(`${API_BASE_URL}auth/verify-email/`, { otp: code });
       const { message, user_type, user_id } = response.data;
 
       if (response.status === 200) {

@@ -10,12 +10,13 @@ const PartnerDetailedPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 
   useEffect(() => {
     const fetchPartnerDetails = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/customer/partner-detail/${partnerId}`);
+        const response = await axios.get(`${API_BASE_URL}customer/partner-detail/${partnerId}`);
         setPartnerDetails(response.data);
       } catch (error) {
         setError('Failed to fetch partner details');

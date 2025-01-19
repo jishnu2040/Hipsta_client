@@ -7,13 +7,15 @@ const Chat = ({ ticketId }) => {
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;  
+
   // Fetch the initial chat messages when the component loads
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     
     // Fetch chat history from the API
     axios
-      .get(`http://localhost:8000/api/v1/ticket/${ticketId}/chatmessages/`, {
+      .get(`${API_BASE_URL}ticket/${ticketId}/chatmessages/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -13,11 +13,13 @@ const AddEmployee = ({ closeDrawer }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   // Fetch specializations to populate the dropdown
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/partner/specializations');
+        const response = await axios.get(`${API_BASE_URL}partner/specializations`);
         setSpecializations(response.data);
       } catch (error) {
         console.error('Error fetching specializations:', error);
@@ -60,7 +62,7 @@ const AddEmployee = ({ closeDrawer }) => {
       };
   
       const response = await axios.post(
-        `http://localhost:8000/api/v1/partner/employees/${partnerId}/`,
+        `${API_BASE_URL}partner/employees/${partnerId}/`,
         newEmployee
       );
   

@@ -12,10 +12,12 @@ const ResetPassword = () => {
   const [tokenValid, setTokenValid] = useState(false); // To track token validity
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const handleResetConfirm = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/v1/auth/password-reset-confirm/${uid}/${token}/`);
+        const response = await axios.get(`${API_BASE_URL}auth/password-reset-confirm/${uid}/${token}/`);
         console.log(response.data); // Debugging purpose
         if (!response.data.success) {
           setTokenValid(false);
@@ -53,7 +55,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.patch('http://localhost:8000/api/v1/auth/set-new-password/', {
+      const response = await axios.patch(`${API_BASE_URL}auth/set-new-password/`, {
         password,
         confirm_password: confirmPassword,
         uidb64: uid,

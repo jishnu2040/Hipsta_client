@@ -9,6 +9,8 @@ const AdminLoginPage = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,7 +21,7 @@ const AdminLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/admin/login/', formData);
+      const response = await axios.post(`${API_BASE_URL}admin/login/`, formData);
       const { access_token, refresh_token, user_type } = response.data;
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);

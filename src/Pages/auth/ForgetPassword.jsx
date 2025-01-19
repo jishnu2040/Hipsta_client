@@ -9,6 +9,9 @@ const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+
   const handleChange = (e) => {
     setEmail(e.target.value);
   };
@@ -18,7 +21,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/auth/password-reset/', { email });
+      const response = await axios.post(`${API_BASE_URL}auth/password-reset/`, { email });
       setIsLoading(false);
       toast.success("a link to reset your password has be sent to your email");
     } catch (error) {

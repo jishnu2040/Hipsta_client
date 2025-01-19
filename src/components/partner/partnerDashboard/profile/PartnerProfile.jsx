@@ -6,6 +6,8 @@ const PartnerProfile = () => {
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true); // State to manage loading
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     console.log("User ID:", userId);

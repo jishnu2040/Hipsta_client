@@ -13,13 +13,15 @@ const TeamMembers = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const partnerId = localStorage.getItem('partnerId');
 
     if (partnerId) {
       const fetchEmployees = async () => {
         try {
-          const response = await axios.get(`http://localhost:8000/api/v1/partner/employees/${partnerId}/`);
+          const response = await axios.get(`${API_BASE_URL}partner/employees/${partnerId}/`);
           setEmployees(response.data);
           setLoading(false);
         } catch (error) {

@@ -19,12 +19,14 @@ const NewService = () => {
   const [serviceTypeLoading, setServiceTypeLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServiceTypes = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/core/service_type/');
+        const response = await axios.get(`${API_BASE_URL}core/service_type/`);
         setServiceTypes(response.data);
         setServiceTypeLoading(false);
       } catch (error) {
@@ -61,7 +63,7 @@ const NewService = () => {
     data.append('partnerId', partnerId);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/partner/services/create/', data, {
+      const response = await axios.post(`${API_BASE_URL}partner/services/create/`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       toast.success('Service created successfully!');

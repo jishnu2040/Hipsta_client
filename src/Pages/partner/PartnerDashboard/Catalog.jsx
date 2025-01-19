@@ -13,6 +13,8 @@ const Catalog = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
@@ -24,7 +26,7 @@ const Catalog = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8000/api/v1/partner/${userId}/services/`);
+        const response = await axios.get(`${API_BASE_URL}partner/${userId}/services/`);
         setServices(response.data);
         setLoading(false);
 
@@ -61,7 +63,7 @@ const Catalog = () => {
 
   const handleUpdate = () => {
     if (userId) {
-      axios.get(`http://localhost:8000/api/v1/partner/${userId}/services/`)
+      axios.get(`${API_BASE_URL}partner/${userId}/services/`)
         .then((response) => setServices(response.data));
     }
   };

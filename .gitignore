@@ -25,3 +25,6 @@ dist-ssr
 
 # git ignore
 .env
+.env.development
+.env.production
+

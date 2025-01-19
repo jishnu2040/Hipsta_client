@@ -65,13 +65,15 @@ const PartnerListView = ({ location }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+ 
   const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
   const fetchPartners = async () => {
     try {
       setLoading(true);
-      const url = "http://localhost:8000/api/v1/customer/partners/";
-      const response = await axios.get(url);
+  
+      const response = await axios.get(`${API_BASE_URL}customer/partners/`);
       setPartners(response.data.results);
       setLoading(false);
     } catch (error) {

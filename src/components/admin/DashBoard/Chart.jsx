@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Custom tooltip component for displaying additional information
+
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
@@ -77,7 +77,7 @@ const Chart = () => {
           <Line
             type="monotone"
             dataKey="booked"
-            stroke="#28a745" // Green for booked appointments
+            stroke="#28a745" 
             strokeWidth={4}
             dot={{ fill: '#28a745', r: 5 }}
             activeDot={{ r: 8 }}
@@ -85,7 +85,7 @@ const Chart = () => {
           <Line
             type="monotone"
             dataKey="canceled"
-            stroke="#dc3545" // Red for canceled appointments
+            stroke="#dc3545" 
             strokeWidth={4}
             dot={{ fill: '#dc3545', r: 5 }}
             activeDot={{ r: 8 }}

@@ -4,11 +4,12 @@ import axios from 'axios';
 const Notification = () => {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/notification/create/', {
+      const response = await axios.post(`${API_BASE_URL}notification/create/`, {
         message,
       });
       setStatus('Notification created successfully!');

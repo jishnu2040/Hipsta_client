@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import axiosInstance from '../../../utlils/axiosinstance';
@@ -7,8 +7,8 @@ import TimeSelection from './Steps/TimeSelection';
 import Confirmation from './Steps/Confirmation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Lottie from 'lottie-react';
-import bookingSuccessAnimation from './animations/successAnimation.json'
+import lottie from 'lottie-web/build/player/lottie_light';
+import bookingSuccessAnimation from './animations/successAnimation.json';
 
 const AppointmentBooking = () => {
   const { serviceId } = useParams();
@@ -25,21 +25,20 @@ const AppointmentBooking = () => {
   const [partnerDetails, setPartnerDetails] = useState(null);
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
   const navigate = useNavigate();
+  const animationContainer = useRef(null); // Create a reference for the animation container
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
   const S3_BASE_URL = 'https://hipsta-s3.s3.ap-south-1.amazonaws.com/';
 
-
-  console.log(bookingData)
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const serviceResponse = await axios.get(`${baseUrl}/customer/service/${serviceId}`);
+        const serviceResponse = await axios.get(`${API_BASE_URL}customer/service/${serviceId}`);
         setServiceDetails(serviceResponse.data);
 
         const partnerId = serviceResponse.data.partner;
         setBookingData((prev) => ({ ...prev, partnerId: partnerId }));
-        const partnerResponse = await axios.get(`${baseUrl}/customer/partner-detail/${partnerId}/`);
+        const partnerResponse = await axios.get(`${API_BASE_URL}customer/partner-detail/${partnerId}/`);
         setPartnerDetails(partnerResponse.data);
 
         setBookingData((prev) => ({
@@ -60,9 +59,25 @@ const AppointmentBooking = () => {
     };
   }, [serviceId]);
 
+  useEffect(() => {
+    if (showSuccessAnimation && animationContainer.current) {
+      lottie.loadAnimation({
+        container: animationContainer.current,
+        animationData: bookingSuccessAnimation,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+      });
+    }
+
+    return () => {
+      lottie.destroy(); // Clean up animation on unmount
+    };
+  }, [showSuccessAnimation]);
+
   const lockSlot = async (slot_id) => {
     try {
-      await axios.post(`${baseUrl}/customer/lock-slot/`, { slot_id });
+      await axios.post(`${API_BASE_URL}customer/lock-slot/`, { slot_id });
       setBookingData((prev) => ({ ...prev, lockedSlot: slot_id }));
     } catch (error) {
       console.error('Failed to lock slot:', error);
@@ -73,7 +88,7 @@ const AppointmentBooking = () => {
   const releaseSlot = async (slot_id) => {
     try {
       if (slot_id) {
-        await axios.post(`${baseUrl}/customer/release-slot/`, { slot_id });
+        await axios.post(`${API_BASE_URL}customer/release-slot/`, { slot_id });
         setBookingData((prev) => ({ ...prev, lockedSlot: null }));
       }
     } catch (error) {
@@ -154,106 +169,89 @@ const AppointmentBooking = () => {
     { id: 3, label: 'Confirm', component: <Confirmation bookingData={bookingData} setBookingData={setBookingData} /> },
   ];
 
-  
-
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
 
       {showSuccessAnimation && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <Lottie
-              animationData={bookingSuccessAnimation}
-              loop={true}
-              style={{ height: 300, width: 300 }}
-            />
-          </div>
-        )}  
-
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-4 mb-6 flex justify-between items-center">
-          <button onClick={handleBack} className="text-gray-700 font-extrabold">&larr;</button>
-          <button onClick={handleDiscard} className="text-red-600 font-semibold">&times; Discard</button>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div ref={animationContainer} style={{ height: 300, width: 300 }}></div> {/* Animation container */}
         </div>
+      )}
 
-        <div className="flex justify-center">
-          <div className="w-full max-w-7xl flex flex-col lg:flex-row overflow-hidden">
-            <div className="lg:w-8/12 w-full">
-              <div className="text-gray-600 font-medium p-4">
-                {steps.map((step, index) => (
-                  <span
-                    key={step.id}
-                    className={`${
-                      currentStep === index ? 'text-gray-600 font-bold' : 'text-gray-400'
-                    }`}
-                  >
-                    {step.label}
-                    {index < steps.length - 1 && <span className="mx-2">&gt;</span>}
-                  </span>
-                ))}
-              </div>
-              <div>{steps[currentStep]?.component}</div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-4 mb-6 flex justify-between items-center">
+        <button onClick={handleBack} className="text-gray-700 font-extrabold">&larr;</button>
+        <button onClick={handleDiscard} className="text-red-600 font-semibold">&times; Discard</button>
+      </div>
+
+      <div className="flex justify-center">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row overflow-hidden">
+          <div className="lg:w-8/12 w-full">
+            <div className="text-gray-600 font-medium p-4">
+              {steps.map((step, index) => (
+                <span
+                  key={step.id}
+                  className={`${currentStep === index ? 'text-gray-600 font-bold' : 'text-gray-400'}`}
+                >
+                  {step.label}
+                  {index < steps.length - 1 && <span className="mx-2">&gt;</span>}
+                </span>
+              ))}
             </div>
+            <div>{steps[currentStep]?.component}</div>
+          </div>
 
-            {/* Summary Section: Right side for large screens (md: and above) */}
-            <div className="lg:w-4/12 w-full mt-6 lg:mt-0 lg:ml-6 sticky top-4 self-start bg-white border border-gray-300 rounded-xl p-4 md:space-y-4">
-              
-              {/* Partner Details: Visible on medium and larger screens */}
-              {partnerDetails && (
-                <div className="md:block hidden">
-                  <h4 className="text-lg font-semibold">Partner Details</h4>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={`${S3_BASE_URL}${partnerDetails.image_slides?.[0]?.image_url}`}
-                      alt={partnerDetails.business_name || 'Partner Image'}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                    <div>
-                      <p className="font-medium">{partnerDetails.business_name}</p>
-                      <p className="text-sm text-gray-500">{partnerDetails.address}</p>
-                    </div>
+          <div className="lg:w-4/12 w-full mt-6 lg:mt-0 lg:ml-6 sticky top-4 self-start bg-white border border-gray-300 rounded-xl p-4 md:space-y-4">
+            {partnerDetails && (
+              <div className="md:block hidden">
+                <h4 className="text-lg font-semibold">Partner Details</h4>
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={`${S3_BASE_URL}${partnerDetails.image_slides?.[0]?.image_url}`}
+                    alt={partnerDetails.business_name || 'Partner Image'}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <div>
+                    <p className="font-medium">{partnerDetails.business_name}</p>
+                    <p className="text-sm text-gray-500">{partnerDetails.address}</p>
                   </div>
                 </div>
-              )}
-
-              {/* Service Details */}
-              {serviceDetails && (
-                <div>
-                  <h4 className="md:block hidden text-lg font-semibold">Service Details</h4>
-                  <div className="hidden md:flex text-sm text-gray-600 justify-between">
-                    <p>{serviceDetails.name}</p>
-                    <p>{serviceDetails.duration} mins</p>
-                    <p>{serviceDetails.price}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Booking Data Summary */}
-              <ul className="md:block hidden space-y-2">
-                {bookingData.employee?.name && <li>Profession: {bookingData.employee.name}</li>}
-                {bookingData.date && <li>Date: {bookingData.date}</li>}
-                {bookingData.timeSlot?.start_time && <li>Time: {bookingData.timeSlot.start_time}</li>}
-              </ul>
-
-              {/* Total Price */}
-              <div className="md:block hidden mt-4 border-t pt-4">
-                <h4 className="text-lg font-semibold">Total Price</h4>
-                <p className="text-xl font-bold text-gray-600">
-                  {bookingData.totalAmount ? bookingData.totalAmount.toFixed(2) : '0.00'}
-                </p>
               </div>
+            )}
 
-              {/* Continue Button */}
-              <button
-                onClick={handleContinue}
-                className="mt-4 w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900"
-              >
-                {currentStep < steps.length - 1 ? 'Continue' : 'Confirm Booking'}
-              </button>
+            {serviceDetails && (
+              <div>
+                <h4 className="md:block hidden text-lg font-semibold">Service Details</h4>
+                <div className="hidden md:flex text-sm text-gray-600 justify-between">
+                  <p>{serviceDetails.name}</p>
+                  <p>{serviceDetails.duration} mins</p>
+                  <p>{serviceDetails.price}</p>
+                </div>
+              </div>
+            )}
+
+            <ul className="md:block hidden space-y-2">
+              {bookingData.employee?.name && <li>Profession: {bookingData.employee.name}</li>}
+              {bookingData.date && <li>Date: {bookingData.date}</li>}
+              {bookingData.timeSlot?.start_time && <li>Time: {bookingData.timeSlot.start_time}</li>}
+            </ul>
+
+            <div className="md:block hidden mt-4 border-t pt-4">
+              <h4 className="text-lg font-semibold">Total Price</h4>
+              <p className="text-xl font-bold text-gray-600">
+                {bookingData.totalAmount ? bookingData.totalAmount.toFixed(2) : '0.00'}
+              </p>
             </div>
+
+            <button
+              onClick={handleContinue}
+              className="mt-4 w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900"
+            >
+              {currentStep < steps.length - 1 ? 'Continue' : 'Confirm Booking'}
+            </button>
           </div>
         </div>
-
+      </div>
     </div>
   );
 };

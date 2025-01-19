@@ -12,11 +12,9 @@ import TopServices from "../../../components/partner/partnerDashboard/Dashboard/
 import SchedulerComponent from "./SchedulerComponent";
 
 const Dashboard = () => {
-
   const navigate = useNavigate();
   const { isDarkMode } = useContext(ThemeContext);
-
-  
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchPartnerId = async () => {
@@ -28,11 +26,11 @@ const Dashboard = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/partner/get-partner-id/${userId}/`
+          `${API_BASE_URL}partner/get-partner-id/${userId}/`
         );
         const partnerId = response.data.partner_id;
         const subscription_status = response.data.subscription_status;
-        localStorage.setItem("partnerId", partnerId); 
+        localStorage.setItem("partnerId", partnerId);
 
         if (subscription_status === "inactive") {
           navigate("/partner-subscription");
@@ -45,43 +43,47 @@ const Dashboard = () => {
     fetchPartnerId();
   }, []);
 
+  useEffect(() => {
+    console.log("Second useEffect called during initial rendering");
+    // Additional logic can be added here if needed
+  }, []);
 
   return (
     <div
-      className={` min-h-screen ${
+      className={`min-h-screen ${
         isDarkMode ? "bg-gray-900 text-gray-600" : "bg-white text-gray-800"
       }`}
     >
-      <div className=" gap-6 ">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
-        {/* Cards: 2/3 Width */}
-        <div className="lg:col-span-2">
-          <div className="grid grid-cols-1 sm:grid-cols-1 gap-6  p-2">
-            <Cards />
+      <div className="gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
+          {/* Cards: 2/3 Width */}
+          <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 p-2">
+              <Cards />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-6">
+              <Chart />
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-1 gap-6  ">
-            <Chart />
+          {/* Next Appointment: 1/3 Width */}
+          <div className="lg:col-span-1 p-2">
+            <NextAppointment />
           </div>
         </div>
-        {/* Next Appointment: 1/3 Width */}
-        <div className="lg:col-span-1 p-2 ">
-          <NextAppointment />
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 p-4 gap-2">
-        <div className="col-span-1 p-2">
-          <SubscriptionValidity />
+        <div className="grid grid-cols-1 md:grid-cols-3 p-4 gap-2">
+          <div className="col-span-1 p-2">
+            <SubscriptionValidity />
+          </div>
+          <div className="col-span-2">
+            <BarChartComponent />
+          </div>
         </div>
-        <div className="col-span-2">
-          <BarChartComponent />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
+          <TopEmployees />
+          <TopServices />
         </div>
-      </div>   
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
-        <TopEmployees />
-        <TopServices />
       </div>
-    </div>
     </div>
   );
 };

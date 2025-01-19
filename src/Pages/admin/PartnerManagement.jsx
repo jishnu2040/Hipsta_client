@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Modal component (with added functionality to close when clicking outside)
+// Modal component
 const Modal = ({ isOpen, imageUrl, onClose }) => {
   if (!isOpen) return null;
 
@@ -39,11 +39,13 @@ const PartnerManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   // Fetch partners from the backend
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/admin/partners/');
+        const response = await axios.get(`${API_BASE_URL}admin/partners/`);
         setPartners(response.data);
       } catch (error) {
         console.error('Error fetching partners:', error);
@@ -52,6 +54,26 @@ const PartnerManagement = () => {
 
     fetchPartners();
   }, []);
+
+  // Approve a partner
+  const handleApprovePartner = async (partnerId) => {
+    try {
+      await axios.patch(`${API_BASE_URL}admin/partners/${partnerId}/approve/`);
+      setPartners(partners.map(partner => partner.id === partnerId ? { ...partner, is_approved: true } : partner));
+    } catch (error) {
+      console.error('Error approving partner:', error);
+    }
+  };
+
+  // Reject a partner
+  const handleRejectPartner = async (partnerId) => {
+    try {
+      await axios.patch(`${API_BASE_URL}admin/partners/${partnerId}/reject/`);
+      setPartners(partners.map(partner => partner.id === partnerId ? { ...partner, is_approved: false } : partner));
+    } catch (error) {
+      console.error('Error rejecting partner:', error);
+    }
+  };
 
   // Filter partners based on the selected filter
   const filteredPartners = partners.filter(partner => {
@@ -131,15 +153,12 @@ const PartnerManagement = () => {
                 <td className="py-3 px-4">{partner.team_size}</td>
                 <td className="py-3 px-4">
                   {partner.license_certificate_image ? (
-                    <div className="flex items-center space-x-4">
-                    
-                      <button
-                        onClick={() => openModal(`https://hipsta-s3.s3.ap-south-1.amazonaws.com/${partner.license_certificate_image}`)}
-                        className="text-blue-500 underline"
-                      >
-                        View 
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => openModal(`https://hipsta-s3.s3.ap-south-1.amazonaws.com/${partner.license_certificate_image}`)}
+                      className="text-blue-500 underline"
+                    >
+                      View
+                    </button>
                   ) : (
                     <span className="text-sm text-gray-500">No Image</span>
                   )}
@@ -148,12 +167,14 @@ const PartnerManagement = () => {
                 <td className="py-3 px-4">
                   {partner.is_approved ? (
                     <button
+                      onClick={() => handleRejectPartner(partner.id)}
                       className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
                       Reject
                     </button>
                   ) : (
                     <button
+                      onClick={() => handleApprovePartner(partner.id)}
                       className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
                     >
                       Approve

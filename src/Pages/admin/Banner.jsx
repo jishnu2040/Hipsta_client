@@ -12,6 +12,8 @@ const Banner = () => {
     is_active: true,
   });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   // Fetch all banners
   useEffect(() => {
     fetchBanners();
@@ -19,7 +21,7 @@ const Banner = () => {
 
   const fetchBanners = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/core/banners/");
+      const response = await axios.get(`${API_BASE_URL}core/banners/`);
       setBanners(response.data);
     } catch (error) {
       console.error("Error fetching banners:", error);
@@ -46,7 +48,7 @@ const Banner = () => {
     });
 
     try {
-      await axios.post("http://localhost:8000/api/v1/core/banners/", formData, {
+      await axios.post(`${API_BASE_URL}core/banners/`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       fetchBanners();
@@ -67,7 +69,7 @@ const Banner = () => {
   // Handle delete
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/core/banners/${id}/`);
+      await axios.delete(`${API_BASE_URL}core/banners/${id}/`);
       fetchBanners();
     } catch (error) {
       console.error("Error deleting banner:", error);
@@ -77,7 +79,7 @@ const Banner = () => {
   // Toggle active status
   const toggleActive = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/api/v1/core/banners/${id}/toggle_active/`);
+      await axios.post(`${API_BASE_URL}core/banners/${id}/toggle_active/`);
       fetchBanners();
     } catch (error) {
       console.error("Error toggling active status:", error);

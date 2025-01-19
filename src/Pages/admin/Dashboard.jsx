@@ -10,20 +10,22 @@ const Dashboard = () => {
   const [partners, setPartners] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   // Fetch data from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch total bookings
-        const bookingsResponse = await axios.get('http://localhost:8000/api/v1/booking/total-bookings/');
+        const bookingsResponse = await axios.get(`${API_BASE_URL}booking/total-bookings/`);
         const totalBookingsData = bookingsResponse.data.total_bookings;
 
         // Fetch partner count
-        const partnersResponse = await axios.get('http://localhost:8000/api/v1/partner/partner-count/');
+        const partnersResponse = await axios.get(`${API_BASE_URL}partner/partner-count/`);
         const partnerCountData = partnersResponse.data.partner_count;
 
         // Fetch active user count
-        const usersResponse = await axios.get('http://localhost:8000/api/v1/auth/user-count/');
+        const usersResponse = await axios.get(`${API_BASE_URL}auth/user-count/`);
         const userCountData = usersResponse.data.user_count;
 
         // Update state variables with backend data

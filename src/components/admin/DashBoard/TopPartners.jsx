@@ -25,7 +25,7 @@ const TopPartners = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold mb-4">Top 5 Partners (Last Month)</h2>
+      <h2 className="text-lg font-semibold mb-4">Top 5 Partners 🏆 (Last Month)</h2>
       <ul className="space-y-3">
         {topPartners.map((partner, index) => (
           <li key={partner.partner_id} className="flex justify-between items-center p-3 border rounded-md">
