@@ -1,10 +1,10 @@
 # Stage 1: Build Stage
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to leverage Docker's cache for dependencies
+# Copy package.json and lock file
 COPY package.json package-lock.json ./
 
 # Install dependencies
@@ -20,22 +20,17 @@ ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 
 # Stage 2: Production Stage
-FROM node:18-slim
+FROM nginx:1.23-alpine
 
-# Set the working directory
-WORKDIR /app
+# Remove default Nginx configuration and add custom configuration
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
 
-# Copy the built files from the build stage
-COPY --from=build /app/dist /app/dist
+# Copy built files from the build stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy the necessary production dependencies from the build stage
-COPY --from=build /app/package.json /app/package-lock.json /app/
+# Expose the port for Nginx
+EXPOSE 80
 
-# Install only the production dependencies
-RUN npm install --production --no-optional
-
-# Expose the port for the frontend application
-EXPOSE 5173
-
-# Command to serve the production build
-CMD ["npx", "vite", "preview", "--host", "0.0.0.0"]
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]

@@ -164,7 +164,7 @@ const AppointmentBooking = () => {
   };
 
   const steps = [
-    { id: 1, label: 'Professional', component: <Professional setBookingData={setBookingData} bookingData={bookingData} partnerId={serviceDetails?.partner} /> },
+    { id: 1, label: 'Professional', component: <Professional setBookingData={setBookingData} bookingData={bookingData} partnerId={serviceDetails?.partner} serviceId={serviceDetails?.id}  /> },
     { id: 2, label: 'Time', component: <TimeSelection setBookingData={setBookingData} bookingData={bookingData} /> },
     { id: 3, label: 'Confirm', component: <Confirmation bookingData={bookingData} setBookingData={setBookingData} /> },
   ];

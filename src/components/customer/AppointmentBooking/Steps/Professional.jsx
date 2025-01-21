@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaUserCircle } from 'react-icons/fa'; // Import the avatar icon
 
-const Professional = ({ setBookingData, bookingData, partnerId }) => {
+const Professional = ({ setBookingData, bookingData, partnerId, serviceId }) => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${baseUrl}/customer/${partnerId}/employees/`);
+        const response = await axios.get(`${API_BASE_URL}customer/${partnerId}/employees/`,
+          { params: { service_id: serviceId } }
+        );
         setEmployees(response.data);
       } catch (err) {
         console.error('Error fetching employees:', err);
@@ -23,10 +25,10 @@ const Professional = ({ setBookingData, bookingData, partnerId }) => {
       }
     };
 
-    if (partnerId) {
+    if (partnerId && serviceId ) {
       fetchEmployees();
     }
-  }, [partnerId]);
+  }, [partnerId,  serviceId]);
 
   const handleSelectEmployee = (employee) => {
     setBookingData({

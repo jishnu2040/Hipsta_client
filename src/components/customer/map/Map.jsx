@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const openGoogleMaps = (lat, lng) => {
@@ -6,28 +6,41 @@ const openGoogleMaps = (lat, lng) => {
 };
 
 const Map = ({ partners }) => {
+  const mapRef = useRef(null);
+
   if (!partners || partners.length === 0) {
     return <p className="text-gray-500">No location data available for partners.</p>;
   }
 
-  // Calculate map center dynamically based on partner locations
-  const calculateCenter = (partners) => {
-    const latSum = partners.reduce((sum, partner) => sum + parseFloat(partner.latitude), 0);
-    const lngSum = partners.reduce((sum, partner) => sum + parseFloat(partner.longitude), 0);
-    return {
-      lat: latSum / partners.length,
-      lng: lngSum / partners.length,
-    };
+  // Create bounds to include all markers
+  const adjustMapBounds = () => {
+    if (partners.length > 1) {
+      const bounds = new window.google.maps.LatLngBounds();
+      partners.forEach((partner) => {
+        bounds.extend({
+          lat: parseFloat(partner.latitude),
+          lng: parseFloat(partner.longitude),
+        });
+      });
+      mapRef.current.fitBounds(bounds);
+    }
   };
 
-  const mapCenter = calculateCenter(partners);
+  useEffect(() => {
+    if (mapRef.current) {
+      adjustMapBounds();
+    }
+  }, [partners]);
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyD8rS9O4Zj7NL3PEfVChzHiyB0Z0-4yIu4">
       <GoogleMap
         mapContainerStyle={{ height: "500px", width: "100%" }}
-        center={mapCenter}
-        zoom={12} // Adjust zoom level as needed
+        zoom={2} // Initial zoom (will be overridden by fitBounds)
+        onLoad={(map) => {
+          mapRef.current = map; // Save the map instance to ref
+          adjustMapBounds();
+        }}
       >
         {partners.map((partner) => {
           const lat = parseFloat(partner.latitude);

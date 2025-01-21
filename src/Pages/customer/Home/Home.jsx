@@ -75,7 +75,7 @@ function Home() {
           <ServiceTypes />
         </div>
       </div>
-      <div className=" sm:px-24">
+      <div className="sm:px-24">
         <PartnerListView location={location} />
       </div>
       <div className=" sm:px-24 ">

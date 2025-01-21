@@ -39,7 +39,6 @@ const PartnerAvailability = ({ partnerId }) => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
-      <h3 className="text-xl font-semibold text-orange-500 mb-2">Availability</h3>
       {status === 'loading' && (
         <p className="text-gray-500 animate-pulse">Loading data...</p>
       )}
@@ -49,7 +48,7 @@ const PartnerAvailability = ({ partnerId }) => {
       {status === 'success' && (
         <>
           <div>
-            <h4 className="text-lg font-semibold text-green-600 mb-2">Available Slots</h4>
+            <h4 className="text-xl font-semibold text-gray-600 mb-4">Available Slots</h4>
             {availabilities.length === 0 ? (
               <p className="text-gray-600">No availability found for this partner.</p>
             ) : (
@@ -57,7 +56,7 @@ const PartnerAvailability = ({ partnerId }) => {
                 {availabilities.map((availability) => (
                   <li
                     key={availability.id}
-                    className="text-green-800 text-lg flex justify-between items-center"
+                    className="text-cyan-700 text-lg flex justify-between items-center"
                   >
                     <span>
                       {availability.is_weekly ? `${availability.weekday}` : availability.specific_date}
@@ -72,9 +71,9 @@ const PartnerAvailability = ({ partnerId }) => {
           </div>
 
           <div className="mt-6">
-            <h4 className="text-lg font-semibold text-red-600 mb-2">Holidays</h4>
+            <h4 className="text-lg font-semibold text-gray-600 mb-4">Holidays</h4>
             {holidays.length === 0 ? (
-              <p className="text-gray-600">No holidays found for this partner.</p>
+              <p className="text-gray-600 ">No holidays found for this partner.</p>
             ) : (
               <ul className="space-y-2">
                 {holidays.map((holiday) => (

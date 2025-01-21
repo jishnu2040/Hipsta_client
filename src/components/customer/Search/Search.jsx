@@ -7,6 +7,12 @@ const Search = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
 
+
+  // console.log("Navigating with:");
+  // console.log("Place:", selectedPlace);
+  // console.log("Service:", selectedService);
+  
+
   const navigate = useNavigate();
 
   // Handle location selection
@@ -20,11 +26,15 @@ const Search = () => {
   };
 
   const handleSearch = () => {
-    navigate("/partnersView", {
-      state: { location: selectedPlace, service: selectedService },
-    });
+    if (selectedPlace && selectedService) {
+      navigate("/partnersView", {
+        state: { location: selectedPlace, service: selectedService },
+      });
+    } else {
+      console.error("Both selectedPlace and selectedService are required.");
+    }
   };
-
+  
   return (
     <div className="p-3 rounded shadow">
       <h2 className="text-xl font-bold ">Search for a Service</h2>

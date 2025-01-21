@@ -39,16 +39,16 @@ const PartnerCard = ({ partner, S3_BASE_URL }) => (
           {partner.address || "No Address"}
         </p>
         <p className="text-sm text-gray-500 mt-2">
-          Team Size: {partner.team_size || "N/A"}
+          Service Professionals: {partner.team_size || "N/A"}
         </p>
         <div className="flex flex-wrap mt-3 gap-2">
           {partner.selected_services?.length > 0 ? (
-            partner.selected_services.map((serviceId) => (
+            partner.service_names.map((service) => (
               <span
-                key={serviceId}
+                key={service}
                 className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-medium"
               >
-                Service {serviceId}
+                {service}
               </span>
             ))
           ) : (
@@ -123,7 +123,8 @@ const PartnerListView = ({ location }) => {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div>
+    <div className="container mx-auto px-2">
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
       </h2>
@@ -134,6 +135,8 @@ const PartnerListView = ({ location }) => {
           </div>
         ))}
       </Slider>
+    </div>
+    
     </div>
   );
 };

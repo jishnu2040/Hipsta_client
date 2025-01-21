@@ -3,31 +3,37 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AddEmployee = ({ closeDrawer }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [specialization, setSpecialization] = useState('');
+  const [serviceType, setServiceType] = useState(''); // New state for service type
   const [isAvailable, setIsAvailable] = useState(true);
   const [isActive, setIsActive] = useState(true);
   const [specializations, setSpecializations] = useState([]);
+  const [serviceTypes, setServiceTypes] = useState([]); // State for service types
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  // Fetch specializations to populate the dropdown
+  // Fetch specializations and service types to populate dropdowns
   useEffect(() => {
-    const fetchSpecializations = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}partner/specializations`);
-        setSpecializations(response.data);
+        const [specializationsResponse, serviceTypesResponse] = await Promise.all([
+          axios.get(`${API_BASE_URL}partner/specializations`),
+          axios.get(`${API_BASE_URL}core/service_type/`),
+        ]);
+        setSpecializations(specializationsResponse.data);
+        setServiceTypes(serviceTypesResponse.data);
       } catch (error) {
-        console.error('Error fetching specializations:', error);
-        setError('Failed to fetch specializations.');
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch dropdown data.');
       }
     };
 
-    fetchSpecializations();
+    fetchData();
   }, []);
 
   // Handle form submission
@@ -35,14 +41,14 @@ const AddEmployee = ({ closeDrawer }) => {
     event.preventDefault();
     setLoading(true);
     setError(''); // Clear previous errors
-  
+
     const partnerId = localStorage.getItem('partnerId');
     if (!partnerId) {
       setError('Partner ID is missing. Please log in first.');
       setLoading(false);
       return;
     }
-  
+
     // Basic phone number validation
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phone)) {
@@ -50,32 +56,31 @@ const AddEmployee = ({ closeDrawer }) => {
       setLoading(false);
       return;
     }
-  
+
     try {
       const newEmployee = {
         name,
         phone,
         specialization, // Send specialization ID directly
+        service_type: serviceType, // Include service type ID
         is_available: isAvailable,
         is_active: isActive,
         partner: partnerId,
       };
-  
-      const response = await axios.post(
+
+      await axios.post(
         `${API_BASE_URL}partner/employees/${partnerId}/`,
         newEmployee
       );
-  
+
       setLoading(false);
-      closeDrawer(); 
+      closeDrawer(); // Close the drawer on successful submission
     } catch (error) {
       setLoading(false);
       console.error('Error creating employee:', error);
       setError('Failed to create employee. Please try again.');
     }
   };
-  
-  
 
   return (
     <div className="container mx-auto p-8">
@@ -83,7 +88,9 @@ const AddEmployee = ({ closeDrawer }) => {
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-700 mb-2" htmlFor="name">Name</label>
+          <label className="font-semibold text-gray-700 mb-2" htmlFor="name">
+            Name
+          </label>
           <input
             type="text"
             id="name"
@@ -95,7 +102,9 @@ const AddEmployee = ({ closeDrawer }) => {
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-700 mb-2" htmlFor="phone">Phone Number</label>
+          <label className="font-semibold text-gray-700 mb-2" htmlFor="phone">
+            Phone Number
+          </label>
           <input
             type="text"
             id="phone"
@@ -107,7 +116,9 @@ const AddEmployee = ({ closeDrawer }) => {
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold text-gray-700 mb-2" htmlFor="specialization">Specialization</label>
+          <label className="font-semibold text-gray-700 mb-2" htmlFor="specialization">
+            Specialization
+          </label>
           <select
             id="specialization"
             value={specialization}
@@ -116,15 +127,31 @@ const AddEmployee = ({ closeDrawer }) => {
             required
           >
             <option value="">Select Specialization</option>
-            {specializations.length === 0 ? (
-              <p>No specializations available.</p>
-            ) : (
-              specializations.map((spec) => (
-                <option key={spec.id} value={spec.id}>
-                  {spec.name}
-                </option>
-              ))
-            )}
+            {specializations.map((spec) => (
+              <option key={spec.id} value={spec.id}>
+                {spec.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700 mb-2" htmlFor="serviceType">
+            Service Type
+          </label>
+          <select
+            id="serviceType"
+            value={serviceType}
+            onChange={(e) => setServiceType(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-md"
+            required
+          >
+            <option value="">Select Service Type</option>
+            {serviceTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -137,7 +164,9 @@ const AddEmployee = ({ closeDrawer }) => {
               onChange={() => setIsAvailable(!isAvailable)}
               className="h-5 w-5"
             />
-            <label htmlFor="isAvailable" className="ml-2 text-gray-700">Available</label>
+            <label htmlFor="isAvailable" className="ml-2 text-gray-700">
+              Available
+            </label>
           </div>
 
           <div className="flex items-center">
@@ -148,7 +177,9 @@ const AddEmployee = ({ closeDrawer }) => {
               onChange={() => setIsActive(!isActive)}
               className="h-5 w-5"
             />
-            <label htmlFor="isActive" className="ml-2 text-gray-700">Active</label>
+            <label htmlFor="isActive" className="ml-2 text-gray-700">
+              Active
+            </label>
           </div>
         </div>
 

@@ -115,7 +115,18 @@ const Services = ({ partnerId }) => {
 
               <div className="flex flex-col  text-right">
                 <span className="text-gray-700 font-medium">₹{service.price}</span>
-                <span className="text-sm text-orange-600">{service.duration} min</span>
+                <span className="text-sm text-green-600">
+                  {service.duration
+                    .split(":")
+                    .map((part, index) => {
+                      if (index === 0 && part !== "00") return `${part} hr`; // Hours
+                      if (index === 1 && part !== "00") return `${part} min`; // Minutes
+                      return ""; // Remove seconds or "00"
+                    })
+                    .filter(Boolean)
+                    .join(" ")}
+                </span>
+
               </div>
             </div>
 
