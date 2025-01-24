@@ -1,21 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Scheduler } from 'devextreme-react/scheduler';
 import axios from 'axios';
-import ThemeContext from '../../../ThemeContext'; // Assuming a ThemeContext is available
+import ThemeContext from '../../../ThemeContext';
 
 const SchedulerComponent = () => {
   const [appointments, setAppointments] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [isTableView, setIsTableView] = useState(false); // State to toggle between table and calendar view
-  const [defaultDate, setDefaultDate] = useState(new Date()); // Default date state
+  const [isTableView, setIsTableView] = useState(false);
+  const [defaultDate, setDefaultDate] = useState(new Date());
 
-  const { isDarkMode } = useContext(ThemeContext); // Get dark mode state from context
+  const { isDarkMode } = useContext(ThemeContext); 
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 
   useEffect(() => {
-    const partnerId = localStorage.getItem('partnerId'); // Retrieve partnerId from localStorage
+    const partnerId = localStorage.getItem('partnerId');
 
     if (partnerId) {
       // Fetch appointments for the specific partner

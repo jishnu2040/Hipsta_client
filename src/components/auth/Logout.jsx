@@ -36,7 +36,7 @@ const Logout = () => {
           localStorage.removeItem("access");
           localStorage.removeItem("refresh");
           localStorage.removeItem("user");
-          navigate("/login");
+          navigate("/");
           toast.info("Session expired. Logged out.");
         } else {
           toast.error("Logout failed. Please try again.");

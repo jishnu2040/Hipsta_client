@@ -59,6 +59,9 @@ function Home() {
     return () => clearTimeout(timer); // Cleanup timeout on component unmount
   }, [location]);
 
+  // Debug: Check location value
+  console.log("Current Location:", location);
+
   if (loading) {
     return <ShimmerHome />;
   }
@@ -66,45 +69,44 @@ function Home() {
   return (
     <div className="flex flex-col">
       <MainHeader />
-      <div className="mx-6 md:mx-8 lg:mx-16 xl:mx-32 py-8 flex flex-col md:flex-row justify-between">
-        <div className="flex-1 mr-4">
+      <div className="mx-[3%] md:mx-[5%] xl:mx-[10%] py-[2%] flex flex-col md:flex-row justify-between">
+        <div className="flex-1 mr-[5%]">
           <Search onPlaceSelected={handlePlaceSelected} />
           <Banner />
         </div>
-        <div className="flex-1 ml-4">
+        <div className="flex-1 ">
           <ServiceTypes />
         </div>
       </div>
-      <div className="sm:px-24">
+      <div className="sm:px-[10%]">
         <PartnerListView location={location} />
       </div>
-      <div className=" sm:px-24 ">
+      <div className="sm:px-[10%]">
         <Business />
       </div>
       <Footer />
       {showLocationPrompt && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">Allow Location Access</h2>
-          <p className="text-sm text-gray-500 mb-4">We need your location to provide better services near you.</p>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-          <div className="space-x-4">
-            <button
-              onClick={handleLocationObtained}
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg"
-            >
-              Allow
-            </button>
-            <button
-              onClick={handleClosePrompt}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
-            >
-              Close
-            </button>
+          <div className="bg-white p-[5%] rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h2 className="text-lg font-semibold text-gray-800 mb-[3%]">Allow Location Access</h2>
+            <p className="text-sm text-gray-500 mb-[4%]">We need your location to provide better services near you.</p>
+            {error && <p className="text-red-500 text-sm mb-[4%]">{error}</p>}
+            <div className="space-x-[5%]">
+              <button
+                onClick={handleLocationObtained}
+                className="bg-gray-900 text-white px-[5%] py-[2%] rounded-lg"
+              >
+                Allow
+              </button>
+              <button
+                onClick={handleClosePrompt}
+                className="bg-gray-200 text-gray-700 px-[5%] py-[2%] rounded-lg hover:bg-gray-300"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      
       )}
     </div>
   );

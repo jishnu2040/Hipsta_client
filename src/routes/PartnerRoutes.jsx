@@ -43,8 +43,8 @@ const PartnerRoutes = () => {
           <Route path="logout" element={<Logout />} />
         </Route>
         <Route path="qr" element= {<QRScannerComponent />}/>
+        <Route path="employeeAvailability" element={<EmployeeAvailability />} />
       </Route>
-      <Route path="employeeAvailability" element={<EmployeeAvailability />} />
       <Route path="/holiday" element={<AddHoliday/>} />
       
 

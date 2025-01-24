@@ -24,7 +24,7 @@ const Sidebar = ({ isSidebarMinimized, onToggleSidebar }) => {
     { title: 'Catalog', link: '/partner/catalog', icon: <FaBook />, restrictedOnMobile: false },
     { title: 'Team', link: '/partner/team', icon: <FaUsers />, restrictedOnMobile: false },
     { title: 'Profile', link: '/partner/profile', icon: <CgProfile />, restrictedOnMobile: true },
-    { title: 'Availability', link: '/employeeAvailability', icon: <FaClock />, restrictedOnMobile: true },
+    { title: 'Availability', link: '/partner/employeeAvailability', icon: <FaClock />, restrictedOnMobile: true },
     { title: 'Help', link: '/helpdesk/tickets', icon: <FaHeadset />, restrictedOnMobile: false },
   ];
   

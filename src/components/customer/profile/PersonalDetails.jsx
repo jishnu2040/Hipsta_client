@@ -9,9 +9,11 @@ const PersonalDetails = () => {
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('access_token'); 
+    console.log(userId, token);
+    
 
     if (userId && token) {
-      axiosInstance.get(`http://localhost:8000/api/v1/auth/profile/${userId}/`, {
+      axiosInstance.get(`/auth/profile/${userId}/`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

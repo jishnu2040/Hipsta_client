@@ -76,13 +76,16 @@ const Login = ({ onLoginSuccess }) => {
       const server_res = await axios.post(`${API_BASE_URL}auth/google/`, { access_token: payload });
 
       if (server_res.status === 200) {
-        const { email, full_name, access_token, refresh_token, userId } = server_res.data;
+        const { email, full_name, access_token, refresh_token, user_id } = server_res.data;
+
+        console.log(server_res.data);
+        
 
         localStorage.setItem('user', JSON.stringify({ email, full_name }));
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
-
-        dispatch(setUserId(userId));
+        localStorage.setItem('userId', user_id);
+        dispatch(setUserId(user_id));
         toast.success('Google login successful');
 
         navigate('/');

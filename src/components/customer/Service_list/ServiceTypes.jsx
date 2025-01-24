@@ -34,7 +34,7 @@ const ServiceTypes = ({ small = false }) => {
 
   return (
     <div>
-      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium mt-4 ml-10 text-start`}>
+      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium  ml-8 text-start`}>
         {small ? null : 'Discover Our Services'}
       </h2>
 
@@ -42,7 +42,7 @@ const ServiceTypes = ({ small = false }) => {
       {loading ? (
         <ShimmerServiceTypes />
       ) : (
-        <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-4' : 'grid-cols-2 sm:grid-cols-4 gap-6 p-8'}`}>
+        <div className={`grid ${small ? 'grid-cols-4 sm:grid-cols-3 gap-2 p-4' : 'grid-cols-2 sm:grid-cols-4 gap-6 p-2'}`}>
           {serviceTypes.map((service) => (
             <div
               key={service.id}

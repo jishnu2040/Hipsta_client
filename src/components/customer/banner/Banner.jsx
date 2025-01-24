@@ -5,13 +5,12 @@ const Banner = () => {
   const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
-    // Fetch banners from the backend
     const fetchBanners = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}core/banners/`); 
+        const response = await axios.get(`${API_BASE_URL}core/banners/`);
         setBanners(response.data.filter((banner) => banner.is_active));
       } catch (error) {
         console.error('Error fetching banners', error);
@@ -22,12 +21,11 @@ const Banner = () => {
   }, [API_BASE_URL]);
 
   useEffect(() => {
-    // Auto-slide the banners every 3 seconds
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
     }, 3000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [banners]);
 
   if (banners.length === 0) {
@@ -55,12 +53,12 @@ const Banner = () => {
       </div>
 
       {/* Navigation Dots */}
-      <div className="dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="hidden sm:flex dots absolute bottom-4 left-1/2 transform -translate-x-1/2 space-x-2">
         {banners.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 sm:w-2 sm:h-2 rounded-full ${
+            className={`w-3 h-3 rounded-full ${
               index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
             }`}
           />

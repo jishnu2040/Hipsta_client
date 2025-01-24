@@ -20,33 +20,34 @@ const Dashboard = () => {
     const fetchPartnerId = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) {
-        console.error("User ID not found in local storage");
         return;
       }
-
+  
       try {
         const response = await axios.get(
           `${API_BASE_URL}partner/get-partner-id/${userId}/`
         );
+  
+  
         const partnerId = response.data.partner_id;
         const subscription_status = response.data.subscription_status;
+  
         localStorage.setItem("partnerId", partnerId);
-
+  
         if (subscription_status === "inactive") {
           navigate("/partner-subscription");
         }
       } catch (error) {
-        console.error("Failed to fetch partner ID:", error.response?.data || error.message);
+        console.error(
+          "Failed to fetch partner ID:",
+          error.response?.data || error.message
+        );
       }
     };
-
+  
     fetchPartnerId();
-  }, []);
-
-  useEffect(() => {
-    console.log("Second useEffect called during initial rendering");
-    // Additional logic can be added here if needed
-  }, []);
+  }, [API_BASE_URL, navigate]);
+  
 
   return (
     <div

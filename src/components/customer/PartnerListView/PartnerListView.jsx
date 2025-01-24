@@ -14,7 +14,6 @@ const OfflineUI = () => (
   </div>
 );
 
-
 const PartnerCard = ({ partner, S3_BASE_URL }) => (
   <Link to={`/detaildPage/${partner.id}`}>
     <div className="bg-white rounded-xl shadow overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out group">
@@ -66,17 +65,26 @@ const PartnerListView = ({ location }) => {
   const [error, setError] = useState(false);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
- 
   const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
   const fetchPartners = async () => {
     try {
       setLoading(true);
+      console.log("Fetching partners for location:", location);
+      
+
   
-      const response = await axios.get(`${API_BASE_URL}customer/partners/`);
+      const response = await axios.get(`${API_BASE_URL}customer/partners/`, {
+        params: {
+          latitude: location.lat,
+          longitude: location.lng,
+        },
+      });
+
       setPartners(response.data.results);
       setLoading(false);
     } catch (error) {
+      console.error("Error fetching partners:", error);
       setError(true); // Set error to true for offline mode
       setLoading(false);
     }
@@ -84,7 +92,7 @@ const PartnerListView = ({ location }) => {
 
   useEffect(() => {
     fetchPartners();
-  }, []);
+  }, [location]); // Re-fetch partners whenever location changes
 
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -95,7 +103,7 @@ const PartnerListView = ({ location }) => {
   }
 
   if (!partners.length) {
-    return <div className="text-center text-gray-500">No partners found.</div>;
+    return <div className="text-center text-gray-500">No partners found near you.</div>;
   }
 
   const sliderSettings = {
@@ -123,7 +131,6 @@ const PartnerListView = ({ location }) => {
   };
 
   return (
-    <div>
     <div className="container mx-auto px-2">
       <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
@@ -135,8 +142,6 @@ const PartnerListView = ({ location }) => {
           </div>
         ))}
       </Slider>
-    </div>
-    
     </div>
   );
 };

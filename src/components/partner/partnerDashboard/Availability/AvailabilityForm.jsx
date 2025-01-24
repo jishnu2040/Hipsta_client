@@ -26,6 +26,12 @@ const AvailabilityForm = ({ refreshAvailability, editAvailability, onSaveEdit })
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const partnerId = localStorage.getItem('partnerId');
+    if (!partnerId) {
+      toast.error('Partner ID not found in local storage.');
+      return;
+    }
+
     // Validation
     if (startTime >= endTime) {
       toast.error("Start time cannot be later than or equal to end time.");
@@ -42,6 +48,7 @@ const AvailabilityForm = ({ refreshAvailability, editAvailability, onSaveEdit })
       specific_date: !isWeekly ? specificDate : null,
       start_time: startTime,
       end_time: endTime,
+      partner: partnerId,
     };
 
     try {

@@ -1,7 +1,7 @@
 import React from "react";
 
 const ShimmerServiceTypes = () => (
-  <div className="animate-pulse grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-10">
+  <div className="animate-pulse grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 ">
     {Array(8)
       .fill("")
       .map((_, index) => (
