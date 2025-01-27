@@ -38,7 +38,7 @@ axiosInstance.interceptors.request.use(async (req) => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
-        window.location.href = '/login'; // Redirect to login if token refresh fails
+        window.location.href = '/auth/login'; 
       }
     }
   }

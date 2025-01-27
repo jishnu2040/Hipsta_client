@@ -6,10 +6,12 @@ const ServiceAutocomplete = ({ onServiceSelected }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/v1/core/services");
+        const response = await fetch(`${API_BASE_URL}core/services`);
         const data = await response.json();
         // Store both id and name
         setServices(data.map((service) => ({ id: service.id, name: service.name })));
