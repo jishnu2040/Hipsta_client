@@ -6,6 +6,8 @@ const WorkPlace = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
+
   const partnerId = localStorage.getItem('partnerId');
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const WorkPlace = () => {
     const fetchPartnerDetails = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/v1/partner/partner-detail/?user_id=${userId}`
+          `${API_BASE_URL}partner/partner-detail/?user_id=${userId}`
         );
 
         if (!response.ok) {
@@ -133,7 +135,7 @@ const WorkPlace = () => {
               className="flex items-start bg-gray-50 p-4 rounded-lg shadow hover:shadow-lg transition-shadow"
             >
               <img
-                src={service.image}
+                src={service.image_url}
                 alt={service.name}
                 className="w-16 h-16 rounded-md object-cover mr-4"
               />

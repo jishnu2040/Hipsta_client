@@ -8,8 +8,7 @@ const ServiceTypes = ({ small = false }) => {
   const [loading, setLoading] = useState(true); // Track loading state
   const navigate = useNavigate();
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -34,7 +33,7 @@ const ServiceTypes = ({ small = false }) => {
 
   return (
     <div>
-      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium  ml-8 text-start`}>
+      <h2 className={`${small ? 'text-base' : 'md:text-3xl'} font-medium ml-8 text-start`}>
         {small ? null : 'Discover Our Services'}
       </h2>
 
@@ -49,9 +48,9 @@ const ServiceTypes = ({ small = false }) => {
               className={`max-w-sm mx-auto ${small ? 'h-24 w-20' : 'h-28'} bg-white rounded-lg p-2 hover:shadow-xl transition-shadow duration-300`}
               onClick={() => handleServiceClick(service.id)}
             >
-              {service.image && (
+              {service.image_url && (
                 <img
-                  src={service.image}
+                  src={service.image_url} // Use `image_url` from the backend
                   alt={service.name}
                   className={`w-full ${small ? 'h-16' : 'h-full'} object-contain`}
                 />

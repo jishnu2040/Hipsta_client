@@ -132,7 +132,7 @@ const PartnerList = ({ partners }) => {
 
 
         {/* Map Section */}
-        <div className="col-span-12 md:col-span-4 lg:col-span-4 bg-gray-50 rounded-lg sticky top-24 shadow-sm">
+        <div className="col-span-12 md:col-span-4 lg:col-span-4 bg-black-50 rounded-lg sticky top-24 shadow-sm">
           <Map partners={partners} />
         </div>
       </div>

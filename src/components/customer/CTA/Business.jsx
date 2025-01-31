@@ -42,7 +42,7 @@ const Business = () => {
               alt="Business Dashboard"
               width={1824}
               height={1080}
-              className="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
+              className="absolute left-0 top-0 w-[40rem] max-w-none scale-150 object-cover object-top rounded-md bg-white/5 ring-1 ring-white/10"
             />
           </div>
         </div>

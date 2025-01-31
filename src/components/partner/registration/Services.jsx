@@ -11,13 +11,15 @@ const Services = ({ nextStep, previousStep }) => {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServiceTypes = async () => {
       setStatus('loading');
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/core/service_type/');
+        const response = await axios.get(`${API_BASE_URL}core/service_type/`);
         setServiceCategories(response.data);
         setStatus('succeeded');
       } catch (err) {
@@ -90,7 +92,12 @@ const Services = ({ nextStep, previousStep }) => {
               onClick={() => handleServiceSelect(service.id)}
             >
               <label className="flex flex-col items-center">
-                <img src={service.image} alt={service.name} className="w-24 h-24 object-cover mb-2 rounded-lg" />
+                {/* Update image URL to use S3 URL */}
+                <img
+                  src={service.image_url} // This is the updated property for the image URL
+                  alt={service.name}
+                  className="w-24 h-24 object-cover mb-2 rounded-lg"
+                />
                 <span className="mt-2 text-lg font-medium text-center">{service.name}</span>
               </label>
             </div>

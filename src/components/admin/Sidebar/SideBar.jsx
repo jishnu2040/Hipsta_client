@@ -13,6 +13,7 @@ const Sidebar = () => {
         { title: 'Notification', Link: '/admin/notification', icon: <FaBell /> },
         { title : 'banner', Link: '/admin/banner', icon: <PiFlagBannerFill /> },
         { title : 'service', Link: '/admin/service', icon: <PiFlagBannerFill /> },
+        { title : 'specializations', Link: '/admin/specializations', icon: <PiFlagBannerFill /> },
         { title: 'Support', Link: '/support', icon: <FaHeadset /> },
     ];
 

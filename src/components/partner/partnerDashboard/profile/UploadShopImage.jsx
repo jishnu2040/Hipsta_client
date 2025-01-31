@@ -7,10 +7,18 @@ const UploadShopImage = ({ partnerId }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  // Handle file input change
   const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file));  // Show preview of selected image
+    }
   };
 
+  // Upload the image to S3
   const uploadImageToS3 = async () => {
     if (!imageFile) return;
 
@@ -18,30 +26,32 @@ const UploadShopImage = ({ partnerId }) => {
     setErrorMessage(null);
 
     try {
-      // Step 1: Get the pre-signed URL from the backend
-      const response = await axios.post('http://localhost:8000/api/v1/partner/get-presigned-url/', {
+      // Step 1: Get pre-signed URL from backend
+      const response = await axios.post(`${API_BASE_URL}partner/get-presigned-url/`, {
         file_name: `shop-images/${partnerId}/${imageFile.name}`,
         file_type: imageFile.type,
       });
 
       const { url, file_key } = response.data;
 
-      // Step 2: Upload the file to S3 using the pre-signed URL
-      await axios.put(url, imageFile, {
+      // Step 2: Upload file to S3 using pre-signed URL
+      const uploadResponse = await axios.put(url, imageFile, {
         headers: {
           'Content-Type': imageFile.type,
         },
       });
 
-      // Step 3: The image is successfully uploaded, now store the image URL in the backend
-      await axios.post('http://localhost:8000/api/v1/partner/partner-image-save', {
-        image_url: file_key,  // This is the image URL from S3 without query parameters
-        partner_id: partnerId,
-      });
+      if (uploadResponse.status === 200) {
+        // Step 3: Save the image URL in the backend
+        await axios.post(`${API_BASE_URL}partner/partner-image-save`, {
+          image_url: file_key, // This is the image URL from S3 without query parameters
+          partner_id: partnerId,
+        });
 
-      setImageUrl(url.split('?')[0]);  // Extract the image URL without query params
-      setLoading(false);
-      alert('Image uploaded successfully!');
+        setImageUrl(url.split('?')[0]);  // Remove query params from the image URL
+        setLoading(false);
+        alert('Image uploaded successfully!');
+      }
     } catch (error) {
       setLoading(false);
       setErrorMessage('Error uploading image. Please try again.');
@@ -50,21 +60,31 @@ const UploadShopImage = ({ partnerId }) => {
   };
 
   return (
-    <div>
-      <h3>Upload Shop Image</h3>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={uploadImageToS3} disabled={loading}>
+    <div className="max-w-md mx-auto p-6 ">
+      <h3 className="text-xl font-semibold mb-4 text-center">Upload Shop Image</h3>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="block w-full text-sm text-gray-700 mb-4"
+      />
+      <div className="flex justify-center mb-4">
+        {imageFile && (
+          <img
+            src={imageUrl}
+            alt="Shop Preview"
+            className="w-32 h-32 object-cover rounded-md"
+          />
+        )}
+      </div>
+      <button
+        onClick={uploadImageToS3}
+        disabled={loading}
+        className={`w-full py-2 rounded-lg text-white ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'} transition`}
+      >
         {loading ? 'Uploading...' : 'Upload Image'}
       </button>
-
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-
-      {imageUrl && (
-        <div>
-          <h4>Uploaded Image:</h4>
-          <img src={imageUrl} alt="Uploaded Shop" className="w-32 h-32 object-cover" />
-        </div>
-      )}
+      {errorMessage && <p className="text-red-500 text-center mt-2">{errorMessage}</p>}
     </div>
   );
 };

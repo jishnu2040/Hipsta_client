@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const VerifyData = ({ previousStep }) => {
   // Retrieve the user ID from localStorage
   const userId = localStorage.getItem('user_id');
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   
   // Handle case where userId is not available in localStorage
   if (!userId) {
@@ -74,7 +76,7 @@ const VerifyData = ({ previousStep }) => {
     };
   
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/partner/create/', dataToSend);
+      const response = await axios.post(`${API_BASE_URL}partner/create/`, dataToSend);
       if (response.status === 201 || response.status === 200) {
         toast.success('Partner data submitted successfully!');
         // Clear localStorage after submission

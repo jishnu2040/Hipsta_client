@@ -6,6 +6,10 @@ const FileUpload = ({ nextStep, previousStep }) => {
   const [uploadStatus, setUploadStatus] = useState(null);
   const [progress, setProgress] = useState(0);
 
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -17,7 +21,8 @@ const FileUpload = ({ nextStep, previousStep }) => {
     }
   
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/partner/get-presigned-url/', {
+      // Step 1: Get the pre-signed URL from the backend
+      const response = await axios.post(`${API_BASE_URL}partner/get-presigned-url/`, {
         file_name: file.name,
         file_type: file.type,
       });
@@ -30,7 +35,7 @@ const FileUpload = ({ nextStep, previousStep }) => {
   
       console.log("File upload URL:", url);
       console.log("File key:", file_key);
-  
+      // Step 2: Upload the file to S3 using the pre-signed URL
       const uploadResponse = await axios.put(url, file, {
         headers: {
           'Content-Type': file.type, // Ensure the Content-Type is the file's MIME type

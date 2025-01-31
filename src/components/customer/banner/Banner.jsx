@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Banner = () => {
   const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}core/banners/`);
+        const response = await axios.get(`${API_BASE_URL}core/banners`);
         setBanners(response.data.filter((banner) => banner.is_active));
       } catch (error) {
-        console.error('Error fetching banners', error);
+        console.error("Error fetching banners", error);
       }
     };
 
@@ -44,7 +45,7 @@ const Banner = () => {
         {banners.map((banner) => (
           <div key={banner.id} className="banner-item w-full flex-shrink-0">
             <img
-              src={banner.image}
+              src={`${S3_BASE_URL}${banner.image_url}`}
               alt={banner.title}
               className="w-full h-full object-scale-down rounded-xl"
             />
@@ -59,7 +60,7 @@ const Banner = () => {
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`w-3 h-3 rounded-full ${
-              index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
+              index === currentIndex ? "bg-blue-500" : "bg-gray-300"
             }`}
           />
         ))}

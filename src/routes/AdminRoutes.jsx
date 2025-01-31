@@ -7,6 +7,7 @@ import Customer from '../Pages/admin/Customer';
 import PartnerManagement from '../Pages/admin/PartnerManagement';
 import Notification from '../Pages/admin/Notification';
 import Banner from '../Pages/admin/Banner';
+import SpecializationManager from '../Pages/admin/SpecializationManager';
 import Support from '../Pages/admin/Support';
 import Dashboard from '../Pages/admin/Dashboard';
 import ProtectedAdminRoute from '../protectRoutes/ProtectedAdminRoute';
@@ -25,6 +26,7 @@ const AdminRoutes = () => {
         <Route path="notification" element={<Notification />} />
         <Route path="banner" element={<Banner />} />
         <Route path="service" element={<Service />} />
+        <Route path="specializations" element={<SpecializationManager />} />
       </Route>
       <Route path="/support" element={<Support />} />
     </Routes>
