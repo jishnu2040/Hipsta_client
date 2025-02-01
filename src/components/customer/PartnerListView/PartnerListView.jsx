@@ -20,7 +20,7 @@ const PartnerCard = ({ partner, S3_BASE_URL }) => (
       <div className="relative h-48 md:h-56 overflow-hidden">
         {partner.image_slides?.length > 0 ? (
           <img
-            src={`${S3_BASE_URL}${partner.image_url}`}
+            src={`${S3_BASE_URL}${partner.image_slides[0]?.image_url}`}
             alt="Partner Slide"
             className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
