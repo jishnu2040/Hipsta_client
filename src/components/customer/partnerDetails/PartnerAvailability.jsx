@@ -4,7 +4,9 @@ import axios from 'axios';
 const PartnerAvailability = ({ partnerId }) => {
   const [availabilities, setAvailabilities] = useState([]);
   const [holidays, setHolidays] = useState([]);
-  const [status, setStatus] = useState('loading'); // 'loading', 'error', or 'success'
+  const [status, setStatus] = useState('loading'); 
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Format time to 12-hour clock
   const formatTime = (time) => {
@@ -18,12 +20,12 @@ const PartnerAvailability = ({ partnerId }) => {
     const fetchAvailability = async () => {
       try {
         const { data: availabilityData } = await axios.get(
-          `http://localhost:8000/api/v1/customer/${partnerId}/availability/`
+          `${API_BASE_URL}customer/${partnerId}/availability/`
         );
         setAvailabilities(availabilityData);
 
         const { data: holidayData } = await axios.get(
-          `http://localhost:8000/api/v1/partner/${partnerId}/holidays/`
+          `${API_BASE_URL}partner/${partnerId}/holidays/`
         );
         setHolidays(holidayData);
 

@@ -8,7 +8,7 @@ const AddServices = ({ partnerId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +18,7 @@ const AddServices = ({ partnerId }) => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/customer/service/`, {
+        const response = await axios.get(`${API_BASE_URL}customer/service/`, {
           params: { partnerId },
         });
         setServices(response.data);

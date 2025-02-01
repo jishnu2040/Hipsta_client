@@ -10,13 +10,13 @@ const Services = ({ partnerId }) => {
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState('all');
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/customer/service/`, {
+        const response = await axios.get(`${API_BASE_URL}customer/service/`, {
           params: { partnerId },
         });
 

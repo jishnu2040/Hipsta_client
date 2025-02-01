@@ -17,19 +17,18 @@ const Appointment = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const baseUrl = 'http://localhost:8000/api/v1';
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   // Fetch service and employees
   useEffect(() => {
     const fetchServiceAndEmployees = async () => {
       try {
-        const serviceResponse = await axios.get(`${baseUrl}/customer/service/${serviceId}`);
+        const serviceResponse = await axios.get(`${API_BASE_URL}customer/service/${serviceId}`);
         setService(serviceResponse.data);
   
         // Set total amount from service price
         setTotalAmount(parseFloat(serviceResponse.data.price)); // Ensure price is converted to a number
   
-        const employeesResponse = await axios.get(`${baseUrl}/customer/${serviceResponse.data.partner}/employees/`);
+        const employeesResponse = await axios.get(`${API_BASE_URL}customer/${serviceResponse.data.partner}/employees/`);
         setEmployees(employeesResponse.data);
       } catch (error) {
         setError('Failed to fetch service or employees');
@@ -58,7 +57,7 @@ const Appointment = () => {
 
     if (selectedEmployee) {
       try {
-        const response = await axios.get(`${baseUrl}/customer/employee/${selectedEmployee}/available-times/`, {
+        const response = await axios.get(`${API_BASE_URL}customer/employee/${selectedEmployee}/available-times/`, {
           params: { date },
         });
         setAvailableTimes(response.data);

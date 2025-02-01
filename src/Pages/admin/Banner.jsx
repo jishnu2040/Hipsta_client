@@ -52,7 +52,7 @@ const Banner = () => {
         headers: { "Content-Type": imageFile.type },
       });
 
-      return file_key; // Return file_key to be passed as image_url and ranmp
+      return file_key; // Return file_key to be passed as image_url and ran
     } catch (error) {
       console.error("Error uploading image to S3:", error);
       throw new Error("Failed to upload image. Please try again.");
