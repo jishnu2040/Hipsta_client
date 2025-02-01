@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+const S3_BASE_URL = "https://hipsta-s3.s3.ap-south-1.amazonaws.com/";
 export default function ServiceProvide() {
   const [services, setServices] = useState([]);
 
@@ -37,7 +37,7 @@ export default function ServiceProvide() {
               <div className="h-24 w-24 rounded-full bg-gray-100 overflow-hidden">
                 <img
                   alt={service.name}
-                  src={service.image} // Assuming the service object contains an 'image' field
+                  src= {`${S3_BASE_URL}${service.image}` }
                   className="h-full w-full object-cover group-hover:scale-110 transition duration-300"
                 />
               </div>

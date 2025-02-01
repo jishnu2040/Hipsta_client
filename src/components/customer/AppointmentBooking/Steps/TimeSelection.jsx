@@ -8,7 +8,7 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [timeCategory, setTimeCategory] = useState('morning'); // 'morning', 'afternoon', 'evening'
 
-  const baseUrl = 'http://localhost:8000/api/v1';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
   const selectedEmployee = bookingData?.employee?.id;
 
   const getNextSevenDays = () => {
@@ -28,7 +28,7 @@ const TimeSelection = ({ setBookingData, bookingData }) => {
     if (!selectedEmployee) return;
 
     try {
-      const response = await axios.get(`${baseUrl}/customer/employee/${selectedEmployee}/available-times/`, {
+      const response = await axios.get(`${API_BASE_URL}customer/employee/${selectedEmployee}/available-times/`, {
         params: { date },
       });
       setAvailableTimes(response.data);
