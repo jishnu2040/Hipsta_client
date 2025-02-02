@@ -4,33 +4,43 @@ import axios from 'axios';
 const Chat = ({ ticketId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [socketConnected, setSocketConnected] = useState(false);
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
+  const reconnectAttempts = useRef(0);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;  
+  const API_BASE_URL = 'https://api.hipsta.live/api/v1/';
+  const WS_BASE_URL = 'wss://api.hipsta.live/ws/chat/';
 
-  // Fetch the initial chat messages when the component loads
+  // Fetch initial chat messages
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    
-    // Fetch chat history from the API
+
     axios
       .get(`${API_BASE_URL}ticket/${ticketId}/chatmessages/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => {
-        setMessages(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching chat messages:', error);
-      });
+      .then((response) => setMessages(response.data))
+      .catch((error) => console.error('Error fetching chat messages:', error));
 
-    // WebSocket setup
-    socket.current = new WebSocket(
-      `ws://localhost:8000/ws/chat/${ticketId}/?token=${token}`
-    );
+    connectWebSocket(token);
+
+    return () => {
+      if (socket.current) {
+        socket.current.close();
+      }
+    };
+  }, [ticketId]);
+
+  // WebSocket connection with automatic reconnection
+  const connectWebSocket = (token) => {
+    socket.current = new WebSocket(`${WS_BASE_URL}${ticketId}/?token=${token}`);
+
+    socket.current.onopen = () => {
+      console.log('WebSocket connected');
+      setSocketConnected(true);
+      reconnectAttempts.current = 0;
+    };
 
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -42,13 +52,18 @@ const Chat = ({ ticketId }) => {
     };
 
     socket.current.onclose = () => {
-      console.log('WebSocket closed');
-    };
+      console.log('WebSocket disconnected');
+      setSocketConnected(false);
 
-    return () => {
-      socket.current.close();
+      if (reconnectAttempts.current < 5) {
+        setTimeout(() => {
+          reconnectAttempts.current += 1;
+          console.log(`Reconnecting... Attempt ${reconnectAttempts.current}`);
+          connectWebSocket(token);
+        }, 3000);
+      }
     };
-  }, [ticketId]);
+  };
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -56,8 +71,13 @@ const Chat = ({ ticketId }) => {
   }, [messages]);
 
   const sendMessage = () => {
-    if (newMessage.trim()) {
-      socket.current.send(JSON.stringify({ message: newMessage }));
+    if (newMessage.trim() && socket.current && socketConnected) {
+      const messageData = {
+        type: 'chat.message',
+        message: newMessage,
+        sender: 'User', // Replace with actual sender username
+      };
+      socket.current.send(JSON.stringify(messageData));
       setNewMessage('');
     }
   };
@@ -86,7 +106,8 @@ const Chat = ({ ticketId }) => {
         />
         <button
           onClick={sendMessage}
-          className="p-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none"
+          className={`p-3 ${socketConnected ? 'bg-blue-500' : 'bg-gray-400'} text-white rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none`}
+          disabled={!socketConnected}
         >
           Send
         </button>
