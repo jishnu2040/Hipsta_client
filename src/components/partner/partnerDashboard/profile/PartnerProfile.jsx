@@ -89,6 +89,7 @@ const PartnerProfile = () => {
           <h3 className="text-xl font-medium text-gray-700">Date Joined</h3>
           <p className="text-lg text-gray-600">{formatDate(profileData.date_joined)}</p>
         </div>
+        <p></p>
       </div>
 
     </div>
