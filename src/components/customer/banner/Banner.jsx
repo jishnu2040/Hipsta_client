@@ -29,9 +29,9 @@ const Banner = () => {
     return () => clearInterval(interval);
   }, [banners]);
 
-  if (banners.length === 0) {
-    return <p className="text-center mt-4">No active banners at the moment.</p>;
-  }
+  // if (banners.length === 0) {
+  //   return <p className="text-center mt-4">No active banners at the moment.</p>;
+  // }
 
   return (
     <div className="banner-container mt-6 relative overflow-hidden w-full h-56 sm:h-48 md:h-64 lg:h-72">
