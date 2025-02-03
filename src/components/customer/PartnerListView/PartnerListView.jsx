@@ -132,7 +132,7 @@ const PartnerListView = ({ location }) => {
 
   return (
     <div className="container mx-auto px-2">
-      <h2 className="text-2xl font-bold text-start text-gray-800 mb-6">
+      <h2 className="md:text-2xl font-bold text-start text-gray-800 mb-6">
         Nearest Partners
       </h2>
       <Slider {...sliderSettings}>
