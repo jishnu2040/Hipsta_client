@@ -28,10 +28,12 @@ const CustomTooltip = ({ active, payload, label }) => {
 const Chart = () => {
   const [chartData, setChartData] = useState([]);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
   useEffect(() => {
     // Fetch the grouped booking data
     axios
-      .get(`http://localhost:8000/api/v1/admin/bookings/`)
+      .get(`${API_BASE_URL}admin/bookings/`)
       .then((response) => {
         const groupedBookings = response.data; // Array of months with bookings
 

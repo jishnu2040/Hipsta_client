@@ -8,13 +8,16 @@ const ServiceTypeManager = () => {
   const [description, setDescription] = useState('');
   const [editId, setEditId] = useState(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+
   useEffect(() => {
     fetchServiceTypes();
   }, []);
 
   const fetchServiceTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/core/service_type/');
+      const response = await axios.get(`${API_BASE_URL}core/service_type/`);
       setServiceTypes(response.data);
     } catch (error) {
       console.error('Error fetching service types:', error);
@@ -25,9 +28,9 @@ const ServiceTypeManager = () => {
     event.preventDefault();
     try {
         if (editId) {
-            await axios.patch(`http://localhost:8000/api/v1/partner/service-types/${editId}/`, { name, description });
+            await axios.patch(`${API_BASE_URL}partner/service-types/${editId}/`, { name, description });
         } else {
-            await axios.post('http://localhost:8000/api/v1/partner/service-types/', { name, description });
+            await axios.post(`${API_BASE_URL}partner/service-types/`, { name, description });
         }
         fetchServiceTypes();
         setName('');
@@ -47,7 +50,7 @@ const ServiceTypeManager = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/partner/service-types/${id}/`);
+      await axios.delete(`${API_BASE_URL}partner/service-types/${id}/`);
       fetchServiceTypes();
     } catch (error) {
       console.error('Error deleting service type:', error);

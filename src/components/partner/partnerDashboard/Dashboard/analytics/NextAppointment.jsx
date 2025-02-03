@@ -9,11 +9,13 @@ const NextAppointment = () => {
   const partnerId = localStorage.getItem("partnerId"); // Fetch partnerId from local storage
   const { isDarkMode } = useContext(ThemeContext); // Access the theme context
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     if (partnerId) {
       // Fetch appointments data from the API
       axios
-        .get(`http://localhost:8000/api/v1/booking/${partnerId}/`)
+        .get(`${API_BASE_URL}booking/${partnerId}/`)
         .then((response) => {
           // Assuming the response contains an array of appointments
           const sortedAppointments = response.data.appointments

@@ -9,6 +9,7 @@ const TopServices = () => {
   // Fetch partnerId from localStorage
   const partnerId = localStorage.getItem('partnerId');
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   // Access the theme context
   const { isDarkMode } = useContext(ThemeContext);
 
@@ -16,7 +17,7 @@ const TopServices = () => {
     if (partnerId) {
       // Fetch the top services for the given partner ID
       axios
-        .get(`http://localhost:8000/api/v1/partner/${partnerId}/topServices/`)
+        .get(`${API_BASE_URL}partner/${partnerId}/topServices/`)
         .then((response) => {
           setServices(response.data); // Set the fetched service data
           setLoading(false);

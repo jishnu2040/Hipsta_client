@@ -16,7 +16,7 @@ const PartnerProfile = () => {
     const token = localStorage.getItem('access_token'); 
 
     if (userId && token) {
-      axiosInstance.get(`http://localhost:8000/api/v1/auth/profile/${userId}/`, {
+      axiosInstance.get(`${API_BASE_URL}auth/profile/${userId}/`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

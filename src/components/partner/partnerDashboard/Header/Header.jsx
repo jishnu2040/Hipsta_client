@@ -14,11 +14,13 @@ const Header = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
+  const WS_BASE_URL = 'wss://api.hipsta.live/ws/notifications/';
+
   useEffect(() => {
     let socket;
 
     const connectSocket = () => {
-      socket = new WebSocket(`ws://localhost:8000/ws/notifications/`);
+      socket = new WebSocket(`${WS_BASE_URL}`);
 
       socket.onopen = () => console.log('WebSocket connection established');
 

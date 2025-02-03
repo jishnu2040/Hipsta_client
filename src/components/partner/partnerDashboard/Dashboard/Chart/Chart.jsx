@@ -28,11 +28,13 @@ const Chart = () => {
   const [chartData, setChartData] = useState([]);
   const partnerId = localStorage.getItem("partnerId"); // Fetch partnerId from local storage
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     if (partnerId) {
       // Fetch the appointment analysis data
       axios
-        .get(`http://localhost:8000/api/v1/booking/analysis/${partnerId}/`)
+        .get(`${API_BASE_URL}booking/analysis/${partnerId}/`)
         .then((response) => {
           const appointments = response.data.appointments;
           // Process data for the chart: group by date and count 'booked' and 'canceled' statuses

@@ -23,6 +23,7 @@ const Cards = () => {
       bgColor: "bg-gray-700",
     },
   ]);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const partnerId = localStorage.getItem("partnerId"); // Fetch partnerId from local storage
 
   const { isDarkMode } = useContext(ThemeContext); // Access the theme context
@@ -31,7 +32,7 @@ const Cards = () => {
     if (partnerId) {
       // Make an API call to fetch partner stats
       axios
-        .get(`http://localhost:8000/api/v1/partner/${partnerId}/stats/`)
+        .get(`${API_BASE_URL}partner/${partnerId}/stats/`)
         .then((response) => {
           // Update the state with the API response
           setCardData([

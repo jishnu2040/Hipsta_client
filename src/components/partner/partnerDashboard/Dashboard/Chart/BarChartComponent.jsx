@@ -14,10 +14,12 @@ const BarChartComponent = () => {
   const [chartData, setChartData] = useState([]);
   const partnerId = localStorage.getItem("partnerId");
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     if (partnerId) {
       axios
-        .get(`http://localhost:8000/api/v1/booking/analysis/${partnerId}/`)
+        .get(`${API_BASE_URL}booking/analysis/${partnerId}/`)
         .then((response) => {
           const appointments = response.data.appointments;
           const groupedData = appointments.reduce((acc, appointment) => {
